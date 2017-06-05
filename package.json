@@ -1,0 +1,23 @@
+{
+  "name": "cluedo",
+  "version": "0.0.1",
+  "description": "A cluedo game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zleub/Cluedo.git"
+  },
+  "author": "Zleub",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zleub/Cluedo/issues"
+  },
+  "homepage": "https://github.com/Zleub/Cluedo#readme",
+  "dependencies": {
+    "bower": "^1.8.0",
+    "director": "^1.2.8"
+  }
+}

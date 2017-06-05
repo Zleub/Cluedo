@@ -1,0 +1,22 @@
+{
+  "name": "cluedo",
+  "description": "A cluedo game",
+  "main": "index.js",
+  "authors": [
+    "Zleub"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Zleub/Cluedo",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^2.0.1",
+    "iron-elements": "^1.0.10"
+  }
+}
