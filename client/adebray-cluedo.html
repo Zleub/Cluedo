@@ -1,0 +1,394 @@
+<dom-module id="adebray-cluedo">
+	<template>
+		<style>
+			:host {
+				display: block;
+				margin: 4px;
+				padding: 8px;
+			}
+		</style>
+
+		<iron-ajax
+			id="XHR"
+			method="POST"
+			content-type="application/json"
+			url="http://api.adebray.ovh/test"
+			handle-as="json"
+			on-response="handleResponse">
+		</iron-ajax>
+		<prism-highlighter></prism-highlighter>
+
+		<canvas id=scene width="800" height="800"></canvas>
+		<paper-input id=toto type=text on-change=onChange></paper-input>
+		<marked-element id="markdown"></marked-element>
+
+	</template>
+	<script>
+		Polymer({
+			is: 'adebray-cluedo',
+
+			onChange: function (e) {
+				console.log(this.$.toto.value)
+				this.$.XHR.body = {
+					text: this.$.toto.value
+				}
+
+				this.$.XHR.generateRequest()
+			},
+
+			handleResponse: function (e) {
+				// this.$.route.innerText = e.detail.url
+				// this.$.res.innerText = e.detail.response
+				this.$.markdown.markdown = "```\n" + JSON.stringify(JSON.parse(e.detail.response), null, "  ") + "\n```"
+			},
+
+			attached: function () {
+				canvas = this.$.scene
+				scene = new THREE.Scene()
+				camera = new THREE.PerspectiveCamera( 75, canvas.width / canvas.height, 0.1, 1000 )
+
+				renderer = new THREE.WebGLRenderer({
+					canvas: canvas
+				})
+
+				let geometry = new THREE.BoxGeometry( 1, 0.1, 1 )
+				let material = new THREE.MeshBasicMaterial( {
+					color: 0xf5f5f5,
+					// wireframe: true
+				} )
+
+				for (let i = -4.5; i < 5; i += 1)
+					for (let j = -4.5; j < 5; j += 1) {
+						let cube = new THREE.Mesh( geometry, material )
+						cube.position.set( i, 0, j)
+						scene.add( cube )
+					}
+
+				let vector = new THREE.Vector3()
+				let center = new THREE.Vector3()
+				let spherical = new THREE.Spherical()
+				let normalMatrix = new THREE.Matrix3()
+				let rotate = ( delta ) => {
+					vector.copy( camera.position ).sub( center );
+
+					spherical.setFromVector3( vector );
+					spherical.theta += delta.x / 200;
+					spherical.phi += delta.y / 200;
+					spherical.makeSafe();
+
+					vector.setFromSpherical( spherical );
+
+					camera.position.copy( center ).add( vector );
+					camera.lookAt( center );
+				}
+
+				let pan = function ( delta ) {
+					let distance = camera.position.distanceTo( center );
+
+					delta.multiplyScalar( distance * 0.001 );
+					delta.applyMatrix3( normalMatrix.getNormalMatrix( camera.matrix ) );
+
+					camera.position.add( delta );
+					center.add( delta );
+				}
+
+				let STATE = { NONE: - 1, ROTATE: 0, ZOOM: 1, PAN: 2 }
+				let state = STATE.NONE
+				let pointer = new THREE.Vector2()
+				let pointerOld = new THREE.Vector2()
+
+				window.addEventListener('wheel', ( event ) => {
+					event.preventDefault();
+					zoom( new THREE.Vector3( 0, 0, event.deltaY ) )
+				})
+
+				zoom = function ( delta ) {
+					let distance = camera.position.distanceTo( center );
+					delta.multiplyScalar( distance * 0.001 );
+
+					if ( delta.length() > distance )
+						return;
+
+					delta.applyMatrix3( normalMatrix.getNormalMatrix( camera.matrix ) );
+					camera.position.add( delta );
+				}
+
+
+				canvas.addEventListener("mousedown", ( e ) => {
+					if ( e.button === 0 ) {
+						state = STATE.ROTATE
+					} else if ( event.button === 1 ) {
+						state = STATE.ZOOM;
+					} else if ( event.button === 2 ) {
+						state = STATE.PAN;
+					}
+
+					pointerOld.set( e.offsetX, e.offsetY )
+
+					canvas.addEventListener( 'mousemove', onMouseMove, false )
+					window.addEventListener( 'mouseup', onMouseUp, false )
+				})
+
+				let onMouseUp = () => {
+					canvas.removeEventListener( 'mousemove', onMouseMove, false )
+					window.removeEventListener( 'mouseup', onMouseUp, false )
+				}
+
+				let onMouseMove = (e) => {
+					pointer.set( e.offsetX, e.offsetY )
+
+					let movementX = pointer.x - pointerOld.x
+					let movementY = pointer.y - pointerOld.y
+
+					if ( state === STATE.ROTATE ) {
+						rotate( new THREE.Vector3( - movementX * 1, - movementY * 1, 0 ) )
+					} else if ( state === STATE.PAN ) {
+						pan( new THREE.Vector3( - movementX, movementY, 0 ) );
+					} else if ( state === STATE.ZOOM ) {
+						zoom( new THREE.Vector3( 0, 0, movementY ) );
+					}
+
+					pointerOld.set( e.offsetX, e.offsetY )
+
+				}
+
+				function contextmenu( event ) {
+					event.preventDefault();
+				}
+				canvas.addEventListener( 'contextmenu', contextmenu, false )
+
+				function render() {
+					requestAnimationFrame( render )
+					renderer.render( scene, camera )
+				}
+
+				camera.position.y = 2
+				camera.position.z = 10
+				zoom( new THREE.Vector3( 0, 0, -800 ) )
+				camera.lookAt( new THREE.Vector3() )
+
+				render()
+
+				// ---- ----
+
+				let ratio = 1 / 32
+				let pieces = {}
+
+				pieces.head = {
+					size: {
+						height: 8 * ratio,
+						width: 8 * ratio,
+						depth: 8 * ratio
+					}
+				}
+				// pieces.helmet = {
+				// 	size: {
+				// 		height: 9 * ratio,
+				// 		width: 9 * ratio,
+				// 		depth: 9 * ratio
+				// 	}
+				// }
+				pieces.body = {
+					size: {
+						height: 12 * ratio,
+						width: 8 * ratio,
+						depth: 4 * ratio
+					}
+				}
+				pieces.left_leg = {
+					size: {
+						height: 12 * ratio,
+						width: 4 * ratio,
+						depth: 4 * ratio
+					}
+				}
+				pieces.right_leg = {
+					size: {
+						height: 12 * ratio,
+						width: 4 * ratio,
+						depth: 4 * ratio
+					}
+				}
+				pieces.left_arm = {
+					size: {
+						height: 12 * ratio,
+						width: 4 * ratio,
+						depth: 4 * ratio
+					}
+				}
+				pieces.right_arm = {
+					size: {
+						height: 12 * ratio,
+						width: 4 * ratio,
+						depth: 4 * ratio
+					}
+				}
+
+				pieces.head.position = {
+					x: 0,
+					y: pieces.body.size.height - 2 / 32,
+					z: 0
+				}
+				// pieces.helmet.position = {
+				// 	x: 0,
+				// 	y: pieces.body.size.height / 1.15,
+				// 	z: 0
+				// }
+				pieces.body.position = {
+					x: 0,
+					y: 0,
+					z: 0
+				}
+				pieces.left_leg.position = {
+					x: pieces.body.size.width / 4,
+					y: - pieces.body.size.height,
+					z: 0
+				}
+				pieces.right_leg.position = {
+					x: - pieces.body.size.width / 4,
+					y: - pieces.body.size.height,
+					z: 0
+				}
+				pieces.left_arm.position = {
+					x: pieces.body.size.width - 2 / 32,
+					y: 0,
+					z: 0
+				}
+				pieces.right_arm.position = {
+					x: -pieces.body.size.width + 2 / 32,
+					y: 0,
+					z: 0
+				}
+
+				pieces.head.map = [
+					[ {x: 16, y: 24}, {x: 16, y: 16}, {x: 24, y: 24}, {x: 24, y: 16} ],
+					[ {x:  0, y: 24}, {x:  0, y: 16}, {x:  8, y: 24}, {x:  8, y: 16} ],
+					[ {x:  8, y: 32}, {x:  8, y: 24}, {x: 16, y: 32}, {x: 16, y: 24} ],
+					[ {x: 16, y: 24}, {x: 16, y: 32}, {x: 24, y: 24}, {x: 24, y: 32} ],
+					[ {x:  8, y: 24}, {x:  8, y: 16}, {x: 16, y: 24}, {x: 16, y: 16} ],
+					[ {x: 24, y: 24}, {x: 24, y: 16}, {x: 32, y: 24}, {x: 32, y: 16} ]
+				]
+				pieces.body.map = [
+					[ {x: 28, y: 12}, {x: 28, y:  0}, {x: 32, y: 12}, {x: 32, y:  0} ],
+					[ {x: 16, y: 12}, {x: 16, y:  0}, {x: 20, y: 12}, {x: 20, y:  0} ],
+					[ {x: 20, y: 16}, {x: 20, y: 12}, {x: 28, y: 16}, {x: 28, y: 12} ],
+					[ {x: 28, y: 16}, {x: 28, y: 12}, {x: 36, y: 16}, {x: 36, y: 12} ],
+					[ {x: 20, y: 12}, {x: 20, y:  0}, {x: 28, y: 12}, {x: 28, y:  0} ],
+					[ {x: 32, y: 12}, {x: 32, y:  0}, {x: 40, y: 12}, {x: 40, y:  0}]
+				]
+
+				pieces.left_leg.map = [
+					[ {x:  4, y: 12}, {x:  4, y:  0}, {x:  0, y: 12}, {x:  0, y:  0} ],
+					[ {x: 12, y: 12}, {x: 12, y:  0}, {x:  8, y: 12}, {x:  8, y:  0} ],
+					[ {x:  8, y: 16}, {x:  8, y: 12}, {x:  4, y: 16}, {x:  4, y: 12} ],
+					[ {x: 12, y: 16}, {x: 12, y: 12}, {x:  8, y: 16}, {x:  8, y: 12} ],
+					[ {x:  8, y: 12}, {x:  8, y:  0}, {x:  4, y: 12}, {x:  4, y:  0} ],
+					[ {x: 16, y: 12}, {x: 16, y:  0}, {x: 12, y: 12}, {x: 12, y:  0} ]
+				]
+				pieces.right_leg.map = [
+					[ {x:  8, y: 12}, {x:  8, y:  0}, {x: 12, y: 12}, {x: 12, y:  0} ],
+					[ {x:  0, y: 12}, {x:  0, y:  0}, {x:  4, y: 12}, {x:  4, y:  0} ],
+					[ {x:  4, y: 16}, {x:  4, y: 12}, {x:  8, y: 16}, {x:  8, y: 12} ],
+					[ {x:  8, y: 16}, {x:  8, y: 12}, {x: 12, y: 16}, {x: 12, y: 12} ],
+					[ {x:  4, y: 12}, {x:  4, y:  0}, {x:  8, y: 12}, {x:  8, y:  0} ],
+					[ {x: 12, y: 12}, {x: 12, y:  0}, {x: 16, y: 12}, {x: 16, y:  0} ]
+				]
+				pieces.left_arm.map = [
+					[ {x: 44, y: 12}, {x: 44, y:  0}, {x: 40, y: 12}, {x: 40, y:  0} ],
+					[ {x: 52, y: 12}, {x: 52, y:  0}, {x: 48, y: 12}, {x: 48, y:  0} ],
+					[ {x: 48, y: 16}, {x: 48, y: 12}, {x: 44, y: 16}, {x: 44, y: 12} ],
+					[ {x: 52, y: 12}, {x: 52, y: 16}, {x: 48, y: 12}, {x: 48, y: 16} ],
+					[ {x: 48, y: 12}, {x: 48, y:  0}, {x: 44, y: 12}, {x: 44, y:  0} ],
+					[ {x: 56, y: 12}, {x: 56, y:  0}, {x: 52, y: 12}, {x: 52, y:  0} ],
+				]
+				pieces.right_arm.map = [
+					[ {x: 48, y: 12}, {x: 48, y:  0}, {x: 52, y: 12}, {x: 52, y:  0} ],
+					[ {x: 40, y: 12}, {x: 40, y:  0}, {x: 44, y: 12}, {x: 44, y:  0} ],
+					[ {x: 44, y: 16}, {x: 44, y: 12}, {x: 48, y: 16}, {x: 48, y: 12} ],
+					[ {x: 48, y: 12}, {x: 48, y: 16}, {x: 52, y: 12}, {x: 52, y: 16} ],
+					[ {x: 44, y: 12}, {x: 44, y:  0}, {x: 48, y: 12}, {x: 48, y:  0} ],
+					[ {x: 52, y: 12}, {x: 52, y:  0}, {x: 56, y: 12}, {x: 56, y:  0} ],
+				]
+
+
+				let tTexture = new THREE.TextureLoader().load( "redheadphones.png" )
+				tTexture.magFilter	= THREE.NearestFilter;
+				tTexture.minFilter	= THREE.NearestFilter;
+				let tMaterial = new THREE.MeshBasicMaterial({
+					map: tTexture
+				})
+				let tMaterialt	= new THREE.MeshBasicMaterial({
+					map: tTexture,
+					transparent: true,
+					side: THREE.DoubleSide
+				})
+
+				character = new THREE.Object3D()
+
+				let applyUV = (map, cube) => {
+					map.forEach( (e, i) => {
+						cube.geometry.faceVertexUvs[0][i * 2][0].x = e[0].x * 1 / 64
+						cube.geometry.faceVertexUvs[0][i * 2][0].y = e[0].y * 1 / 32
+						cube.geometry.faceVertexUvs[0][i * 2][1].x = e[1].x * 1 / 64
+						cube.geometry.faceVertexUvs[0][i * 2][1].y = e[1].y * 1 / 32
+						cube.geometry.faceVertexUvs[0][i * 2][2].x = e[2].x * 1 / 64
+						cube.geometry.faceVertexUvs[0][i * 2][2].y = e[2].y * 1 / 32
+
+						cube.geometry.faceVertexUvs[0][i * 2 + 1][0].x = e[1].x * 1 / 64
+						cube.geometry.faceVertexUvs[0][i * 2 + 1][0].y = e[1].y * 1 / 32
+						cube.geometry.faceVertexUvs[0][i * 2 + 1][1].x = e[3].x * 1 / 64
+						cube.geometry.faceVertexUvs[0][i * 2 + 1][1].y = e[3].y * 1 / 32
+						cube.geometry.faceVertexUvs[0][i * 2 + 1][2].x = e[2].x * 1 / 64
+						cube.geometry.faceVertexUvs[0][i * 2 + 1][2].y = e[2].y * 1 / 32
+					})
+				}
+
+				Object.keys(pieces).forEach( k => {
+					let v = pieces[k]
+
+					let geometry = new THREE.BoxGeometry( v.size.width, v.size.height, v.size.depth )
+					let material = new THREE.MeshBasicMaterial( {
+						color: 0xf50000,
+						wireframe: true
+					} )
+
+					let cube = new THREE.Mesh( geometry, material )
+					if (v.map) {
+						cube = new THREE.Mesh( geometry, tMaterial )
+						applyUV(v.map, cube)
+					}
+
+					cube.position.set(v.position.x, v.position.y, v.position.z)
+					character.add(cube)
+				})
+
+				// window.onload = function() {
+				//   let gui = new dat.GUI();
+				//   let cube = character.children[0]
+				//   let uvs = pieces[Object.keys(pieces)[0]].map
+				//
+				//   uvs.forEach( (e, i) => {
+				// 	  var f = gui.addFolder(`${i}`)
+				// 	  e.forEach( (_e, _i) => {
+				// 		var _f = f.addFolder(`${_i}`)
+				// 		let change = () => {
+				// 			applyUV(uvs, cube)
+				// 			cube.geometry.uvsNeedUpdate = true
+				// 			document.querySelector('.res').innerText = JSON.stringify( uvs )
+				// 		}
+				//
+				// 	    _f.add(_e, 'x', 0, 64).onChange(change);
+				// 	    _f.add(_e, 'y', 0, 32).onChange(change);
+				//
+				// 	  })
+				//   })
+				// };
+
+				character.position.set(0, 0.615, 0)
+				scene.add(character)
+
+
+			}
+		});
+	</script>
+</dom-module>
