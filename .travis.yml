@@ -1,0 +1,10 @@
+# @Author: Debray Arnaud <adebray>
+# @Date:   2017-06-20T20:31:00+02:00
+# @Email:  adebray@student.42.fr
+# @Last modified by:   adebray
+# @Last modified time: 2017-06-20T21:07:15+02:00
+
+language: node_js
+install:
+    - npm install
+    - bower install
