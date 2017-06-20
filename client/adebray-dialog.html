@@ -1,0 +1,61 @@
+<dom-module id="adebray-dialog">
+	<template>
+	<style>
+		:host {
+			display: block;
+		}
+		paper-dialog {
+			overflow: auto;
+		}
+	</style>
+
+
+	<iron-ajax
+		id="XHR"
+		method="POST"
+		content-type="application/json"
+		url="http://api.adebray.ovh/test"
+		handle-as="json"
+		on-response="handleResponse">
+	</iron-ajax>
+
+	<paper-dialog>
+		<h2>Dialog Title</h2>
+
+		<paper-input id=toto type=text value="do you like potatoes ?" on-change=onChange></paper-input>
+		<marked-element id="markdown"></marked-element>
+
+	</paper-dialog>
+
+	</template>
+	<script>
+	Polymer({
+		is: 'adebray-dialog',
+
+		onChange: function (e) {
+			console.log(this.$.toto.value)
+			this.$.XHR.body = {
+				text: this.$.toto.value
+			}
+
+			this.$.XHR.generateRequest()
+		},
+
+		handleResponse: function (e) {
+			this.$.markdown.markdown = "```\n" +
+				e.detail.url + "\n" +
+				JSON.stringify(JSON.parse(e.detail.response), null, "  ") +
+				"\n```"
+			this.async( () => this.querySelector('paper-dialog').center() )
+		},
+
+		setTitle: function (title) {
+			this.querySelector('h2').innerText = title
+		},
+
+		toggle: function (e) {
+			this.querySelector('paper-dialog').toggle()
+		}
+	});
+	</script>
+</dom-module>
