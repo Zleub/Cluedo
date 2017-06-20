@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T00:43:42+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-20T21:02:00+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-20T22:22:29+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -18,11 +18,18 @@ querystring = require('querystring')
 fs = require('fs')
 director = require('director')
 
-opt = {}
+opt = {
+	port: 8080,
+	hostname: "0.0.0.0"
+}
 
 process.argv.reduce( (p, e) => {
 	if (p == "--token")
 		opt.token = e
+	if (p == "--port")
+		opt.port = Number(e)
+	if (p == "--hostname")
+		opt.hostname = e
 	return e
 })
 
@@ -43,9 +50,9 @@ new Promise( (res, rej) => {
 
 	let server = http.createServer(function (req, res) {
 		req.chunks = [];
-	    req.on('data', function (chunk) {
-	      req.chunks.push(chunk.toString());
-	    });
+		req.on('data', function (chunk) {
+			req.chunks.push(chunk.toString());
+		});
 
 		router.dispatch(req, res, function (err) {
 			if (err) {
@@ -53,10 +60,13 @@ new Promise( (res, rej) => {
 				res.writeHead(404);
 				res.end();
 			}
+			else
+				console.log('Served ' + req.url);
 		});
 
-		console.log('Served ' + req.url);
 	});
 
-	server.listen(8080);
+	server.listen(opt.port, opt.hostname);
+
+	console.log('Server Up')
 })
