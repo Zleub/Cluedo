@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-22T21:11:45+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T15:58:26+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T18:18:15+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -17,7 +17,7 @@ class Router {
 		this.routes = routes
 	}
 
-	matchRoute(req, routes) {
+	matchRoute(req, routes, args = []) {
 		return Object.keys(routes).reduce( (p, k) => {
 			let match = req.url.match(`^${k}`)
 			if (match) {
@@ -25,30 +25,34 @@ class Router {
 				let _f = routes[k][req.method.toLowerCase()]
 
 				if (_url == "" && _f)
-					return _f
+					return function () {
+						_f.apply(this, args)
+					}
 				else {
 					return this.matchRoute({
 						url: _url,
 						method: req.method,
 						headers: req.headers
-					}, routes[k])
+					}, routes[k], args)
 				}
 			}
 			return p
 		}, null) || Object.keys(routes).reduce( (p, k) => {
 			if (k.indexOf(":") == 1) {
+				let _url = req.url.match(/\/(\w+)(\/.+)/)
 				let _f = routes[k][req.method.toLowerCase()]
 
-				if (_f)
+				if (_f && _url == null)
 					return function () {
-						_f.call(this, req.url.substr(1))
+						_f.apply(this, args.concat([req.url.substr(1)]))
 					}
 				else {
+					args.push(_url[1])
 					return this.matchRoute({
-						url: req.url,
+						url: _url != null ? _url[2] : req.url,
 						method: req.method,
 						headers: req.headers
-					}, routes[k])
+					}, routes[k], args)
 				}
 			}
 
@@ -60,15 +64,11 @@ class Router {
 		if (req.method === 'HEAD') {
 			req.method = 'GET'
 		}
-		// console.log(' ---- ')
-		// console.log('headers: ', req.headers)
-		// console.log('method: ', req.method)
-		// console.log('url: ', req.url)
 
 		let route = this.matchRoute(req, this.routes)
 
 		if (route) {
-			route.call({req, res})
+			route.apply({req, res})
 			callback()
 		}
 		else

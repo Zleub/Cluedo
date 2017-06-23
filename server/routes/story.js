@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-20T20:59:09+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T16:17:36+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T18:12:56+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -31,7 +31,15 @@ exports['/:param'] = {
 		this.res.end(`Hello story/param <${param}> get !\n`)
 	},
 
-	"/:more_param": function (more_param) {
-		this.res.end(`Hello story/more_param <${more_param}> get !\n`)
+	"/adebray": {
+		get: function (param) {
+			this.res.end(`Hello story/:param/adebray <${param}> get !\n`)
+		}
+	},
+
+	"/:more_param": {
+		get: function (param, more_param) {
+			this.res.end(`Hello story/more_param <${param}> <${more_param}> get !\n`)
+		}
 	}
 }
