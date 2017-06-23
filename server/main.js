@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T00:43:42+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-20T22:22:29+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T13:44:27+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -17,6 +17,8 @@ https = require('https')
 querystring = require('querystring')
 fs = require('fs')
 director = require('director')
+
+let { Router } = require('./router.js')
 
 opt = {
 	port: 8080,
@@ -46,7 +48,8 @@ new Promise( (res, rej) => {
 } ).then( routes => {
 	console.log(routes)
 
-	let router = new director.http.Router(routes)
+	// let router = new director.http.Router(routes)
+	let router = new Router(routes)
 
 	let server = http.createServer(function (req, res) {
 		req.chunks = [];
