@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T00:43:42+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T13:44:27+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T18:21:37+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -16,7 +16,6 @@ http = require('http')
 https = require('https')
 querystring = require('querystring')
 fs = require('fs')
-director = require('director')
 
 let { Router } = require('./router.js')
 
@@ -48,9 +47,7 @@ new Promise( (res, rej) => {
 } ).then( routes => {
 	console.log(routes)
 
-	// let router = new director.http.Router(routes)
 	let router = new Router(routes)
-
 	let server = http.createServer(function (req, res) {
 		req.chunks = [];
 		req.on('data', function (chunk) {
