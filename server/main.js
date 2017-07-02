@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T00:43:42+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T17:44:08+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T21:36:27+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -33,8 +33,6 @@ process.argv.reduce( (p, e) => {
 		opt.hostname = e
 	return e
 })
-
-console.log(opt)
 
 new Promise( (res, rej) => {
 	fs.readdir('./server/routes', (err, data) => {
