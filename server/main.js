@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T00:43:42+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T18:21:37+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T17:44:08+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -17,7 +17,7 @@ https = require('https')
 querystring = require('querystring')
 fs = require('fs')
 
-let { Router } = require('./router.js')
+let { Router } = require('./scripts/router.js')
 
 opt = {
 	port: 8080,
@@ -50,19 +50,26 @@ new Promise( (res, rej) => {
 	let router = new Router(routes)
 	let server = http.createServer(function (req, res) {
 		req.chunks = [];
+
 		req.on('data', function (chunk) {
-			req.chunks.push(chunk.toString());
+			req.chunks.push(chunk);
 		});
 
-		router.dispatch(req, res, function (err) {
-			if (err) {
-				console.error(err)
-				res.writeHead(404);
-				res.end();
-			}
-			else
-				console.log('Served ' + req.url);
-		});
+		req.on('end', function () {
+			if (req.chunks.length > 0)
+				req.body = JSON.parse( Buffer.concat(req.chunks).toString() )
+
+			router.dispatch(req, res, function (err) {
+				if (err) {
+					console.error(err)
+					res.writeHead(404);
+					res.end();
+				}
+				else
+					console.log('Served ' + req.url);
+			});
+		})
+
 
 	});
 
