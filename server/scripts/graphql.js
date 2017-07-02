@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-07-01T19:40:17+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T03:11:50+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T18:35:28+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -36,11 +36,9 @@ var schema = buildSchema(`
 		victim: Character
 		characters(
 			name: String
-			particularity: String
-			relationship: String
+			particularities: String
+			relationships: String
 		): [Character]
-		relationships(state: String): [Relationship]
-		relationships(state: String): [Character]
 	}
 
 	type Relationship {
@@ -50,12 +48,29 @@ var schema = buildSchema(`
 `)
 
 graphql(schema, `{
-	characters(relationship: "friend") {
+	victim {
+		name
+	}
+	queryByName: characters(name: "Blue") {
+		name
+		relationships {
+			character {
+				name
+			}
+			state
+		}
+	}
+	queryByRelation: characters(name: "Blue") {
 		name
 		relationships(state: "friend") {
 			character {
 				name
 			}
+			state
 		}
+	}
+	queryByParticularity: characters(particularities: "woman") {
+		name
+		particularities
 	}
 }`, characters).then(prettyPrint)

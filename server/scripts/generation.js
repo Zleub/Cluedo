@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-23T20:30:08+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T03:14:10+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T18:40:25+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -47,6 +47,35 @@ let optionalParticularities = [
 	'glasses'
 ]
 
+class Character {
+	constructor(opt) {
+		this._name = opt.name
+		this._relationships = opt.relationships
+		this._particularities = opt.particularities
+	}
+
+	name({name}) {
+		if (!name)
+			return this._name
+		if (this._name == name)
+			return this
+	}
+
+	particularities({particularities}) {
+		if (!particularities)
+			return this._particularities
+		if (particularities && this._particularities.filter(e => e == particularities).length != 0)
+			return this
+	}
+
+	relationships({state}) {
+		if (!state)
+			return this._relationships
+		if (state)
+			return this._relationships.filter( e => e.state == state )
+	}
+}
+
 let f = () => (number) => {
 	let _ = characters.map(e => {
 		return { name: e }
@@ -58,9 +87,6 @@ let f = () => (number) => {
 		let [c] = _.splice(r, 1)
 		_characters.push( c )
 	}
-
-	let victim = _characters[Math.floor( Math.random() * _characters.length )]
-	let murderer = _characters[Math.floor( Math.random() * _characters.length )]
 
 	_characters.forEach( _ => {
 		_.relationships = _characters.reduce( (p,e) => {
@@ -109,32 +135,32 @@ let f = () => (number) => {
 	let chronology = []
 	let motivation = motivations[ Math.floor(Math.random() * motivations.length)]
 
-	// console.log(JSON.stringify(_characters, null, "  "))
-	// console.log(`${victim.name} has be killed by ${murderer.name} because of ${motivation}`)
-	// console.log(chronology)
-	return { characters: _characters, victim, murderer, chronology }
+	_characters = _characters.map( e => new Character(e) )
+	return {
+		characters: _characters,
+		victim: _characters[Math.floor( Math.random() * _characters.length )],
+		murderer: _characters[Math.floor( Math.random() * _characters.length )],
+		motivation,
+		chronology
+	}
 }
 
 let g = f(characters, relationships, motivations)
 
 module.exports = (number) => {
 	let data = g(number)
+	console.log(data)
 	return {
-		characters: ({name, particularity, relationship},b,c) => {
-			console.log({name, particularity, relationship},b,c)
-			console.log(c.fieldNodes[0].arguments, c.fieldNodes[0].name)
+		characters: ({name, particularities, relationships}) => {
 			if (name)
-				return [ data.characters.find( ({name: _name}) => _name == name ) ]
-			else if (particularity) {
-				return data.characters.filter( ({particularities}) => particularities.find( _ => _ == particularity) )
-			}
-			else if (relationship) {
-				return data.characters.filter( ({relationships}) => relationships.find( ({state}) => state == relationship) )
-			}
+				return data.characters.filter( e => e.name({name}) )
+			else if (particularities)
+				return data.characters.filter( e => e.particularities({particularities}) )
+			else if (relationship)
+				return data.characters.filter( e => e.relationships({relationship}) )
 			else
 				return data.characters
 		},
-		relationships: () => console.log("Hello !"),
 		victim: () => data.victim
 	}
 }
