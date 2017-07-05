@@ -14,17 +14,20 @@
 		<style is="custom-style" include="iron-flex iron-flex-alignment"></style>
 
 		<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-		<script src=https://threejs.org/build/three.js></script>
+		<link rel="import" href="elements.html">
 
+		<script src=https://threejs.org/build/three.js></script>
 		<script src=scripts/dat.gui.js></script>
 		<script src=scripts/scene.js></script>
 		<script src=scripts/character.js></script>
 
-		<link rel="import" href="elements.html">
 
 	</head>
 
 	<body>
 		<adebray-cluedo></adebray-cluedo>
+		<script type="text/javascript">
+			location = '#scene'
+		</script>
 	</body>
 </html>

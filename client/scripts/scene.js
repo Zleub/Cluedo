@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T01:07:54+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T17:42:22+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-05T04:44:30+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -19,21 +19,29 @@ let Scene = (canvas) => {
 	let renderer = new THREE.WebGLRenderer({
 		canvas: canvas
 	})
+	renderer.shadowMap.enabled = true
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.gammaInput = true;
+	renderer.gammaOutput = true;
+
 	var raycaster = new THREE.Raycaster()
 
 	let texture = new THREE.TextureLoader().load( "assets/bedrock.png" )
 	texture.magFilter	= THREE.NearestFilter;
 	texture.minFilter	= THREE.NearestFilter;
 	let geometry = new THREE.BoxGeometry( 1, 1, 1 )
-	let material = new THREE.MeshBasicMaterial( {
-		map: texture,
-		wireframe: true
+	let material = new THREE.MeshPhongMaterial( {
+		color: 0xa5a5a5,
+		// map: texture,
+		// wireframe: true
 	} )
 
 	for (let i = -4.5; i < 5; i += 1) {
 		for (let j = -4.5; j < 5; j += 1) {
 			let cube = new THREE.Mesh( geometry, material )
 			cube.position.set( i, 0, j)
+			cube.castShadow = true
+			cube.receiveShadow = true
 			scene.add( cube )
 		}
 	}
@@ -171,12 +179,12 @@ let Scene = (canvas) => {
 
 	function render() {
 		update_stack.forEach( e => e({clock, camera}) )
-		requestAnimationFrame( render )
 		renderer.render( scene, camera )
+		requestAnimationFrame( render )
 	}
 
-	camera.position.y = 10
-	camera.position.z = 10
+	camera.position.y = 5
+	camera.position.z = 30
 	zoom( new THREE.Vector3( 0, 0, -800 ) )
 	camera.lookAt( new THREE.Vector3() )
 
