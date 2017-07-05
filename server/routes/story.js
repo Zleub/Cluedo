@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-20T20:59:09+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T22:33:38+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T22:55:31+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -27,7 +27,7 @@ var schema = buildSchema(`
 	}
 
 	type Query {
-		getStory(id: Int): Story
+		story(id: Int): Story
 	}
 `)
 
@@ -36,7 +36,7 @@ console.log( printSchema(schema) )
 exports['/:id'] = {
 	get: function (id) {
 		graphql(schema, `{
-			getStory(id: ${id}) {
+			story(id: ${id}) {
 				id
 				characters {
 					name
@@ -44,7 +44,7 @@ exports['/:id'] = {
 				}
 			}
 		}`, {
-			getStory: ({id}) => {
+			story: ({id}) => {
 				return process.stories[id]
 			}
 		}).then(e => this.res.end(JSON.stringify(e)))
