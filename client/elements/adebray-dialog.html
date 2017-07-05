@@ -4,8 +4,10 @@
 		:host {
 			display: block;
 		}
-		paper-dialog {
+
+		#repeater {
 			overflow: auto;
+			max-height: 80vw;
 		}
 	</style>
 
@@ -20,7 +22,20 @@
 	</iron-ajax>
 
 	<paper-dialog>
-		<h2>Dialog Title</h2>
+		<h2>{{title}}</h2>
+
+		<div id=repeater>
+			<template is="dom-repeat" items="{{getDiscussions(title, discussions.*)}}" index-as="index">
+				<paper-item disabled>
+					<paper-item-body two-line>
+						<div>{{item.text}}</div>
+						<div secondary>
+							<marked-element markdown={{item.response}}></marked-element>
+						</div>
+					</paper-item-body>
+				</paper-item>
+			</template>
+		</div>
 
 		<paper-input id=toto type=text value="do you like potatoes ?" on-change=onChange></paper-input>
 		<marked-element id="markdown"></marked-element>
@@ -32,8 +47,19 @@
 	Polymer({
 		is: 'adebray-dialog',
 
+		properties: {
+			title: String,
+			discussions: {
+				type: Object,
+				value: {}
+			}
+		},
+
 		onChange: function (e) {
-			console.log(this.$.toto.value)
+			this.set('data', {
+				text: this.$.toto.value
+			})
+
 			this.$.XHR.body = {
 				text: this.$.toto.value
 			}
@@ -41,15 +67,31 @@
 			this.$.XHR.generateRequest()
 		},
 
+		getDiscussions: function(e) {
+			console.log(e)
+			console.log(this.discussions[this.title])
+			if (this.discussions[this.title])
+				return this.discussions[this.title].map(e => e)
+			else
+				return []
+		},
+
 		handleResponse: function (e) {
-			this.$.markdown.markdown = "```\n" +
-				e.detail.url + "\n" +
-				JSON.stringify(JSON.parse(e.detail.response), null, "  ") +
-				"\n```"
+			// this.$.markdown.markdown = "```\n" +
+			// 	e.detail.url + "\n" +
+			// 	JSON.stringify(JSON.parse(e.detail.response), null, "  ") +
+			// 	"\n```"
+
+			this.data.response = "```\n" + JSON.stringify(JSON.parse(e.detail.response).message, null, "  ") + "\n```"
+			if (!this.discussions[this.title])
+				this.set(`discussions.${this.title}`, [])
+			this.push(`discussions.${this.title}`, this.data)
+			this.$.toto.value = ""
 			this.async( () => this.querySelector('paper-dialog').center() )
 		},
 
 		setTitle: function (title) {
+			this.set('title', title)
 			this.querySelector('h2').innerText = title
 		},
 

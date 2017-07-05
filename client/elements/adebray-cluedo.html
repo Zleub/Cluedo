@@ -11,38 +11,105 @@
 				width: 800px;
 			}
 
+			paper-button {
+				display: flex;
+			}
+
 		</style>
 
 		<prism-highlighter></prism-highlighter>
+		<app-drawer id="drawer" swipe-open>
+			<paper-button raised on-tap="changeLocation">Scene</paper-button>
+			<paper-button raised on-tap="changeLocation">Data</paper-button>
+		</app-drawer>
 
-		<adebray-dialog></adebray-dialog>
-		<canvas id=scene width="800" height="800"></canvas>
+		<app-location route="{{route}}" use-hash-as-path></app-location>
+		<app-route
+		    route="{{route}}"
+		    pattern="/:page"
+		    data="{{data}}"
+		    tail="{{tail}}">
+		</app-route>
+
+		<iron-pages selected="{{route.path}}" attr-for-selected="id">
+		<section id=scene>
+			<adebray-dialog id="dialog"></adebray-dialog>
+			<canvas id=canvas width="800" height="800"></canvas>
+		</section>
+		<section id=data>
+			<marked-element markdown={{_toJSON(data)}}></marked-element>
+		</section>
+		<section></section>
+		</iron-pages>
+
+		<iron-ajax
+		  auto
+		  url="http://api.adebray.ovh/story/0"
+		  handle-as="json"
+		  on-response="handleResponse">
+		</iron-ajax>
+
 
 	</template>
 	<script>
 		Polymer({
 			is: 'adebray-cluedo',
 
-			attached: function () {
-				let {character: mainCharacter} = Character({
-					name: "hero",
-					texture: "./assets/redheadphones.png"
+			_toJSON: function (e) {
+				return '```\n' + JSON.stringify(e, null, "  ") + '\n```'
+			},
+
+			changeLocation: function (e) {
+				let path = e.target.innerText.trim().toLowerCase()
+				location = '#' + path
+			},
+
+			handleResponse: function (e) {
+				this.set('data', e.detail.response)
+
+				let {renderer, scene, camera, update_stack} = Scene(this.$.canvas)
+				var spotLight1 = new THREE.SpotLight( 0xffffff, 1 );
+				spotLight1.position.set( 25, 25, 25 );
+
+				spotLight1.castShadow = true;
+
+				spotLight1.shadow.mapSize.width = 1024;
+				spotLight1.shadow.mapSize.height = 1024;
+
+				spotLight1.shadow.camera.near = 1;
+				spotLight1.shadow.camera.far = 1000;
+				spotLight1.shadow.camera.fov = 30;
+				spotLight1.angle = 0.08
+
+				scene.add( spotLight1 );
+
+				update_stack.push(({clock}) => {
+					let time = clock.getElapsedTime() * 50
+					spotLight1.position.set(
+						Math.cos(time / 200) * 40,
+						50,
+						Math.sin(time / 200) * 40
+					)
 				})
-				let {character: pnjCharacter} = Character({
-					name: "pnj",
-					texture: "./assets/3djesus.png"
+
+				scene.dialog = this.$.dialog
+
+				let characters = e.detail.response.data.story.characters
+				characters.forEach( (e, i) => {
+					let name = e.name.toLowerCase()
+					let c = new Character({
+						name: name,
+						texture: `./assets/${name}.png`
+					})
+
+					if (c.name == 'red') {
+						scene.mainCharacter = c
+					}
+
+					c.translateX(i - characters.length / 2)
+					update_stack.push(c.update.bind(c))
+					scene.add(c)
 				})
-
-				let {scene, camera, update_stack} = Scene(this.$.scene)
-				scene.mainCharacter = mainCharacter
-				scene.dialog = this.querySelector('adebray-dialog')
-
-				scene.add(mainCharacter)
-				scene.add(pnjCharacter)
-				pnjCharacter.translateX(1)
-
-				update_stack.push(mainCharacter.update)
-				update_stack.push(pnjCharacter.update)
 			}
 		});
 	</script>
