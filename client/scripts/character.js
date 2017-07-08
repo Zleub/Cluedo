@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T01:07:54+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-05T03:23:28+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-05T18:19:38+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -180,7 +180,7 @@ class Character extends THREE.Object3D {
 	constructor({name, texture, fatness}) {
 		super()
 
-		let _texture = new THREE.TextureLoader().load( texture )
+		let _texture = new THREE.TextureLoader().load( texture.replace(" ", "_") )
 		_texture.magFilter = THREE.NearestFilter;
 		_texture.minFilter = THREE.NearestFilter;
 

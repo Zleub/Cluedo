@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T01:07:54+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-05T04:44:30+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-05T18:05:45+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -26,7 +26,7 @@ let Scene = (canvas) => {
 
 	var raycaster = new THREE.Raycaster()
 
-	let texture = new THREE.TextureLoader().load( "assets/bedrock.png" )
+	let texture = new THREE.TextureLoader().load( "assets/block/bedrock.png" )
 	texture.magFilter	= THREE.NearestFilter;
 	texture.minFilter	= THREE.NearestFilter;
 	let geometry = new THREE.BoxGeometry( 1, 1, 1 )
