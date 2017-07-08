@@ -6,24 +6,34 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-20T20:59:09+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T22:55:31+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-06T18:13:31+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
+const { readFileSync } = require('fs')
+const Story = require('../scripts/story.js')
 const { graphql, buildSchema, printSchema } = require('graphql')
 
 var schema = buildSchema(`
 	type Story {
 		id: Int
-		characters(id: Int): [ Character ]
+		characters(id: Int, particularities: String): [ Character ]
+	}
+
+	type Relationship {
+		state: String
+		character: Character
 	}
 
 	type Character {
 		id: Int
 		name: String
+		texture: String
+		age: String
 		particularities: [String]
+		relationships(state: String): [Relationship]
 	}
 
 	type Query {
@@ -35,18 +45,12 @@ console.log( printSchema(schema) )
 
 exports['/:id'] = {
 	get: function (id) {
-		graphql(schema, `{
-			story(id: ${id}) {
-				id
-				characters {
-					name
-					particularities
-				}
-			}
-		}`, {
+		graphql(schema, readFileSync('./server/query/story.graphql').toString(), {
 			story: ({id}) => {
-				return process.stories[id]
+				delete require.cache[require.resolve('../scripts/story.js')];
+				let Story = require('../scripts/story.js');
+				return process.stories[id] || new Story(16)
 			}
-		}).then(e => this.res.end(JSON.stringify(e)))
+		}, null, {id}).then(e => this.res.end(JSON.stringify(e, null, "  ")))
 	}
 }

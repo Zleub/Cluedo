@@ -1,0 +1,15 @@
+query storyQuery($id: Int!) {
+	story(id: $id) {
+		id
+		characters {
+			name
+			texture
+			age
+			particularities
+			relationships {
+				state
+				character { name }
+			}
+		}
+	}
+}
