@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-22T21:26:10+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-06-23T18:19:01+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-08T12:49:03+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -42,24 +42,6 @@ module.exports = () => {
 			{
 				url: '', code: 404,
 				response: ''
-			}, {
-				url: '/story', code: 200,
-				response: "Hello story get !\n"
-			}, {
-				url: '/story/test', code: 200,
-				response: "Hello story/param <test> get !\n"
-			}, {
-				url: '/story/test/adebray', code: 200,
-				response: "Hello story/:param/adebray <test> get !\n"
-			}, {
-				url: '/story/test/generate', code: 200,
-				response: "Hello story/more_param <test> <generate> get !\n"
-			}, {
-				url: '/story/generate', code: 200,
-				response: "Hello story/generate get !\n"
-			}, {
-				url: '/generate', code: 200,
-				response: "Hello generate get !\n"
 			}
 		]
 
@@ -94,6 +76,7 @@ module.exports = () => {
 			testCode(e)
 			testResponse(e)
 		})
+
 		exit(0)
 	})
 }
