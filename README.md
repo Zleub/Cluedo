@@ -11,5 +11,5 @@ Inside Computer Understanding: Five Programs Plus Miniatures
 [MBTI](https://www.16personalities.com/personality-types)
 
 [Polymer](https://www.polymer-project.org)
-p[TreeJS](http://threejs.org)
+[TreeJS](http://threejs.org)
 [GraphQL](http://graphql.org)
