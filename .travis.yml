@@ -2,11 +2,11 @@
 # @Date:   2017-06-20T20:31:00+02:00
 # @Email:  adebray@student.42.fr
 # @Last modified by:   adebray
-# @Last modified time: 2017-06-22T16:14:21+02:00
+# @Last modified time: 2017-07-09T23:05:20+02:00
 
 language: node_js
 node_js:
     - "7"
 install:
     - npm install
-    - bower install
+    # - bower install

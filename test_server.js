@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-22T21:26:10+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-08T12:49:03+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-09T23:06:30+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -52,6 +52,7 @@ module.exports = () => {
 
 		let testCode = (e) => {
 			const {stdout, stderr, status} = spawnSync('curl', ['-I', `localhost:8000${e.url}`])
+			console.log(stdout.toString().match(/HTTP\/.\..\s(\d+)/))
 			let code = stdout.toString().match(/HTTP\/.\..\s(\d+)/)[1]
 
 			try {
