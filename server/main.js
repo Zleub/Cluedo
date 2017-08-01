@@ -54,8 +54,13 @@ new Promise( (res, rej) => {
 		});
 
 		req.on('end', function () {
-			if (req.chunks.length > 0)
-				req.body = JSON.parse( Buffer.concat(req.chunks).toString() )
+			if (req.chunks.length > 0) {
+				try {
+					req.body = JSON.parse( Buffer.concat(req.chunks).toString() )
+				} catch (e) {
+					req.body = {}
+				}
+			}
 
 			router.dispatch(req, res, function (err) {
 				if (err) {

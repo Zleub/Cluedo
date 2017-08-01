@@ -12,41 +12,75 @@
 //       .+ydddddddddhs/.
 //           .-::::-`
 
-exports.post = function () {
-	let postData = querystring.stringify({
-		"text": this.req.body.text,
-		"language": "en"
-	});
+exports.get = function () {
+	delete require.cache['../micro-talespin/micro-talespin.js']
+	let { ts } = require('../micro-talespin/micro-talespin.js')
 
-	let options = {
-		hostname: "api.recast.ai",
-		path: "/v2/request",
-		method: "POST",
-		headers: {
-			'Authorization': `Token ${opt.token}`,
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Content-Length': Buffer.byteLength(postData)
-		}
-	}
+	let _ = new ts({
+		id: 0,
+		verbose: true,
+		goals: [
+			'hunger',
+			'thirsty'
+		],
+		actors: [
+			'World',
+			'Joe',
+			'Irving'
+		],
+		personae: [
+			'Joe',
+			'Irving'
+		],
+		object: [
+			'water',
+			'honey',
+			'worm',
+			'fish'
+		],
+		initFacts: [
+			{
+				personae: 'Joe',
+				actor: 'Joe',
+				action: 'location',
+				target: 'cave'
+			},
+			// function () { this["location"](this, 'Joe', 'Joe', 'cave') },
+			// function () { this["location"](this, 'World', 'Joe', 'cave') },
+			// function () { this["location"](this, 'Irving', 'Joe', 'cave') },
+			//
+			// function () { this["location"](this, 'Irving', 'Irving', 'oak tree') },
+			// function () { this["location"](this, 'World', 'Irving', 'oak tree') },
+			// function () { this["location"](this, 'Joe', 'Irving', 'oak tree') },
+			//
 
-	let req = https.request(options, (res) => {
-		let response = ""
-
-		res.setEncoding('utf8');
-		res.on('data', (chunk) => {
-			response += chunk;
-		});
-		res.on('end', () => {
-			this.res.writeHead(200, { 'Content-Type': 'application/json' })
-			this.res.end(JSON.stringify(response));
-
-		});
+			{
+				personae: 'World',
+				actor: 'water',
+				action: 'location',
+				target: 'river'
+			}
+			// function () { this["location"](this, 'World', 'water', 'river') },
+			// // function () { this["location"](this, 'Joe', 'water', 'river') },
+			// function () { this["location"](this, 'World', 'honey', 'elm tree') },
+			// function () { this["location"](this, 'Irving', 'honey', 'elm tree') },
+			// function () { this["location"](this, 'World', 'worm', 'ground') },
+			// function () { this["location"](this, 'Joe', 'worm', 'ground') },
+			// function () { this["location"](this, 'World', 'fish', 'river') },
+			// function () { this["location"](this, 'Irving', 'fish', 'river') },
+			//
+			// function () { this["is-a"](this, 'Joe', 'bear') },
+			// function () { this["home"](this, 'Joe', 'cave') },
+			//
+			// function () { this["is-a"](this, 'Irving', 'bird') },
+			// function () { this["home"](this, 'Irving', 'oak tree') },
+			//
+			// function () { this["food"](this, 'bear', ['honey', 'berries', 'fish']) },
+			// function () { this["food"](this, 'bird', 'worm') },
+			//
+			// function () { this["goal"](this, 'Joe', 'thirsty') }
+		]
 	})
 
-	req.on('error', (e) => {
-		console.error(`problem with request: ${e.message}`);
-	});
-
-	req.write(postData);
-	req.end();
+	this.res.end(JSON.stringify(_, null, "  "))
 }

@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-07-02T21:37:11+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-06T18:20:57+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-10T20:00:57+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -132,12 +132,20 @@ class Story {
 			let tmpWomanCharacters = characters.woman.map(e => e)
 			this._characters = []
 
+			console.log(`Randomly picking ${number} characters`)
 			for (var i = 0; i < number; i++) {
 				this._characters.push( {
 					relationships: [],
 					age: randArray(age_type)
 				} )
 			}
+
+			let teen_nbr = this._characters.reduce((p,e) => (e.age == 'teen' ? p + 1 : p), 0)
+			console.log(`Randomly picking ${teen_nbr} teen`)
+			let adult_nbr = this._characters.reduce((p,e) => (e.age == 'adult' ? p + 1 : p), 0)
+			console.log(`Randomly picking ${adult_nbr} adult`)
+			let senior_nbr = this._characters.reduce((p,e) => (e.age == 'senior' ? p + 1 : p), 0)
+			console.log(`Randomly picking ${senior_nbr} senior`)
 
 			this._characters.forEach( _ => {
 				_.particularities = particularities.reduce( (p, e) => {
@@ -327,7 +335,7 @@ class Story {
 					hash.update(_.character.firstname + ' ' + _.character.lastname + _.character.age);
 					let id = hash.digest('hex');
 					_.character = this._characters.find( e => {
-						console.log(e.id({}), id)
+						// console.log(e.id({}), id)
 						return e.id({}) == id
 					})
 					return _
