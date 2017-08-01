@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T01:07:54+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-05T18:19:38+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-12T20:50:17+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -65,41 +65,41 @@ pieces.right_arm = {
 	}
 }
 
-pieces.head.position = {
+pieces.head.position = (fatness, tallness) => (body) => ({
 	x: 0,
-	y: pieces.body.size.height - 2 / 32,
+	y: (body._size.height * tallness) - 2 / 32,
 	z: 0
-}
-pieces.helmet.position = {
+})
+pieces.helmet.position = (fatness, tallness) => (body) => ({
 	x: 0,
-	y: pieces.body.size.height / 1.15,
+	y: (body._size.height * tallness) - 2 / 32,
 	z: 0
-}
-pieces.body.position = {
+})
+pieces.body.position = (fatness, tallness) => (body) => ({
 	x: 0,
 	y: 0,
 	z: 0
-}
-pieces.left_leg.position = {
-	x: pieces.body.size.width / 4,
-	y: - pieces.body.size.height,
+})
+pieces.left_leg.position = (fatness, tallness) => (body) => ({
+	x: (body._size.width * fatness) / 4,
+	y: - body._size.height,
 	z: 0
-}
-pieces.right_leg.position = {
-	x: - pieces.body.size.width / 4,
-	y: - pieces.body.size.height,
+})
+pieces.right_leg.position = (fatness, tallness) => (body) => ({
+	x: - (body._size.width * fatness) / 4,
+	y: - body._size.height,
 	z: 0
-}
-pieces.left_arm.position = {
-	x: pieces.body.size.width - 2 / 32,
-	y: 0,
+})
+pieces.left_arm.position = (fatness, tallness) => (body) => ({
+	x: (body._size.width * fatness) - 2 / 32,
+	y: tallness / 32,
 	z: 0
-}
-pieces.right_arm.position = {
-	x: -pieces.body.size.width + 2 / 32,
-	y: 0,
+})
+pieces.right_arm.position = (fatness, tallness) => (body) => ({
+	x: - (body._size.width * fatness) + 2 / 32,
+	y: tallness / 32,
 	z: 0
-}
+})
 
 pieces.head.map = [
 	[ {x: 16, y: 24}, {x: 16, y: 16}, {x: 24, y: 24}, {x: 24, y: 16} ],
@@ -115,7 +115,7 @@ pieces.body.map = [
 	[ {x: 20, y: 16}, {x: 20, y: 12}, {x: 28, y: 16}, {x: 28, y: 12} ],
 	[ {x: 28, y: 16}, {x: 28, y: 12}, {x: 36, y: 16}, {x: 36, y: 12} ],
 	[ {x: 20, y: 12}, {x: 20, y:  0}, {x: 28, y: 12}, {x: 28, y:  0} ],
-	[ {x: 32, y: 12}, {x: 32, y:  0}, {x: 40, y: 12}, {x: 40, y:  0}]
+	[ {x: 32, y: 12}, {x: 32, y:  0}, {x: 40, y: 12}, {x: 40, y:  0} ]
 ]
 pieces.helmet.map = [
 	[ { x: 48 , y: 24}, { x: 48, y: 16}, {x: 56, y: 24}, {x:56, y: 16 } ],
@@ -177,8 +177,12 @@ let applyUV = (map, cube) => {
 }
 
 class Character extends THREE.Object3D {
-	constructor({name, texture, fatness}) {
+	constructor({name, texture, fatness, tallness}) {
 		super()
+		if (!fatness)
+			fatness = 1
+		if (!tallness)
+			tallness = 1
 
 		let _texture = new THREE.TextureLoader().load( texture.replace(" ", "_") )
 		_texture.magFilter = THREE.NearestFilter;
@@ -197,11 +201,9 @@ class Character extends THREE.Object3D {
 			let v = pieces[k]
 
 			let geometry = new THREE.BoxGeometry( v.size.width, v.size.height, v.size.depth )
-			if (k == 'body') {
-				if (!fatness)
-					fatness = 1
-				geometry = new THREE.BoxGeometry( v.size.width * fatness, v.size.height * fatness, v.size.depth * fatness)
-			}
+			if (k == 'body')
+				geometry = new THREE.BoxGeometry( v.size.width * fatness, v.size.height * tallness, v.size.depth * fatness)
+
 			let material = new THREE.MeshPhongMaterial( {
 				color: 0xf50000,
 				transparent: true,
@@ -217,9 +219,20 @@ class Character extends THREE.Object3D {
 			cube.receiveShadow = true
 
 			cube.userData.parent = this
-			cube.position.set(v.position.x, v.position.y, v.position.z)
+
 			this[k] = cube
-			this.add(cube)
+			this[k]._size = v.size
+			this[k]._position = v.position(fatness, tallness)
+		})
+
+		Object.keys(pieces).forEach( k => {
+			let v = pieces[k]
+			this[k].position.set(
+				this[k]._position(this.body).x,
+				this[k]._position(this.body).y,
+				this[k]._position(this.body).z
+			)
+			this.add(this[k])
 		})
 
 		this.position.set(0, 1.1, 0)

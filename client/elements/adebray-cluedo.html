@@ -14,7 +14,6 @@
 			paper-button {
 				display: flex;
 			}
-
 		</style>
 
 		<iron-ajax
@@ -23,11 +22,18 @@
 		  handle-as="json"
 		  on-response="handleResponse">
 		</iron-ajax>
+		<iron-ajax
+		  auto
+		  url="http://api.adebray.ovh/test"
+		  handle-as="json"
+		  on-response="handleTS">
+		</iron-ajax>
 
 		<prism-highlighter></prism-highlighter>
 		<app-drawer id="drawer" swipe-open>
 		<paper-button raised on-tap="changeLocation">Scene</paper-button>
 		<paper-button raised on-tap="changeLocation">Data</paper-button>
+		<paper-button raised on-tap="changeLocation">Story</paper-button>
 		</app-drawer>
 
 		<app-location route="{{route}}" use-hash-as-path></app-location>
@@ -48,7 +54,12 @@
 			<section id=data>
 				<marked-element markdown={{_toJSON(data)}}></marked-element>
 			</section>
-			<section></section>
+			<section id=story>
+				<h2>Story</h2>
+				<!-- <div>{{ts.personae}}</div> -->
+				<!-- <div>{{ts.World.facts}}</div> -->
+				<!-- <marked-element markdown={{_toJSON(ts)}}></marked-element> -->
+			</section>
 		</iron-pages>
 
 	</template>
@@ -63,6 +74,10 @@
 		changeLocation: function (e) {
 			let path = e.target.innerText.trim().toLowerCase()
 			location = '#' + path
+		},
+
+		handleTS: function (e) {
+			this.set('ts', e.detail.response)
 		},
 
 		handleResponse: function (e) {
@@ -91,15 +106,21 @@
 
 			scene.dialog = this.$.dialog
 
+			var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+			scene.add( light );
+
 			let tree = []
 			let characters = e.detail.response.data.story.characters
 			characters.forEach( (e, i) => {
 				let name = e.name
 				if (e.texture)
 					var texture = e.texture.toLowerCase()
+
 				let c = new Character({
 					name: name,
-					texture: `./assets/${texture}.png`
+					texture: `./assets/${texture}.png`,
+					fatness: (e.particularities.find(e => e == 'Fat') ? 1.5 : 1),
+					tallness: (e.particularities.find(e => e == 'Tall') ? 1.5 : 1)
 				})
 
 				if (i == 0) {
@@ -127,38 +148,39 @@
 				}
 
 				c.translateX(i - characters.length / 2)
+				// c.translateZ( Math.floor(i % 4) - 1)
 				update_stack.push(c.update.bind(c))
 				scene.add(c)
 			})
 
-			this.async(() => jsPlumb.ready(function() {
-				tree.forEach( e => {
-					let {id} = e
-					let relationships = characters.find(_ => _.name == id).relationships
-
-					jsPlumb.draggable(e.id)
-					relationships.forEach( _ => {
-						let anchors = ['Center', 'Center']
-						let paintStyle = { strokeWidth:4, stroke:'gray' }
-
-						if (_.state == 'father' || _.state == 'mother') {
-							anchors = ['Bottom', 'Top']
-						}
-						if (_.state == 'son' || _.state == 'daughter') {
-							anchors = ['Top', 'Bottom']
-						}
-						if (_.state == 'husband' || _.state == 'wife') {
-							paintStyle = { strokeWidth:4, stroke:'green' }
-						}
-						jsPlumb.connect({
-							source: e.id,
-							target: _.character.name,
-							anchors,
-							paintStyle,
-						})
-					})
-				})
-			}), 200)
+			// this.async(() => jsPlumb.ready(function() {
+			// 	tree.forEach( e => {
+			// 		let {id} = e
+			// 		let relationships = characters.find(_ => _.name == id).relationships
+			//
+			// 		jsPlumb.draggable(e.id)
+			// 		relationships.forEach( _ => {
+			// 			let anchors = ['Center', 'Center']
+			// 			let paintStyle = { strokeWidth:4, stroke:'gray' }
+			//
+			// 			if (_.state == 'father' || _.state == 'mother') {
+			// 				anchors = ['Bottom', 'Top']
+			// 			}
+			// 			if (_.state == 'son' || _.state == 'daughter') {
+			// 				anchors = ['Top', 'Bottom']
+			// 			}
+			// 			if (_.state == 'husband' || _.state == 'wife') {
+			// 				paintStyle = { strokeWidth:4, stroke:'green' }
+			// 			}
+			// 			jsPlumb.connect({
+			// 				source: e.id,
+			// 				target: _.character.name,
+			// 				anchors,
+			// 				paintStyle,
+			// 			})
+			// 		})
+			// 	})
+			// }), 200)
 
 		}
 	});
