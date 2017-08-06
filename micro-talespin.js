@@ -55,9 +55,8 @@ function facts(actor, action, data) {
 }
 
 function talesFactory(mods) {
-	let tale = function ({id, verbose, actors, personae, object, initFacts}) {
+	let tale = function ({id, actors, personae, object, initFacts}) {
 		this.id = id
-		this._verbose = verbose
 		this.personae = personae
 		this.object = object
 		this.actors = actors
@@ -273,7 +272,7 @@ let t = new talesFactory([
 			personae: 'want to move'
 		},
 		function: function (tale, actor, object) {
-			tale.verbose('dprox'.inverse)
+				tale.verbose('dprox'.inverse)
 			if (tale[actor].location != object) {
 				let k = { actor, action: this, personae: actor, data: object }
 				return tale[actor].stack ? tale[actor].stack.push(k) : tale[actor].stack = [k]
@@ -309,62 +308,63 @@ let t = new talesFactory([
 
 ])
 
-console.log(t)
+exports.ts = t
 
-let _ = new t({
-	id: 0,
-	verbose: true,
-	goals: [
-		'hunger',
-		'thirsty'
-	],
-	actors: [
-		'World',
-		'Joe',
-		'Irving'
-	],
-	personae: [
-		'Joe',
-		'Irving'
-	],
-	object: [
-		'water',
-		'honey',
-		'worm',
-		'fish'
-	],
-	initFacts: [
-		function () { this["location"](this, 'Joe', 'Joe', 'cave') },
-		function () { this["location"](this, 'World', 'Joe', 'cave') },
-		function () { this["location"](this, 'Irving', 'Joe', 'cave') },
+// console.log(t)
 
-		function () { this["location"](this, 'Irving', 'Irving', 'oak tree') },
-		function () { this["location"](this, 'World', 'Irving', 'oak tree') },
-		function () { this["location"](this, 'Joe', 'Irving', 'oak tree') },
-
-		function () { this["location"](this, 'World', 'water', 'river') },
-		// function () { this["location"](this, 'Joe', 'water', 'river') },
-		function () { this["location"](this, 'World', 'honey', 'elm tree') },
-		function () { this["location"](this, 'Irving', 'honey', 'elm tree') },
-		function () { this["location"](this, 'World', 'worm', 'ground') },
-		function () { this["location"](this, 'Joe', 'worm', 'ground') },
-		function () { this["location"](this, 'World', 'fish', 'river') },
-		function () { this["location"](this, 'Irving', 'fish', 'river') },
-
-		function () { this["is-a"](this, 'Joe', 'bear') },
-		function () { this["home"](this, 'Joe', 'cave') },
-
-		function () { this["is-a"](this, 'Irving', 'bird') },
-		function () { this["home"](this, 'Irving', 'oak tree') },
-
-		function () { this["food"](this, 'bear', ['honey', 'berries', 'fish']) },
-		function () { this["food"](this, 'bird', 'worm') },
-
-		function () { this["goal"](this, 'Joe', 'thirsty') }
-	]
-})
+// let _ = new t({
+// 	id: 0,
+// 	goals: [
+// 		'hunger',
+// 		'thirsty'
+// 	],
+// 	actors: [
+// 		'World',
+// 		'Joe',
+// 		'Irving'
+// 	],
+// 	personae: [
+// 		'Joe',
+// 		'Irving'
+// 	],
+// 	object: [
+// 		'water',
+// 		'honey',
+// 		'worm',
+// 		'fish'
+// 	],
+// 	initFacts: [
+// 		function () { this["location"](this, 'Joe', 'Joe', 'cave') },
+// 		function () { this["location"](this, 'World', 'Joe', 'cave') },
+// 		function () { this["location"](this, 'Irving', 'Joe', 'cave') },
+//
+// 		function () { this["location"](this, 'Irving', 'Irving', 'oak tree') },
+// 		function () { this["location"](this, 'World', 'Irving', 'oak tree') },
+// 		function () { this["location"](this, 'Joe', 'Irving', 'oak tree') },
+//
+// 		function () { this["location"](this, 'World', 'water', 'river') },
+// 		// function () { this["location"](this, 'Joe', 'water', 'river') },
+// 		function () { this["location"](this, 'World', 'honey', 'elm tree') },
+// 		function () { this["location"](this, 'Irving', 'honey', 'elm tree') },
+// 		function () { this["location"](this, 'World', 'worm', 'ground') },
+// 		function () { this["location"](this, 'Joe', 'worm', 'ground') },
+// 		function () { this["location"](this, 'World', 'fish', 'river') },
+// 		function () { this["location"](this, 'Irving', 'fish', 'river') },
+//
+// 		function () { this["is-a"](this, 'Joe', 'bear') },
+// 		function () { this["home"](this, 'Joe', 'cave') },
+//
+// 		function () { this["is-a"](this, 'Irving', 'bird') },
+// 		function () { this["home"](this, 'Irving', 'oak tree') },
+//
+// 		function () { this["food"](this, 'bear', ['honey', 'berries', 'fish']) },
+// 		function () { this["food"](this, 'bird', 'worm') },
+//
+// 		function () { this["goal"](this, 'Joe', 'thirsty') }
+// 	]
+// })
 
 // console.log(JSON.stringify(_, null, "  "))
-_.printFacts()
-_.run()
+// _.printFacts()
+// _.run()
 // _.printGoals()
