@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-06T22:26:29+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T01:37:28+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -40,6 +40,5 @@ if (require.main === module) {
 		initFacts: require('./story0.json')
 	})
 
-	verbose('_: ', _)
 	_.run()
 }

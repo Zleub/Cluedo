@@ -6,43 +6,39 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-06T23:38:06+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T01:52:52+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
-// exports
+const actions = require('./actions.js');
+const { verbose } = require('./utils.js');
 
-exports.knows = function ({personae, actor, action, target}) {
-	let p = this.personae(personae)
+exports.find = function ({personae, actor, action, target}) {
+	verbose(action)
+	let found = Object.keys(this._personae).reduceRight( (p, e) => {
+		let _k = this.personae(e)._knowledge
+		Object.keys(_k).forEach(k => {
+			let _ = Object.keys(_k[k])
+			if (e == k && _.find(e => action == e) && !(p.some( _ => _[0] == this.personae(e) ) ))
+				p.push([this.personae(e), _k[k][action]])
+		})
+		return p
+	}, [])
 
-	if (!p._knowledge) {
-		p._knowledge = {}
-		// p.knowledge = function (name) {
-		// 	if (this._knowledge[name.name])
-		// 		if (!name.mod)
-		// 			return Object.keys(this._knowledge[name.name]).map( k => k + ": " + this._knowledge[name.name][k])
-		// 		return [ this._knowledge[name.name][name.mod] ]
-		// }
+	return {
+		forEach: (f) => f != undefined ? found.forEach( e => f.call(this, e[0], e[1]) ) : console.log(`undefined action: ${action}`.red)
 	}
-	if (!p._knowledge[actor])
-		p._knowledge[actor] = {}
-	if (!action)
-		return p._knowledge[actor]
-	if (!target && !p._knowledge[actor][action])
-		console.warn('warning: quering an undefined knowledge')
-	if (!target)
-		return p._knowledge[actor][action]
-
-	if (p._knowledge[actor][action])
-		p._knowledge[actor][action].push(target)
-	else
-		p._knowledge[actor][action] = [ target ]
-	console.log(this[action])
 }
+exports.run = function () {
+	verbose('run')
 
-exports.thirsty = function ({personae, actor, action, target}) {
-	console.log({personae, actor, action, target})
-	this.knows({personae, actor, action: 'dcont', target: 'water'})
+	verbose(Object.keys(actions))
+
+	this.find({ action: 'goal' }).forEach( this['goal'] )
+	console.log('---- ---- ---- ---- ---- ---- ---- ---- ')
+	this.find({ action: 'dcont' }).forEach( this['dcont'] )
+	verbose(this.personae('Joe')._knowledge)
+
 }

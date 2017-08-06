@@ -1,3 +1,38 @@
+//           `--::-.`
+//       ./shddddddddhs+.
+//     :yddddddddddddddddy:
+//   `sdddddddddddddddddddds`
+//  /ddddy:oddddddddds:sddddd/   @By: Debray Arnaud <adebray> - adebray@student.42.fr
+//  sdddddddddddddddddddddddds   @Last modified by: adebray
+//  sdddddddddddddddddddddddds
+//  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T01:53:44+02:00
+//    +ddddddh`+dh +dddddddo
+//     -sdddddh///sdddddds-
+//       .+ydddddddddhs/.
+//           .-::::-`
+
+const { verbose } = require('./utils.js');
+
+exports.goal = function (personae, knowledge) {
+	verbose(personae, knowledge)
+	knowledge.forEach( e => {
+		verbose(e)
+		if (!this[e])
+			return console.warn(`${e} not implemented.`)
+		this[e]({
+			personae: personae.name,
+			actor: personae.name,
+			action: 'goal',
+			target: e
+		})
+	})
+}
+
+exports.dcont = function () {
+	console.log('~dcont'.blue)
+}
+
 // exports.actions = []
 // exports.actions = [
 // 	{

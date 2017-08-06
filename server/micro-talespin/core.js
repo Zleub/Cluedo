@@ -6,13 +6,11 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T00:20:20+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T01:19:09+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
-
-const { verbose } = require('./utils.js');
 
 ['personae', 'actor', 'target'].forEach( e => {
 	exports[e] = function(name) {
@@ -33,45 +31,30 @@ const { verbose } = require('./utils.js');
 	}
 })
 
-exports.find = function (o) {
-	let found = Object.keys(this._personae).reduceRight( (p, e) => {
-		let _k = this.personae(e)._knowledge
-		Object.keys(_k).forEach(k => {
-			let _ = Object.keys(_k[k])
-			if ( e == k && _.find(e => o == e) && !(p.some( _ => _[0] == this.personae(e) ) ))
-				p.push([this.personae(e), _k[k][o]])
-		})
-		return p
-	}, [])
+exports.knows = function ({personae, actor, action, target}) {
+	let p = this.personae(personae)
 
-	return {
-		forEach: (f) => {
-			console.log(f)
-			found.forEach( e => f(e[0], e[1]) )
-		}
+	if (!p._knowledge) {
+		p._knowledge = {}
+		// p.knowledge = function (name) {
+		// 	if (this._knowledge[name.name])
+		// 		if (!name.mod)
+		// 			return Object.keys(this._knowledge[name.name]).map( k => k + ": " + this._knowledge[name.name][k])
+		// 		return [ this._knowledge[name.name][name.mod] ]
+		// }
 	}
-}
+	if (!p._knowledge[actor])
+		p._knowledge[actor] = {}
+	if (!action)
+		return p._knowledge[actor]
+	if (!target && !p._knowledge[actor][action])
+		console.warn('warning: quering an undefined knowledge')
+	if (!target)
+		return p._knowledge[actor][action]
 
-exports.run = function () {
-	verbose('run')
-	console.log( this.find('location') )
-	console.log( this.find('goal') )
-
-	let solve = (personae, knowledge) => {
-		verbose('->', personae, knowledge)
-		knowledge.forEach( e => {
-			if (!this[e])
-				return console.warn(`${e} not implemented.`)
-			this[e]({
-				personae: personae.name,
-				actor: personae.name,
-				action: 'goal',
-				target: e
-			})
-		})
-	}
-
-	this.find('goal').forEach(solve)
-	this.find('goal').forEach(solve)
-
+	if (p._knowledge[actor][action])
+		p._knowledge[actor][action].push(target)
+	else
+		p._knowledge[actor][action] = [ target ]
+	// console.log(this[action])
 }
