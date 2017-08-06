@@ -1,0 +1,14 @@
+type Story {
+    id: Int
+    personae(name: String): [Character]
+    modsList: [String]
+}
+
+type Character {
+    name: String
+    knowledge(name: String!, mod: String): [String]
+}
+
+type Query {
+    story(id: Int): Story
+}

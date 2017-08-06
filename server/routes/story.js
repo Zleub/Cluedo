@@ -51,6 +51,26 @@ exports['/:id'] = {
 				let Story = require('../scripts/story.js');
 				return process.stories[id] || new Story(16)
 			}
-		}, null, {id}).then(e => this.res.end(JSON.stringify(e, null, "  ")))
+		}, null, {id})
+		.then(e => this.res.end(JSON.stringify(e, null, "  ")))
+	},
+	post: function (id) {
+		// this.res.end('Hello')
+		if (!this.req.body || !this.req.body.query)
+			return this.res.end(JSON.stringify({
+				errors: [
+					{
+						message : `No body query`
+					}
+				]
+			}))
+		graphql(schema, this.req.body.query, {
+			story: ({id}) => {
+				delete require.cache[require.resolve('../scripts/story.js')];
+				let Story = require('../scripts/story.js');
+				return process.stories[id] ? process.stories[id] : (process.stories[id] = new Story(16))
+			}
+		}, null, {id})
+		.then(e => this.res.end(JSON.stringify(e, null, "  ")))
 	}
 }
