@@ -1,0 +1,96 @@
+<dom-module id="adebray-graphql">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply(--layout-horizontal);
+        @apply(--layout-start);
+      }
+
+      /*.container {
+      }*/
+
+      .text, pre {
+          width: 45%;
+          display: inline-block;
+          @apply(--layout-self-start);
+      }
+
+      pre {
+          white-space: pre-wrap;
+      }
+
+    </style>
+
+    <iron-ajax
+      auto
+      method='POST'
+      url="http://api.adebray.ovh/test"
+      content-type="application/json"
+      handle-as="json"
+      on-response="handleResponse">
+    </iron-ajax>
+
+    <!-- <div class=container> -->
+	<pre>{{data}}</pre>
+        <!-- <marked-element markdown={{data}}></marked-element> -->
+        <div class=text>
+            <paper-textarea id='input' value={{value}}></paper-textarea>
+        </div>
+    <!-- </div> -->
+
+  </template>
+  <script>
+    Polymer({
+      is: 'adebray-graphql',
+
+      properties: {
+          data: String,
+          value: {
+              type: String,
+              value: () => `
+
+              {
+                __schema {
+                 types {
+                  name
+                  description
+                  }
+                }
+                story {
+                  id
+                  modsList
+                  personae(name: "Joe") {
+                     name
+                     knowledge(name: "Joe")
+                  }
+                }
+              }`
+          }
+      },
+
+      listeners: {
+          'input.value-changed': 'send'
+      },
+
+      attached: function () {
+          this.send()
+      },
+
+      _toJSON: function (e) {
+          return JSON.stringify(e, null, "  ")
+      },
+
+      handleResponse: function (e) {
+        this.set('data', this._toJSON(e.detail.response))
+      },
+
+      send: function (e) {
+        this.querySelector('iron-ajax').body = {
+            query: this.value
+        }
+        this.querySelector('iron-ajax').generateRequest()
+      }
+    });
+  </script>
+</dom-module>

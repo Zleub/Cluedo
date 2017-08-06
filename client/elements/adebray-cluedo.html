@@ -47,7 +47,7 @@
 		<iron-pages selected="{{route.path}}" attr-for-selected="id">
 			<section id=scene>
 				<adebray-dialog id="dialog"></adebray-dialog>
-				<canvas id=canvas width="800" height="800"></canvas>
+				<!-- <canvas id=canvas width="800" height="800"></canvas> -->
 				<paper-textarea></paper-textarea>
 
 			</section>
@@ -56,6 +56,7 @@
 			</section>
 			<section id=story>
 				<h2>Story</h2>
+				<adebray-graphql></adebray-graphql>
 				<!-- <div>{{ts.personae}}</div> -->
 				<!-- <div>{{ts.World.facts}}</div> -->
 				<!-- <marked-element markdown={{_toJSON(ts)}}></marked-element> -->
