@@ -1,0 +1,140 @@
+[
+    {
+        "personae": "Joe",
+        "actor": "Joe",
+        "action": "location",
+        "target": "cave"
+    },
+    {
+        "personae": "World",
+        "actor": "Joe",
+        "action": "location",
+        "target": "cave"
+    },
+    {
+        "personae": "Irving",
+        "actor": "Joe",
+        "action": "location",
+        "target": "cave"
+    },
+    {
+        "personae": "Irving",
+        "actor": "Irving",
+        "action": "location",
+        "target": "oak tree"
+    },
+    {
+        "personae": "World",
+        "actor": "Irving",
+        "action": "location",
+        "target": "oak tree"
+    },
+    {
+        "personae": "Joe",
+        "actor": "Irving",
+        "action": "location",
+        "target": "oak tree"
+    },
+    {
+        "personae": "World",
+        "actor": "water",
+        "action": "location",
+        "target": "river"
+    },
+    {
+        "personae": "Joe",
+        "actor": "water",
+        "action": "location",
+        "target": "river"
+    },
+    {
+        "personae": "World",
+        "actor": "honey",
+        "action": "location",
+        "target": "elm tree"
+    },
+    {
+        "personae": "Irving",
+        "actor": "honey",
+        "action": "location",
+        "target": "elm tree"
+    },
+    {
+        "personae": "World",
+        "actor": "worm",
+        "action": "location",
+        "target": "ground"
+    },
+    {
+        "personae": "Joe",
+        "actor": "worm",
+        "action": "location",
+        "target": "ground"
+    },
+    {
+        "personae": "World",
+        "actor": "fish",
+        "action": "location",
+        "target": "river"
+    },
+    {
+        "personae": "Irving",
+        "actor": "fish",
+        "action": "location",
+        "target": "river"
+    },
+    {
+        "personae": "Joe",
+        "actor": "Joe",
+        "action": "is_a",
+        "target": "bear"
+    },
+    {
+        "personae": "Joe",
+        "actor": "Joe",
+        "action": "home",
+        "target": "cave"
+    },
+    {
+        "personae": "Irving",
+        "actor": "Irving",
+        "action": "is_a",
+        "target": "bird"
+    },
+    {
+        "personae": "Irving",
+        "actor": "Irving",
+        "action": "home",
+        "target": "oak tree"
+    },
+    {
+        "personae": "World",
+        "actor": "bear",
+        "action": "food",
+        "target": "honey"
+    },
+    {
+        "personae": "World",
+        "actor": "bear",
+        "action": "food",
+        "target": "berries"
+    },
+    {
+        "personae": "World",
+        "actor": "bear",
+        "action": "food",
+        "target": "fish"
+    },
+    {
+        "personae": "World",
+        "actor": "bird",
+        "action": "food",
+        "target": "worm"
+    },
+    {
+        "personae": "Joe",
+        "actor": "Joe",
+        "action": "goal",
+        "target": "thirsty"
+    }
+]

@@ -1,108 +1,48 @@
-exports.location = function ({personae, actor, action, target}) {
-		console.log(this)
+//           `--::-.`
+//       ./shddddddddhs+.
+//     :yddddddddddddddddy:
+//   `sdddddddddddddddddddds`
+//  /ddddy:oddddddddds:sddddd/   @By: Debray Arnaud <adebray> - adebray@student.42.fr
+//  sdddddddddddddddddddddddds   @Last modified by: adebray
+//  sdddddddddddddddddddddddds
+//  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-06T23:38:06+02:00
+//    +ddddddh`+dh +dddddddo
+//     -sdddddh///sdddddds-
+//       .+ydddddddddhs/.
+//           .-::::-`
+
+// exports
+
+exports.knows = function ({personae, actor, action, target}) {
+	let p = this.personae(personae)
+
+	if (!p._knowledge) {
+		p._knowledge = {}
+		// p.knowledge = function (name) {
+		// 	if (this._knowledge[name.name])
+		// 		if (!name.mod)
+		// 			return Object.keys(this._knowledge[name.name]).map( k => k + ": " + this._knowledge[name.name][k])
+		// 		return [ this._knowledge[name.name][name.mod] ]
+		// }
+	}
+	if (!p._knowledge[actor])
+		p._knowledge[actor] = {}
+	if (!action)
+		return p._knowledge[actor]
+	if (!target && !p._knowledge[actor][action])
+		console.warn('warning: quering an undefined knowledge')
+	if (!target)
+		return p._knowledge[actor][action]
+
+	if (p._knowledge[actor][action])
+		p._knowledge[actor][action].push(target)
+	else
+		p._knowledge[actor][action] = [ target ]
+	console.log(this[action])
 }
-// exports.defs = [
-//     {
-// 		name: 'location',
-// 		text: {
-// 			personae: ' is at the',
-// 			object: 'in the'
-// 		},
-// 		function: function (tale, personae, actor, location) {
-// 			let k = facts(actor, this, location)
-// 			if (personae == actor) {
-// 				tale[personae].location = location
-// 				let old_location = tale[personae].facts ? tale[personae].facts.find(e => e.actor == personae && e.action.name == 'location') : undefined
-// 				if (old_location)
-// 					return tale[personae].facts.splice( tale[personae].facts.indexOf(old_location), 1, k)
-// 			}
-// 			tale[personae].facts ? tale[personae].facts.push(k) : tale[personae].facts = [k]
-// 			tale.verbose(`${personae}: ${actor} -> ${location}`)
-// 		},
-// 		functionConsequence: function (tale) {}
-// 	},
-// 	{
-// 		name: 'is-a',
-// 		text: {
-// 			personae: ' is a',
-// 			object: 'is a'
-// 		},
-// 		function: function (tale, personae, is) {
-// 			let k = facts(personae, this, is)
-// 			tale[personae].facts ? tale[personae].facts.push(k) : tale[personae].facts = [k]
-// 			tale[is] ? tale[is].push(personae) : tale[is] = [personae]
-// 			tale.verbose(`${personae} -> ${is}`)
-// 		},
-// 		functionConsequence: function (tale) {}
-// 	},
-// 	{
-// 		name: 'home',
-// 		text: {
-// 			personae: '\'s home is the',
-// 			object: 'in the'
-// 		},
-// 		function: function (tale, personae, is) {
-// 			let k = facts(personae, this, is)
-// 			tale[personae].facts ? tale[personae].facts.push(k) : tale[personae].facts = [k]
-// 			tale.verbose(`${personae} -> ${is}`)
-// 		},
-// 		functionConsequence: function (tale) {}
-// 	},
-// 	{
-// 		name: 'food',
-// 		text: {
-// 			personae: '\'s food is the',
-// 			object: 'in the'
-// 		},
-// 		function: function (tale, personae, foods) {
-// 			let addFood = (food) => {
-// 				let _addFood = (personae) => {
-// 					let k = facts(personae, this, food)
-// 					tale[personae].facts ? tale[personae].facts.push(k) : tale[personae].facts = [k]
-// 					tale.verbose(`${personae} -> ${food}`)
-// 				}
-// 				if (tale[personae] instanceof Array)
-// 					tale[personae].forEach( _addFood )
-// 				else
-// 					_addFood(personae)
-// 			}
-// 			if (foods instanceof Array)
-// 				foods.forEach(e => addFood(e))
-// 			else
-// 				addFood(foods)
-// 		},
-// 		functionConsequence: function (tale) {}
-// 	},
-// 	{
-// 		name: 'has',
-// 		text: {
-// 			personae: 'have the'
-// 		},
-// 		function: function (tale, personae, object) {
-// 		},
-// 		functionConsequence: function (tale) {}
-// 	},
-// 	{
-// 		name: 'goal',
-// 		text: {
-// 			personae: 'is'
-// 		},
-// 		function: function(tale, personae, goal) {
-// 			tale.verbose('goal'.inverse)
-// 			let k = facts(personae, this, goal)
-// 			tale[personae].stack ? tale[personae].stack.push(k) : tale[personae].stack = [k]
-// 			tale.verbose(`${personae} -> ${goal}`)
-// 		},
-// 		functionConsequence: function (tale, personae, goal) {
-// 			tale.verbose(`${personae} -> ${goal.data} consequence`)
-// 			if (goal.data == 'hunger') {
-// 				tale[personae].facts.filter( e => e.action.name == 'food').forEach( e => {
-// 					tale.mods.find(e => e.name == 'dcont').function(tale, personae, e)
-// 				})
-// 			}
-// 			if (goal.data == 'thirsty') {
-// 				tale.mods.find(e => e.name == 'dcont').function(tale, personae, 'water')
-// 			}
-// 		}
-// 	},
-// ]
+
+exports.thirsty = function ({personae, actor, action, target}) {
+	console.log({personae, actor, action, target})
+	this.knows({personae, actor, action: 'dcont', target: 'water'})
+}
