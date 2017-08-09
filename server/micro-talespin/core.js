@@ -6,55 +6,57 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T01:19:09+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-09T01:23:22+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
-['personae', 'actor', 'target'].forEach( e => {
-	exports[e] = function(name) {
-		let _ = `_${e}`
+const actions = require('./actions.js');
+const { verbose } = require('./utils.js');
 
-		if (name.name) {
-			return [ this[_][name.name] ]
-		}
-		else if (typeof name == 'object') {
-			return Object.keys(this[_]).map( k => this[_][k])
-		}
+exports.run = function () {
+	verbose('run')
 
-		if (!this[_])
-			this[_] = {}
-		if (!this[_][name])
-			this[_][name] = { name }
-		return this[_][name]
+	let _find = () => {
+		return Object.keys(this._personae).reduce( (p, e) => {
+			let _k = this.personae(e)._knowledge
+			Object.keys(_k).reduceRight( ($, k) => {
+				let _ = Object.keys(_k[k])
+				_.reduceRight( (__, n) => {
+					Object.keys(actions).forEach( a => {
+						if (n == a && !(p.some(c => c.personae == e))) {
+							p.push({
+								personae: e,
+								actor: e,
+								action: a,
+								target: _k[k][a]
+							})
+						}
+					}, null)
+				}, null)
+			})
+			return p
+		}, [])
 	}
-})
 
-exports.knows = function ({personae, actor, action, target}) {
-	let p = this.personae(personae)
+	let found
+	let i = 0
+	do {
+		console.log('---- ---- ---- ---- ---- ---- ---- ')
+		found = _find()
+		verbose(found)
+		found.forEach( ({personae, actor, action, target}) => {
+			target.forEach( _target => {
+				if (this[action])
+					this[action]({personae, actor, action, target})
+				else
+					console.log(`${action} not implemented`.red)
+			})
+		})
+		i += 1
+	} while (found.length != 0 && i < 4)
 
-	if (!p._knowledge) {
-		p._knowledge = {}
-		// p.knowledge = function (name) {
-		// 	if (this._knowledge[name.name])
-		// 		if (!name.mod)
-		// 			return Object.keys(this._knowledge[name.name]).map( k => k + ": " + this._knowledge[name.name][k])
-		// 		return [ this._knowledge[name.name][name.mod] ]
-		// }
-	}
-	if (!p._knowledge[actor])
-		p._knowledge[actor] = {}
-	if (!action)
-		return p._knowledge[actor]
-	if (!target && !p._knowledge[actor][action])
-		console.warn('warning: quering an undefined knowledge')
-	if (!target)
-		return p._knowledge[actor][action]
-
-	if (p._knowledge[actor][action])
-		p._knowledge[actor][action].push(target)
-	else
-		p._knowledge[actor][action] = [ target ]
-	// console.log(this[action])
+	console.log('---- ---- ---- END ---- ---- ---- ')
+	verbose(this)
 }

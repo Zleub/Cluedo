@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T01:53:44+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T21:08:28+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -14,24 +14,31 @@
 
 const { verbose } = require('./utils.js');
 
-exports.goal = function (personae, knowledge) {
-	verbose(personae, knowledge)
-	knowledge.forEach( e => {
-		verbose(e)
-		if (!this[e])
-			return console.warn(`${e} not implemented.`)
-		this[e]({
-			personae: personae.name,
-			actor: personae.name,
+exports.goal = function ({personae, actor, action, target}) {
+	console.log('~goal'.blue, personae, target)
+	if (this[target])
+		this[target]({
+			personae: personae,
+			actor: personae,
 			action: 'goal',
-			target: e
+			target: target
 		})
-	})
+	else
+		console.log(`${target} not implemented`.red)
 }
 
-exports.dcont = function () {
-	console.log('~dcont'.blue)
+exports.dcont = function ({personae, actor, action, target}) {
+	console.log('~dcont'.blue, personae)
+	verbose({personae, actor, action, target})
+	verbose(`knowledge(${personae}, ${actor}, location, ${target}}): `,
+		this.personae(personae).knowledge({personae, actor, action: 'location', target}) )
+	verbose(`location(${personae}, ${actor}, ${action}, ${target}}): `,
+		this.personae(personae).location({personae, actor, action, target}) )
+	verbose(`this.knows(${personae}, ${actor}, ${action}}): `,
+		this.personae(personae).location({personae, actor, action}) )
 }
+
+// exports.know
 
 // exports.actions = []
 // exports.actions = [

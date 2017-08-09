@@ -6,39 +6,66 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T01:52:52+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T21:06:21+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
-const actions = require('./actions.js');
 const { verbose } = require('./utils.js');
 
-exports.find = function ({personae, actor, action, target}) {
-	verbose(action)
-	let found = Object.keys(this._personae).reduceRight( (p, e) => {
-		let _k = this.personae(e)._knowledge
-		Object.keys(_k).forEach(k => {
-			let _ = Object.keys(_k[k])
-			if (e == k && _.find(e => action == e) && !(p.some( _ => _[0] == this.personae(e) ) ))
-				p.push([this.personae(e), _k[k][action]])
-		})
-		return p
-	}, [])
+['personae', 'actor', 'target'].forEach( e => {
+	exports[e] = function(name) {
+		let _ = `_${e}`
 
-	return {
-		forEach: (f) => f != undefined ? found.forEach( e => f.call(this, e[0], e[1]) ) : console.log(`undefined action: ${action}`.red)
+		if (name.name) {
+			return [ this[_][name.name] ]
+		}
+		else if (typeof name == 'object') {
+			return Object.keys(this[_]).map( k => this[_][k])
+		}
+
+		if (!this[_])
+			this[_] = {}
+		if (!this[_][name])
+			this[_][name] = { name }
+		return this[_][name]
 	}
-}
-exports.run = function () {
-	verbose('run')
+})
 
-	verbose(Object.keys(actions))
+exports.knows = function ({personae, actor, action, target}) {
+	let p = this.personae(personae)
 
-	this.find({ action: 'goal' }).forEach( this['goal'] )
-	console.log('---- ---- ---- ---- ---- ---- ---- ---- ')
-	this.find({ action: 'dcont' }).forEach( this['dcont'] )
-	verbose(this.personae('Joe')._knowledge)
+	if (!p._knowledge) {
+		p._knowledge = {}
+		p.knowledge = function ({personae, actor, action, target}) {
+			console.log('~knowledge'.cyan, personae)
+			// verbose({personae, actor, action, target})
+			// verbose(p._knowledge)
+			return p._knowledge[actor]
+		}
+	}
+	if (!p._knowledge[actor])
+		p._knowledge[actor] = {}
+	if (!action)
+		return p._knowledge[actor]
+	if (!target && !p._knowledge[actor][action])
+		console.warn('warning: quering an undefined knowledge')
+	if (!target)
+		return p._knowledge[actor][action]
 
+	if (this.personae(personae)._knowledge[actor]['dcont']
+		&& this.personae(personae)._knowledge[actor]['dcont'].some(e => e == 'water'))
+		return
+
+	if (p._knowledge[actor][action])
+		p._knowledge[actor][action].push(target)
+	else {
+		p._knowledge[actor][action] = [ target ]
+		p[action] = function ({personae, actor, _, target}) {
+			console.log(`~${action}`.magenta)
+			verbose({personae, actor, action, target})
+		}
+	}
+	// console.log(this[action])
 }

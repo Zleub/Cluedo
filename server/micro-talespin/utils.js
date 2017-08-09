@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T01:43:43+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T20:00:37+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -28,10 +28,17 @@ let usage = process.argv.reduce( (p, e) => {
 }, {})
 
 exports.verbose = (...s) => {
-	s.forEach( e => console.log(util.inspect(e, {
-		depth: null,
-		colors: true
-	})))
+	let _verbose = (e, i) => {
+		process.stdout.write(util.inspect(e, {
+			depth: null,
+			colors: true
+		}))
+		if (i == s.length - 1)
+			process.stdout.write("\n")
+		else
+			process.stdout.write("  ")
+	}
+	s.forEach(_verbose)
 }
 
 exports.load = () => {

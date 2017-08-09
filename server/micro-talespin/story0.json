@@ -136,5 +136,11 @@
         "actor": "Joe",
         "action": "goal",
         "target": "thirsty"
+    },
+    {
+        "personae": "Irving",
+        "actor": "Irving",
+        "action": "goal",
+        "target": "hungry"
     }
 ]
