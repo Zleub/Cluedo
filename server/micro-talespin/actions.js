@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T21:08:28+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-27T23:56:29+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -27,15 +27,39 @@ exports.goal = function ({personae, actor, action, target}) {
 		console.log(`${target} not implemented`.red)
 }
 
+// dcont -> dprox
+//          dprox -> location
 exports.dcont = function ({personae, actor, action, target}) {
 	console.log('~dcont'.blue, personae)
-	verbose({personae, actor, action, target})
-	verbose(`knowledge(${personae}, ${actor}, location, ${target}}): `,
-		this.personae(personae).knowledge({personae, actor, action: 'location', target}) )
-	verbose(`location(${personae}, ${actor}, ${action}, ${target}}): `,
-		this.personae(personae).location({personae, actor, action, target}) )
-	verbose(`this.knows(${personae}, ${actor}, ${action}}): `,
-		this.personae(personae).location({personae, actor, action}) )
+	let k = this.personae(personae).knowledge({personae, actor, action: 'location', target})
+	if (k) {
+		console.log('dcont -> dprox', k)
+		// verbose(this.personae(personae))
+		k.forEach( e => {
+			// if (this.personae(personae).find(/* ... */))
+			this.knows({personae, actor, action: 'dprox', target: e})
+		})
+	}
+
+}
+
+exports.dprox = function ({personae, actor, action, target}) {
+	console.log('~dprox'.blue, personae)
+
+	this.personae(personae)._knowledge[actor]['location'] = []
+	this.knows({personae, actor, action: 'location', target: 'river'})
+	console.log(this.knows({personae, actor, action, target}))
+
+	let _k = this.personae(personae)._knowledge[actor]
+	// this.personae(personae)._knowledge[actor] = Object.keys(_k).reduce( (p, e) => {
+	// 	if (e != action)
+	// 		p[e] = _k[e]
+	// 	return p
+	// }, {})
+	this.personae(personae)._knowledge[actor] = _k.filter((e, i, o, k) => {
+		return action == k && target == e
+	})
+	console.log(this.personae(personae)._knowledge[actor])
 }
 
 // exports.know
