@@ -6,12 +6,13 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-07T21:06:21+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-11T03:12:21+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
+const { Knowledge } = require('./micro-talespin.js')
 const { verbose } = require('./utils.js');
 
 ['personae', 'actor', 'target'].forEach( e => {
@@ -40,13 +41,12 @@ exports.knows = function ({personae, actor, action, target}) {
 		p._knowledge = {}
 		p.knowledge = function ({personae, actor, action, target}) {
 			console.log('~knowledge'.cyan, personae)
-			// verbose({personae, actor, action, target})
-			// verbose(p._knowledge)
-			return p._knowledge[actor]
+			if (p[action])
+				return p[action]({personae, actor, action, target})
 		}
 	}
 	if (!p._knowledge[actor])
-		p._knowledge[actor] = {}
+		p._knowledge[actor] = new Knowledge()
 	if (!action)
 		return p._knowledge[actor]
 	if (!target && !p._knowledge[actor][action])
@@ -54,18 +54,24 @@ exports.knows = function ({personae, actor, action, target}) {
 	if (!target)
 		return p._knowledge[actor][action]
 
-	if (this.personae(personae)._knowledge[actor]['dcont']
-		&& this.personae(personae)._knowledge[actor]['dcont'].some(e => e == 'water'))
-		return
+	if (p._knowledge[actor][action]
+		&& p._knowledge[actor][action].some(e => e == target)) {
+			// console.log(`fail ${personae}, ${actor}, ${action}, ${target}`.red)
+			// console.log(p._knowledge[actor][action])
+			return {personae, actor, action, target}
+		}
 
 	if (p._knowledge[actor][action])
 		p._knowledge[actor][action].push(target)
 	else {
 		p._knowledge[actor][action] = [ target ]
-		p[action] = function ({personae, actor, _, target}) {
+		p[action] = function ({personae, actor, _action, target}) {
 			console.log(`~${action}`.magenta)
 			verbose({personae, actor, action, target})
+			if (p._knowledge[target])
+				return p._knowledge[target][action]
 		}
 	}
-	// console.log(this[action])
+	let length = p._knowledge[actor][action].length - 1
+	return p._knowledge[actor][action][length]
 }
