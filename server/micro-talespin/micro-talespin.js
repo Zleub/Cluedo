@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-28T00:20:55+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-29T00:07:46+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -35,20 +35,20 @@ class Knowledge {
 exports.Knowledge = Knowledge
 
 exports.talesFactory = function talesFactory(mods) {
-	let tale = function ({id, actors, personae, object, initFacts}) {
+	let Tale = function ({id, actors, personae, object, initFacts}) {
 		this.id = id
 		initFacts.forEach( e => {
 			this.knows(e)
 		})
 		this.modsList = Object.keys(this.mods)
 	}
-	tale.prototype.constructor = tale
+	Tale.prototype.constructor = Tale
 
-	tale.prototype.mods = mods
+	Tale.prototype.mods = mods
 	Object.keys(mods).forEach(k => {
-		tale.prototype[k] = mods[k]
+		Tale.prototype[k] = mods[k]
 	})
-	return tale
+	return Tale
 }
 
 if (require.main === module) {

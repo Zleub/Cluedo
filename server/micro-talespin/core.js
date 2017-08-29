@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-28T00:13:26+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-29T00:12:20+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -17,12 +17,9 @@ const { verbose } = require('./utils.js');
 const { createInterface } = require('readline');
 
 exports.run = function (opts) {
-	verbose('run')
-
 	let _find = () => {
 		return Object.keys(this._personae).reduce( (p, e) => {
 			let _k = this.personae(e)._knowledge
-			// console.log(_k)
 			Object.keys(_k).reduceRight( ($, k) => {
 				let _ = Object.keys(_k[k])
 				_.reduceRight( (__, n) => {
