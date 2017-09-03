@@ -19,8 +19,8 @@ Inside Computer Understanding: Five Programs Plus Miniatures
 
 ### Todo - Micro-Talespin
 
-- [ ] Initial database.  It can be extended before running a story.
-- [ ] Initial database can be loaded from a file.
+- [X] Initial database.  It can be extended before running a story.
+- [X] Initial database can be loaded from a file.
 
 - [ ] `assert-fact` is one of the central control functions.  It starts with one fact, infers the consequences, infers the consequences of the consequences, etc.  Besides the simple result put in *conseqs* (e.g., ptrans changes locs), new states may lead to response actions (put in *actions*) or new plans (put in *plans*).  The plans are done after all the consequences are inferred.
 
