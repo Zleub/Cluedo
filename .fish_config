@@ -1,0 +1,3 @@
+function talespin
+  command clear ; and node server/micro-talespin/micro-talespin.js $argv
+end
