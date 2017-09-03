@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-29T00:12:20+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-03T04:30:03+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -42,11 +42,12 @@ exports.run = function (opts) {
 	let i = 0
 	let _run = () => {
 		found = _find()
-		verbose(found)
+		// verbose(found)
 		found.forEach( ({personae, actor, action, target}) => {
-			target.forEach( _target => {
+			let _t = target.slice(0, 1)
+			_t.forEach( _target => {
 				if (this[action])
-					this[action]({personae, actor, action, target})
+					this[action]({personae, actor, action, target: _t})
 				else
 					console.log(`${action} not implemented`.red)
 			})
@@ -71,8 +72,10 @@ exports.run = function (opts) {
 				}
 				else {
 					rl.close()
-					console.log('---- ---- ---- END ---- ---- ---- ')
-					verbose(this)
+					if (opts["--summary"]) {
+						console.log('---- ---- ---- END ---- ---- ---- ')
+						verbose(this)
+					}
 				}
 			})
 		}
@@ -82,8 +85,10 @@ exports.run = function (opts) {
 		do {
 			console.log('---- ---- ---- ---- ---- ---- ---- ')
 			_run(found)
-		} while (found.length != 0 && i < 4)
-		console.log('---- ---- ---- END ---- ---- ---- ')
-		verbose(this)
+		} while (found.length != 0 && i < (opts["--sequence"] || 128))
+		if (opts["--summary"]) {
+			console.log('---- ---- ---- END ---- ---- ---- ')
+			verbose(this)
+		}
 	}
 }

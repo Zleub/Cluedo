@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-11T03:12:21+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-03T04:20:52+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -40,7 +40,7 @@ exports.knows = function ({personae, actor, action, target}) {
 	if (!p._knowledge) {
 		p._knowledge = {}
 		p.knowledge = function ({personae, actor, action, target}) {
-			console.log('~knowledge'.cyan, personae)
+			// console.log('~knowledge'.cyan, {personae, actor, action, target})
 			if (p[action])
 				return p[action]({personae, actor, action, target})
 		}
@@ -65,10 +65,10 @@ exports.knows = function ({personae, actor, action, target}) {
 		p._knowledge[actor][action].push(target)
 	else {
 		p._knowledge[actor][action] = [ target ]
-		p[action] = function ({personae, actor, _action, target}) {
-			console.log(`~${action}`.magenta)
-			verbose({personae, actor, action, target})
-			if (p._knowledge[target])
+		p[action] = function ({personae, actor, action: _action, target}) {
+			console.log(`~${action}`.magenta, personae, actor, _action, target)
+			// verbose('query', personae, actor, _action, target)
+			if (p._knowledge[target] && p._knowledge[target][action])
 				return p._knowledge[target][action]
 		}
 	}

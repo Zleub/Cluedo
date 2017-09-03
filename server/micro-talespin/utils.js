@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-11T02:48:42+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-03T03:36:34+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -15,17 +15,18 @@
 const fs = require('fs')
 const util = require('util');
 
-const _usage = {
-	'--verbose': 'this option is verbosity'
-}
-
-let usage = process.argv.reduce( (p, e) => {
-	Object.keys(_usage).forEach( _ => {
-		if (e == _)
-			p[_] = true
+exports.getopt = (options) => {
+	let opts = {}
+	process.argv.forEach( (arg, i) => {
+		options.forEach( t => {
+			if (t[0].some( e => e == arg))
+				t[2](opts, process.argv[i + 1])
+			else
+				opts[t[0]] = false
+		})
 	})
-	return p
-}, {})
+	return opts
+}
 
 exports.verbose = (...s) => {
 	let _verbose = (e, i) => {
@@ -45,7 +46,7 @@ exports.load = () => {
 	let { talesFactory } = require(`./micro-talespin.js`)
 	let files = fs.readdirSync('./server/micro-talespin/')
 	let data = files.reduce( (p, e) => {
-		if (e != 'micro-talespin.js' && e.match(/.*\.js$/)) {
+		if (e != 'index.js' && e != 'micro-talespin.js' && e.match(/.*\.js$/)) {
 			let _ = require(`./${e}`)
 
 			if (_.talesFactory)
