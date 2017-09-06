@@ -7,12 +7,6 @@
 	},
 	{
 		"personae": "Joe",
-		"actor": "Irving",
-		"action": "location",
-		"target": "oak tree"
-	},
-	{
-		"personae": "Joe",
 		"actor": "water",
 		"action": "location",
 		"target": "sea"
@@ -22,12 +16,6 @@
 		"actor": "water",
 		"action": "location",
 		"target": "river"
-	},
-	{
-		"personae": "Joe",
-		"actor": "worm",
-		"action": "location",
-		"target": "ground"
 	},
 	{
 		"personae": "Joe",

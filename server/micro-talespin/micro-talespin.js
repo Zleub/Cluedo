@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-03T03:36:57+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T08:36:22+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -14,9 +14,9 @@
 
 const colors = require('colors')
 const { verbose, getopt } = require('./utils.js')
+const { goals } = require('./goals.js')
 
 class Knowledge {
-	constructor() {}
 	keys() { return Object.keys(this) }
 	forEach(f) {
 		Object.keys(this).forEach( (k, i) => {
@@ -32,18 +32,95 @@ class Knowledge {
 	}
 }
 
+class Plan extends Array {
+	constructor(e) {
+		super()
+	}
+
+	get last() {
+		let l = this[this.length - 1]
+		if (!l || !l.next)
+			return l
+		else
+			return l.next.last
+	}
+
+	clear() {
+		return (this.reduce( (p, e) => {
+			if (e.next && e.next.clear())
+				e.next = undefined
+			else
+				return true
+			return p
+		}, false) )
+	}
+
+	erase({personae, actor, action, target}) {
+		let goal = Object.keys(goals).reduce( (p, e) => {
+			if (goals[e] == target)
+				return e
+			return p
+		}, undefined)
+
+		this.forEach( (e, i) => {
+			if (e.target == goal) {
+				this[i] = undefined
+			}
+		})
+	}
+
+	push(e) {
+		if (e instanceof Array && !(e instanceof Plan)) {
+			let _ = new Plan
+			e.forEach( _e => _[_.length] = _e )
+			e = _
+		}
+		if (Object.keys(this).length == 0)
+			Array.prototype.push.call(this, e)
+		else {
+			this.forEach( _ => {
+				if (!_.next && !(e instanceof Plan)) {
+					_.next = new Plan()
+					Array.prototype.push.call(_.next, e)
+				}
+				else if (!_.next && e instanceof Plan) {
+					_.next = e
+				}
+				else
+					_.next.push(e)
+			})
+		}
+	}
+}
+
+class Personae {
+	constructor(name) {
+		this.name = name
+		this._knowledge = {}
+		this._plan = new Plan
+	}
+
+	knowledge({personae, actor, action, target}) {
+		console.log('~knowledge'.cyan, personae, actor, action, target)
+		if (this[action])
+			return this[action]({personae, actor, action, target})
+	}
+}
+
 exports.Knowledge = Knowledge
+exports.Plan = Plan
+exports.Personae = Personae
 
 exports.talesFactory = function talesFactory(mods) {
-	let Tale = function ({id, actors, personae, object, initFacts}) {
+	let Tale = function Tale ({id, initFacts}) {
 		this.id = id
 		initFacts.forEach( e => {
 			this.knows(e)
 		})
-		this.modsList = Object.keys(this.mods)
 	}
-	Tale.prototype.constructor = Tale
 
+	Tale.prototype.constructor = Tale
+	Tale.prototype.modsList = Object.keys(mods)
 	Tale.prototype.mods = mods
 	Object.keys(mods).forEach(k => {
 		Tale.prototype[k] = mods[k]
@@ -54,7 +131,6 @@ exports.talesFactory = function talesFactory(mods) {
 if (require.main === module) {
 	let options = [
 		[ [ "-h", "--help" ], "Display the current help screen", () => {
-			console.log("./micro-talespin")
 			options.forEach( t => {
 				let opts = t[0].reduce((p, e) => p += `${e}, `, "")
 				process.stdout.write(`${opts.match(/(.*)\,/)[1]}`)
@@ -78,17 +154,21 @@ if (require.main === module) {
 		} ],
 		[ [ "-s", "--sequence" ], "Stop the story run after N turns", (opts, arg) => {
 			opts["--sequence"] = arg
+		} ],
+		[ [ "--story" ], "Feed the game with a story.json", (opts, arg) => {
+			opts["--story"] = arg
 		} ]
 	]
-
+	let logo = require('fs').readFileSync('.ascii_logo').toString()
 	let opts = getopt(options)
 
 	let { load } = require('./utils.js')
 	let ts = load()
 	let _ = new ts({
 		id: 0,
-		initFacts: require('./story0.json')
+		initFacts: require('./' + opts['--story'] || './story0.json')
 	})
 
+	console.log(logo)
 	_.run(opts)
 }

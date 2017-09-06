@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-03T04:30:03+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T08:30:52+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -19,24 +19,11 @@ const { createInterface } = require('readline');
 exports.run = function (opts) {
 	let _find = () => {
 		return Object.keys(this._personae).reduce( (p, e) => {
-			let _k = this.personae(e)._knowledge
-			Object.keys(_k).reduceRight( ($, k) => {
-				let _ = Object.keys(_k[k])
-				_.reduceRight( (__, n) => {
-					Object.keys(actions).forEach( a => {
-						if (n == a && !(p.some(c => c.personae == e))) {
-							p.push({
-								personae: e,
-								actor: e,
-								action: a,
-								target: _k[k][a]
-							})
-						}
-					}, null)
-				}, null)
-			})
+			let _p = this.personae(e)._plan.last
+			if (_p)
+				return p.concat([_p])
 			return p
-		}, [])
+		}, [] )
 	}
 
 	let i = 0
@@ -44,13 +31,10 @@ exports.run = function (opts) {
 		found = _find()
 		// verbose(found)
 		found.forEach( ({personae, actor, action, target}) => {
-			let _t = target.slice(0, 1)
-			_t.forEach( _target => {
-				if (this[action])
-					this[action]({personae, actor, action, target: _t})
-				else
-					console.log(`${action} not implemented`.red)
-			})
+			if (this[action])
+				this[action]({personae, actor, action, target})
+			else
+				console.log(`${action} not implemented`.red)
 		})
 		i += 1
 		return found

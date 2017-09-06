@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-03T03:36:34+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T08:34:24+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -19,10 +19,8 @@ exports.getopt = (options) => {
 	let opts = {}
 	process.argv.forEach( (arg, i) => {
 		options.forEach( t => {
-			if (t[0].some( e => e == arg))
+			if (t[0].some(e => e == arg))
 				t[2](opts, process.argv[i + 1])
-			else
-				opts[t[0]] = false
 		})
 	})
 	return opts
