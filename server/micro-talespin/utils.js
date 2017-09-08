@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T08:34:24+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T00:31:47+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -45,6 +45,7 @@ exports.load = () => {
 	let files = fs.readdirSync('./server/micro-talespin/')
 	let data = files.reduce( (p, e) => {
 		if (e != 'index.js' && e != 'micro-talespin.js' && e.match(/.*\.js$/)) {
+			delete require.cache[`./${e}`]
 			let _ = require(`./${e}`)
 
 			if (_.talesFactory)

@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T08:36:22+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T00:41:08+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -95,9 +95,14 @@ class Plan extends Array {
 
 class Personae {
 	constructor(name) {
-		this.name = name
+		this._name = name
 		this._knowledge = {}
 		this._plan = new Plan
+	}
+
+	get name() {
+		console.log(this._name.blue)
+		return this._name
 	}
 
 	knowledge({personae, actor, action, target}) {
@@ -114,17 +119,19 @@ exports.Personae = Personae
 exports.talesFactory = function talesFactory(mods) {
 	let Tale = function Tale ({id, initFacts}) {
 		this.id = id
+		this.constructor = Tale
+		this.modsList = Object.keys(mods)
+		this.mods = mods
+
+		Object.keys(mods).forEach(k => {
+			this[k] = mods[k]
+		})
+
 		initFacts.forEach( e => {
 			this.knows(e)
 		})
 	}
 
-	Tale.prototype.constructor = Tale
-	Tale.prototype.modsList = Object.keys(mods)
-	Tale.prototype.mods = mods
-	Object.keys(mods).forEach(k => {
-		Tale.prototype[k] = mods[k]
-	})
 	return Tale
 }
 

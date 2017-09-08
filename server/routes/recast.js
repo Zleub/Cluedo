@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-20T20:32:05+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T17:30:06+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T20:38:36+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -38,7 +38,7 @@ exports.post = function () {
 		});
 		res.on('end', () => {
 			this.res.writeHead(200, { 'Content-Type': 'application/json' })
-			this.res.end(JSON.stringify(response));
+			this.res.end( JSON.stringify(response) );
 
 		});
 	})

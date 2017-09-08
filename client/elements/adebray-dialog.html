@@ -7,7 +7,11 @@
 
 		#repeater {
 			overflow: auto;
-			max-height: 80vw;
+			max-height: 40em;
+		}
+
+		.text {
+			font-size: large;
 		}
 	</style>
 
@@ -24,11 +28,12 @@
 	<paper-dialog>
 		<h2>{{title}}</h2>
 
+		<!-- <iron-image src="https://placeimg.com/100/100/people" preload></iron-image> -->
 		<div id=repeater>
 			<template is="dom-repeat" items="{{getDiscussions(title, discussions.*)}}" index-as="index">
 				<paper-item disabled>
 					<paper-item-body two-line>
-						<div>{{item.text}}</div>
+						<div class=text >{{item.text}}</div>
 						<div secondary>
 							<marked-element markdown={{item.response}}></marked-element>
 						</div>
@@ -82,7 +87,7 @@
 			// 	JSON.stringify(JSON.parse(e.detail.response), null, "  ") +
 			// 	"\n```"
 
-			this.data.response = "```\n" + JSON.stringify(JSON.parse(e.detail.response).message, null, "  ") + "\n```"
+			this.data.response = "```\n" + JSON.stringify(JSON.parse(e.detail.response), null, "  ") + "\n```"
 			if (!this.discussions[this.title])
 				this.set(`discussions.${this.title}`, [])
 			this.push(`discussions.${this.title}`, this.data)

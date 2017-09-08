@@ -6,18 +6,26 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T06:30:03+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T00:16:50+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
+console.log(require('./micro-talespin.js'))
 const { Knowledge, Personae } = require('./micro-talespin.js')
 const { verbose } = require('./utils.js');
 
 ['personae', 'actor', 'target'].forEach( e => {
 	exports[e] = function(name) {
 		let _ = `_${e}`
+
+
+		if (!name) {
+			console.log(name)
+			// verbose(Object.keys(this[_]).map( k => this[_][k]))
+			return Object.keys(this[_]).map( k => this[_][k])
+		}
 
 		if (!this[_])
 			this[_] = {}

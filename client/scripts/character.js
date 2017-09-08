@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T01:07:54+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-12T20:50:17+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T18:56:32+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -179,9 +179,9 @@ let applyUV = (map, cube) => {
 class Character extends THREE.Object3D {
 	constructor({name, texture, fatness, tallness}) {
 		super()
-		if (!fatness)
+		// if (!fatness)
 			fatness = 1
-		if (!tallness)
+		// if (!tallness)
 			tallness = 1
 
 		let _texture = new THREE.TextureLoader().load( texture.replace(" ", "_") )

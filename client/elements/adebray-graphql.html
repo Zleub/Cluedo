@@ -5,15 +5,17 @@
         display: block;
         @apply(--layout-horizontal);
         @apply(--layout-start);
+		margin: 8px;
+		padding: 4px;
       }
 
       /*.container {
       }*/
 
       .text, pre {
-          width: 45%;
           display: inline-block;
           @apply(--layout-self-start);
+		  width: 400px;
       }
 
       pre {
@@ -49,23 +51,12 @@
           value: {
               type: String,
               value: () => `
-
-              {
-                __schema {
-                 types {
-                  name
-                  description
-                  }
-                }
-                story {
-                  id
-                  modsList
-                  personae(name: "Joe") {
-                     name
-                     knowledge(name: "Joe")
-                  }
-                }
-              }`
+{
+  story {
+    id
+    personae { name }
+  }
+}`
           }
       },
 

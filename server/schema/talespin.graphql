@@ -1,0 +1,15 @@
+type Story {
+	id: Int
+	personae: [ Personae ]
+	_personae(name: String!): Personae
+	modsList: [ String ]
+}
+
+type Personae {
+	name: String
+	_name: String
+}
+
+type Query {
+	story(id: Int): Story
+}

@@ -16,12 +16,12 @@
 			}
 		</style>
 
-		<iron-ajax
+		<!-- <iron-ajax
 		  auto
 		  url="http://api.adebray.ovh/story/0"
 		  handle-as="json"
 		  on-response="handleResponse">
-		</iron-ajax>
+		</iron-ajax> -->
 		<iron-ajax
 		  auto
 		  url="http://api.adebray.ovh/test"
@@ -30,10 +30,11 @@
 		</iron-ajax>
 
 		<prism-highlighter></prism-highlighter>
+		<paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
 		<app-drawer id="drawer" swipe-open>
-		<paper-button raised on-tap="changeLocation">Scene</paper-button>
-		<paper-button raised on-tap="changeLocation">Data</paper-button>
-		<paper-button raised on-tap="changeLocation">Story</paper-button>
+			<paper-button raised on-tap="changeLocation">Scene</paper-button>
+			<paper-button raised on-tap="changeLocation">Data</paper-button>
+			<paper-button raised on-tap="changeLocation">Story</paper-button>
 		</app-drawer>
 
 		<app-location route="{{route}}" use-hash-as-path></app-location>
@@ -45,15 +46,16 @@
 		</app-route>
 
 		<iron-pages selected="{{route.path}}" attr-for-selected="id">
-			<section id=scene>
+			<section id=scene >
 				<adebray-dialog id="dialog"></adebray-dialog>
-				<!-- <canvas id=canvas width="800" height="800"></canvas> -->
-				<paper-textarea></paper-textarea>
-
+				<canvas id=canvas width="800" height="800"></canvas>
+				<!-- <paper-textarea></paper-textarea> -->
+				<adebray-graphql></adebray-graphql>
+				<marked-element markdown={{_toJSON(ts)}}></marked-element>
 			</section>
-			<section id=data>
-				<marked-element markdown={{_toJSON(data)}}></marked-element>
-			</section>
+			<!-- <section id=data>
+				<marked-element markdown={{_t oJSON(data)}}></marked-element>
+			</section> -->
 			<section id=story>
 				<h2>Story</h2>
 				<adebray-graphql></adebray-graphql>
@@ -72,6 +74,10 @@
 			return '```\n' + JSON.stringify(e, null, "  ") + '\n```'
 		},
 
+		openDrawer: function (e) {
+			this.$.drawer.toggle()
+		},
+
 		changeLocation: function (e) {
 			let path = e.target.innerText.trim().toLowerCase()
 			location = '#' + path
@@ -79,10 +85,7 @@
 
 		handleTS: function (e) {
 			this.set('ts', e.detail.response)
-		},
-
-		handleResponse: function (e) {
-			this.set('data', e.detail.response)
+			console.log(this.ts)
 
 			let {renderer, scene, camera, update_stack} = Scene(this.$.canvas)
 			var spotLight1 = new THREE.SpotLight( 0xaeaeff, 1 );
@@ -107,11 +110,15 @@
 
 			scene.dialog = this.$.dialog
 
-			var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+			var light = new THREE.AmbientLight( 0x404040 );
 			scene.add( light );
 
-			let tree = []
-			let characters = e.detail.response.data.story.characters
+
+			let characters = Object.keys(this.ts._personae).map( k => Object.assign(this.ts._personae[k], {
+				texture: 'red_headphones',
+				relationships: [],
+				particularities: [],
+			}))
 			characters.forEach( (e, i) => {
 				let name = e.name
 				if (e.texture)
@@ -148,11 +155,17 @@
 					this.$.data.appendChild(d)
 				}
 
-				c.translateX(i - characters.length / 2)
-				// c.translateZ( Math.floor(i % 4) - 1)
+				c.translateX( Math.floor(i / 4) )
+				c.translateZ( Math.floor(i % 4) - 1)
 				update_stack.push(c.update.bind(c))
 				scene.add(c)
 			})
+
+
+		},
+
+		handleResponse: function (e) {
+			this.set('data', e.detail.response)
 
 			// this.async(() => jsPlumb.ready(function() {
 			// 	tree.forEach( e => {
