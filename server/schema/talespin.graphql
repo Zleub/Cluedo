@@ -1,13 +1,17 @@
 type Story {
 	id: Int
-	personae: [ Personae ]
-	_personae(name: String!): Personae
+	personae(name: String): [ Personae ]
 	modsList: [ String ]
 }
 
 type Personae {
-	name: String
 	_name: String
+	knowledge(
+		personae: String,
+		actor: String,
+		action: String,
+		target: String
+	): String
 }
 
 type Query {

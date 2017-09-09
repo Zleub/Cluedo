@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-09-03T20:34:20+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T00:26:12+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T01:02:11+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -49,14 +49,14 @@ readdir("././server/micro-talespin/", (err, files) => {
 		// )
 	}
 	// verbose(this.req.body.query)
-	verbose(_.personae())
-	// graphql(
-	// 	schema,
-	// 	this.req.body.query,
-	// 	{ story: ({ id }) => _ },
-	// 	null,
-	// 	{ id }
-	// ).then(e => {
-	// 	this.res.end(JSON.stringify(e))
-	// })
+	verbose(_)
+	graphql(
+		schema,
+		this.req.body.query,
+		{ story: ({ id }) => _ },
+		null,
+		{ id }
+	).then(e => {
+		this.res.end(JSON.stringify(e))
+	})
 })

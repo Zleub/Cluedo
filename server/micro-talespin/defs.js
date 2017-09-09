@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T00:16:50+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T04:24:06+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -20,11 +20,17 @@ const { verbose } = require('./utils.js');
 	exports[e] = function(name) {
 		let _ = `_${e}`
 
-
 		if (!name) {
-			console.log(name)
-			// verbose(Object.keys(this[_]).map( k => this[_][k]))
-			return Object.keys(this[_]).map( k => this[_][k])
+			return Object.keys(this[_]).map( k => this[_][k] )
+		}
+		else if (typeof name == "object") {
+			if (Object.keys(name).length == 0)
+				return Object.keys(this[_]).map( k => this[_][k] )
+			return Object.keys(this[_]).map( k => this[_][k] ).filter( personae => {
+				return Object.keys(name).reduce( (p, _k) => {
+					return p || personae[_k] == name[_k]
+				}, false)
+			})
 		}
 
 		if (!this[_])
@@ -61,7 +67,7 @@ exports.knows = function ({personae, actor, action, target}) {
 		p[action] = function ({personae, actor, action: _action, target}) {
 			console.log(`~${action}`.magenta, personae, actor, _action, target)
 			// verbose('query', personae, actor, _action, target)
-			if (!target) {
+			if (!target && p._knowledge[actor]) {
 				return p._knowledge[actor][action]
 			}
 
