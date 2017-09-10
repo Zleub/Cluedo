@@ -6,14 +6,14 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T04:37:57+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-10T06:36:33+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
 const colors = require('colors')
-const { verbose, getopt } = require('./utils.js')
+const { verbose, getopt, DictionaryFunctor, ArrayFunctor } = require('./utils.js')
 const { goals } = require('./goals.js')
 
 class Knowledge {
@@ -100,6 +100,10 @@ class Personae {
 		this._plan = new Plan
 	}
 
+	get name() {
+		return this._name
+	}
+
 	knowledge({personae, actor, action, target}) {
 		console.log('~knowledge'.cyan, personae, actor, action, target)
 		console.log(this)
@@ -118,6 +122,34 @@ exports.Knowledge = Knowledge
 exports.Plan = Plan
 exports.Personae = Personae
 
+const JStoQraphQL = (object) => {
+	let type = typeof(object)
+	if (type == "number")
+		return "Int".green
+	else if (type == "object" && object.constructor.name != 'Object') {
+		return object.constructor.name
+	}
+	// else if (type == "function") {
+	// 	return "function"
+	// }
+}
+
+const toGraphQLString = (that) => (p, k) => {
+	let t = JStoQraphQL(that[k])
+	if (!t)
+		return p
+
+	if (typeof that[k] == "function")
+		return p + "\t" + k + "(" + "" + "): " + t + "\n"
+	if (that[k].constructor.name == 'Object')
+		return p + "\t" + k + "(key: String): " + t + "\n"
+	else
+		return p + "\t" + k + ": " + t + "\n"
+}
+
+// const StringDictionary = DictionaryFunctor(String)
+const StringArray = ArrayFunctor(String)
+
 exports.talesFactory = function talesFactory(mods) {
 	let Tale = function Tale ({id, initFacts}) {
 		this.id = id
@@ -126,8 +158,37 @@ exports.talesFactory = function talesFactory(mods) {
 		})
 	}
 	Tale.prototype.constructor = Tale
-	Tale.prototype.modsList = Object.keys(mods)
+	Tale.prototype.modsList = new StringArray
+	Object.keys(mods).forEach( (k) => Tale.prototype.modsList.push(k) )
 	Tale.prototype.mods = mods
+
+	Tale.prototype.introspect = function (schema) {
+		if (schema) {
+			if (schema.match(`type ${this.constructor.name} {`))
+				return schema
+			schema += `type ${this.constructor.name} {\n`
+		}
+		else
+			schema = `type ${this.constructor.name} {\n`
+		schema += Object.keys(this).reduce( toGraphQLString(this), "")
+		schema += Object.keys(Object.getPrototypeOf(this)).reduce( toGraphQLString(this), "")
+		schema += "}\n"
+
+		let childs = Object.keys(this).reduce((p, k) => {
+			if (typeof(this[k]) == 'object' && this[k].constructor.name != "Object")
+				p.push(this[k])
+			return p
+		}, []).concat(Object.keys(Object.getPrototypeOf(this)).reduce((p, k) => {
+			if (typeof(this[k]) == 'object' && this[k].constructor.name != "Object")
+				p.push(this[k])
+			return p
+		}, []))
+
+		childs.forEach( e => verbose(e.constructor.name) )
+		childs.forEach( e => schema = Tale.prototype.introspect.call(e, schema) )
+
+		return schema
+	}
 
 	Object.keys(mods).forEach(k => {
 		Tale.prototype[k] = mods[k]

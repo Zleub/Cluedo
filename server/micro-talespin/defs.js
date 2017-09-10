@@ -6,16 +6,17 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T04:24:06+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-10T04:44:11+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
-console.log(require('./micro-talespin.js'))
 const { Knowledge, Personae } = require('./micro-talespin.js')
-const { verbose } = require('./utils.js');
+const { verbose, DictionaryFunctor } = require('./utils.js');
+const PersonaeDictionary = DictionaryFunctor(Personae);
 
+// false: 39
 ['personae', 'actor', 'target'].forEach( e => {
 	exports[e] = function(name) {
 		let _ = `_${e}`
@@ -34,9 +35,9 @@ const { verbose } = require('./utils.js');
 		}
 
 		if (!this[_])
-			this[_] = {}
+			this[_] = new PersonaeDictionary
 		if (!this[_][name]) {
-			this[_][name] = new Personae(name)
+			this[_].insert(name, new Personae(name))
 		}
 		return this[_][name]
 	}

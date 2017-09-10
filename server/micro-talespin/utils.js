@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T00:31:47+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-10T06:29:12+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -60,4 +60,36 @@ exports.load = () => {
 	}, {})
 
 	return new talesFactory(data)
+}
+
+exports.DictionaryFunctor = (type) => {
+	let _class = class extends Object {
+		static get name() {
+			return type.name + "Dictionary"
+		}
+
+		insert(k, v) {
+			if (v.constructor.name != type.name)
+				throw `No such type ${v.constructor.name} in ${this.name}`
+			else
+				this[k] = v
+		}
+	}
+	return _class
+}
+
+exports.ArrayFunctor = (type) => {
+	let _class = class extends Array {
+		static get name() {
+			return type.name + "Array"
+		}
+
+		push(v) {
+			if (v.constructor.name != type.name)
+				throw `No such type ${v.constructor.name} in ${this.name}`
+			else
+				Array.prototype.push.call(this, v)
+		}
+	}
+	return _class
 }
