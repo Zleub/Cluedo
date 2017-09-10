@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T01:07:54+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-05T18:05:45+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-10T00:36:42+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -105,6 +105,7 @@ let Scene = (canvas) => {
 		if (_) {
 			if (_.object.userData.parent && _.object.userData.parent != scene.mainCharacter) {
 				_.object.userData.parent.lookAt(new THREE.Vector3(scene.mainCharacter.position.x, 1.1, scene.mainCharacter.position.z))
+				console.log(_.object.userData.parent)
 				scene.dialog.setTitle(_.object.userData.parent.name)
 				scene.dialog.toggle()
 				return

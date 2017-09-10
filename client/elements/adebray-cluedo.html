@@ -32,9 +32,11 @@
 		<prism-highlighter></prism-highlighter>
 		<paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
 		<app-drawer id="drawer" swipe-open>
-			<paper-button raised on-tap="changeLocation">Scene</paper-button>
-			<paper-button raised on-tap="changeLocation">Data</paper-button>
-			<paper-button raised on-tap="changeLocation">Story</paper-button>
+			<template is="dom-repeat" items="{{getSections()}}" index-as="index">
+				<paper-button raised on-tap="changeLocation">{{item}}</paper-button>
+			</template>
+			<!-- <paper-button raised on-tap="changeLocation">Data</paper-button>
+			<paper-button raised on-tap="changeLocation">Story</paper-button> -->
 		</app-drawer>
 
 		<app-location route="{{route}}" use-hash-as-path></app-location>
@@ -48,14 +50,17 @@
 		<iron-pages selected="{{route.path}}" attr-for-selected="id">
 			<section id=scene >
 				<adebray-dialog id="dialog"></adebray-dialog>
-				<canvas id=canvas width="800" height="800"></canvas>
+				<canvas id=canvas width="800" height="400"></canvas>
 				<!-- <paper-textarea></paper-textarea> -->
 				<adebray-graphql></adebray-graphql>
-				<marked-element markdown={{_toJSON(ts)}}></marked-element>
+				<!-- <marked-element markdown={{_toJSON(ts)}}></marked-element> -->
 			</section>
 			<!-- <section id=data>
 				<marked-element markdown={{_t oJSON(data)}}></marked-element>
 			</section> -->
+			<section id=blog>
+				<adebray-blog></adebray-blog>
+			</section>
 			<section id=story>
 				<h2>Story</h2>
 				<adebray-graphql></adebray-graphql>
@@ -69,6 +74,10 @@
 	<script>
 	Polymer({
 		is: 'adebray-cluedo',
+
+		getSections: function () {
+			return Array.from(this.querySelectorAll('section')).map( e => e.id )
+		},
 
 		_toJSON: function (e) {
 			return '```\n' + JSON.stringify(e, null, "  ") + '\n```'
@@ -120,7 +129,7 @@
 				particularities: [],
 			}))
 			characters.forEach( (e, i) => {
-				let name = e.name
+				let name = e._name
 				if (e.texture)
 					var texture = e.texture.toLowerCase()
 

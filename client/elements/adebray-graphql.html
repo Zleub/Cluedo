@@ -1,87 +1,80 @@
 <dom-module id="adebray-graphql">
-  <template>
-    <style>
-      :host {
-        display: block;
-        @apply(--layout-horizontal);
-        @apply(--layout-start);
+	<template>
+	<style>
+	:host {
+		display: block;
+		@apply(--layout-horizontal);
+		@apply(--layout-start);
 		margin: 8px;
 		padding: 4px;
-      }
+	}
 
-      /*.container {
-      }*/
+	.text, pre {
+		display: inline-block;
+		@apply(--layout-self-start);
+		width: 400px;
+	}
 
-      .text, pre {
-          display: inline-block;
-          @apply(--layout-self-start);
-		  width: 400px;
-      }
+	pre {
+		white-space: pre-wrap;
+	}
 
-      pre {
-          white-space: pre-wrap;
-      }
+	</style>
 
-    </style>
+	<iron-ajax
+		auto
+		method='POST'
+		url="http://api.adebray.ovh/test"
+		content-type="application/json"
+		handle-as="json"
+		on-response="handleResponse">
+	</iron-ajax>
 
-    <iron-ajax
-      auto
-      method='POST'
-      url="http://api.adebray.ovh/test"
-      content-type="application/json"
-      handle-as="json"
-      on-response="handleResponse">
-    </iron-ajax>
-
-    <!-- <div class=container> -->
 	<pre>{{data}}</pre>
-        <!-- <marked-element markdown={{data}}></marked-element> -->
-        <div class=text>
-            <paper-textarea id='input' value={{value}}></paper-textarea>
-        </div>
-    <!-- </div> -->
+	<div class=text>
+		<paper-textarea id='input' value={{value}}></paper-textarea>
+	</div>
 
-  </template>
-  <script>
-    Polymer({
-      is: 'adebray-graphql',
+	</template>
+	<script>
+	Polymer({
+		is: 'adebray-graphql',
 
-      properties: {
-          data: String,
-          value: {
-              type: String,
-              value: () => `
-{
-  story {
-    id
-    personae { name }
-  }
-}`
-          }
-      },
+		properties: {
+			data: String,
+			value: {
+				type: String,
+				value: () => localStorage.getItem('myQuery'),
+				observer: '_queryChanged'
+			}
+		},
 
-      listeners: {
-          'input.value-changed': 'send'
-      },
+		listeners: {
+			'input.value-changed': 'send'
+		},
 
-      attached: function () {
-          this.send()
-      },
+		attached: function () {
+			this.send()
+		},
 
-      _toJSON: function (e) {
-          return JSON.stringify(e, null, "  ")
-      },
+		_queryChanged: function (e) {
+			localStorage.setItem('myQuery', e)
+		},
 
-      handleResponse: function (e) {
-        this.set('data', this._toJSON(e.detail.response))
-      },
+		_toJSON: function (e) {
+			return JSON.stringify(e, null, "  ")
+		},
 
-      send: function (e) {
-        this.querySelector('iron-ajax').body = {
-            query: this.value
-        }
-        this.querySelector('iron-ajax').generateRequest()
-      }
-    });
-  </script>
+		handleResponse: function (e) {
+		this.set('data', this._toJSON(e.detail.response))
+		},
+
+		send: function (e) {
+		this.querySelector('iron-ajax').body = {
+			query: this.value
+		}
+		this.querySelector('iron-ajax').generateRequest()
+		}
+	});
+	</script>
 </dom-module>
