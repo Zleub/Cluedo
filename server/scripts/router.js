@@ -6,11 +6,13 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-22T21:11:45+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T22:00:28+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-21T23:50:25+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
+
+require('colors')
 
 class Router {
 	constructor(routes) {
@@ -72,7 +74,7 @@ class Router {
 			callback()
 		}
 		else
-			callback(`No such route ${req.method} ${req.url}`)
+			callback(`No such route ${req.method} ${req.url}`.red)
 	}
 }
 

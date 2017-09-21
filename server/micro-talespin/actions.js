@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T08:32:02+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-22T01:29:14+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -60,7 +60,7 @@ exports.dprox = function ({personae, actor, action, target}) {
 	// 		p[e] = _k[e]
 	// 	return p
 	// }, {})
-	console.log(action, target)
+	// console.log(action, target)
 	this.personae(personae)._knowledge[actor] = _k.filter((e, i, o, k) => {
 		return !(action == k && target == e)
 	})
@@ -70,4 +70,5 @@ exports.dprox = function ({personae, actor, action, target}) {
 exports.ingest = function ({personae, actor, action, target}) {
 	console.log('~ingest'.blue, personae, actor, action, target)
 	this.personae(personae)._plan.erase({personae, actor, action: 'dcont', target})
+	this.personae(personae)._knowledge.erase({personae, actor, action: 'goal', target: 'thirsty'})
 }

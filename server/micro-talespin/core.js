@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-06T08:30:52+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-22T01:31:21+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -19,9 +19,9 @@ const { createInterface } = require('readline');
 exports.run = function (opts) {
 	let _find = () => {
 		return Object.keys(this._personae).reduce( (p, e) => {
-			let _p = this.personae(e)._plan.last
-			if (_p)
-				return p.concat([_p])
+			let plan = this.personae(e)._plan.last
+			if (plan)
+				return p.concat([plan])
 			return p
 		}, [] )
 	}
@@ -31,8 +31,9 @@ exports.run = function (opts) {
 		found = _find()
 		// verbose(found)
 		found.forEach( ({personae, actor, action, target}) => {
-			if (this[action])
+			if (this[action]) {
 				this[action]({personae, actor, action, target})
+			}
 			else
 				console.log(`${action} not implemented`.red)
 		})
@@ -67,10 +68,11 @@ exports.run = function (opts) {
 	}
 	else {
 		do {
-			console.log('---- ---- ---- ---- ---- ---- ---- ')
+			if (opts['--verbose'])
+				console.log('---- ---- ---- ---- ---- ---- ---- ')
 			_run(found)
 		} while (found.length != 0 && i < (opts["--sequence"] || 128))
-		if (opts["--summary"]) {
+		if (opts['--verbose'] && opts["--summary"]) {
 			console.log('---- ---- ---- END ---- ---- ---- ')
 			verbose(this)
 		}

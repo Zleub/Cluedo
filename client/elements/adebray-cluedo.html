@@ -1,19 +1,27 @@
 <dom-module id="adebray-cluedo">
 	<template>
+		<style include="iron-flex iron-flex-alignment"></style>
 		<style>
 			:host {
 				display: block;
 				margin: 4px;
 				padding: 8px;
+				@apply(--layout-vertical);
+				@apply(--layout-center);
 			}
 
-			paper-input {
+			/*paper-input {
 				width: 800px;
-			}
+			}*/
 
 			paper-button {
 				display: flex;
 			}
+
+			section {
+				max-width: 800px;
+			}
+
 		</style>
 
 		<!-- <iron-ajax
@@ -28,10 +36,15 @@
 		  handle-as="json"
 		  on-response="handleTS">
 		</iron-ajax>
+		<iron-ajax
+		  auto
+		  url="../.ascii_logo"
+		  handle-as="text"
+		  on-response="handleLogo">
+		</iron-ajax>
 
 		<prism-highlighter></prism-highlighter>
-		<paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
-		<app-drawer id="drawer" swipe-open>
+		<app-drawer id="drawer" style="z-index: 12;" swipe-open>
 			<template is="dom-repeat" items="{{getSections()}}" index-as="index">
 				<paper-button raised on-tap="changeLocation">{{item}}</paper-button>
 			</template>
@@ -48,26 +61,32 @@
 		</app-route>
 
 		<iron-pages selected="{{route.path}}" attr-for-selected="id">
-			<section id=scene >
+			<section id=scene>
+				<div class="horizontal layout">
+					<paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
+					<div class="flex horizontal layout end-justified">
+						<pre>{{logo}}</pre>
+					</div>
+				</div>
 				<adebray-dialog id="dialog"></adebray-dialog>
 				<canvas id=canvas width="800" height="400"></canvas>
 				<!-- <paper-textarea></paper-textarea> -->
-				<adebray-graphql></adebray-graphql>
-				<!-- <marked-element markdown={{_toJSON(ts)}}></marked-element> -->
+				<!-- <adebray-graphql></adebray-graphql> -->
+				<marked-element markdown={{_toJSON(ts)}}></marked-element>
 			</section>
 			<!-- <section id=data>
 				<marked-element markdown={{_t oJSON(data)}}></marked-element>
 			</section> -->
-			<section id=blog>
+			<!-- <section id=blog>
 				<adebray-blog></adebray-blog>
-			</section>
-			<section id=story>
+			</section> -->
+			<!-- <section id=story>
 				<h2>Story</h2>
-				<adebray-graphql></adebray-graphql>
+				<adebray-graphql></adebray-graphql> -->
 				<!-- <div>{{ts.personae}}</div> -->
 				<!-- <div>{{ts.World.facts}}</div> -->
 				<!-- <marked-element markdown={{_toJSON(ts)}}></marked-element> -->
-			</section>
+			<!-- </section> -->
 		</iron-pages>
 
 	</template>
@@ -90,6 +109,11 @@
 		changeLocation: function (e) {
 			let path = e.target.innerText.trim().toLowerCase()
 			location = '#' + path
+		},
+
+		handleLogo: function (e) {
+			console.log(e.detail.response)
+			this.set('logo', e.detail.response)
 		},
 
 		handleTS: function (e) {
@@ -130,6 +154,7 @@
 			}))
 			characters.forEach( (e, i) => {
 				let name = e._name
+
 				if (e.texture)
 					var texture = e.texture.toLowerCase()
 
@@ -140,7 +165,7 @@
 					tallness: (e.particularities.find(e => e == 'Tall') ? 1.5 : 1)
 				})
 
-				if (i == 0) {
+				if (name == "World") {
 					scene.mainCharacter = c
 					mainCharacter = e
 				}

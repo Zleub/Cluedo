@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-09-03T20:34:20+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-10T06:31:43+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-12T04:19:11+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -14,9 +14,9 @@
 
 const { graphql, buildSchema, printSchema } = require("graphql")
 const { readFileSync, readdir } = require("fs")
-
-// delete require.cache["./server/micro-talespin"]
 const { load, verbose, Personae } = require("./server/micro-talespin")
+const colors = require('colors')
+// colors.styles.test = [ open: '\u001b[31m', close: '\u001b[39m', closeRe: /[39m/g ]
 
 readdir("./server/micro-talespin/", (err, files) => {
 	// let types = [
@@ -44,8 +44,9 @@ readdir("./server/micro-talespin/", (err, files) => {
 		initFacts: require("./server/micro-talespin/story0.json")
 	})
 
+	// verbose(require('colors'))
 	// verbose(_)
 	// verbose(_.mods)
-	// console.log('-- -- -- --')
+	console.log('-- -- -- --')
 	console.log( _.introspect() )
 })

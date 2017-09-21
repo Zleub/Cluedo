@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-20T20:32:05+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-09T03:40:32+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-22T01:07:41+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -33,6 +33,7 @@ exports.get = function() {
 		initFacts: require("../micro-talespin/story0.json")
 	})
 
+	_.run({})
 	this.res.end(JSON.stringify(_, null, "  "))
 }
 
@@ -49,22 +50,24 @@ exports.post = function(id) {
 			readFileSync("./server/schema/talespin.graphql").toString()
 		)
 	} catch (e) {
+		console.log(`error`.red)
 		verbose('error '.red, e)
 		return this.res.end(
 			JSON.stringify({ errors: [{ message: e.message }] })
 		)
 	}
 	// verbose(this.req.body.query)
-	console.log(_.toString())
-	graphql(
-		schema,
-		this.req.body.query,
-		{ story: _ },
-		null,
-		{ id }
-	).then(e => {
-		verbose(e)
-		this.res.end(JSON.stringify(e))
-	})
+	// verbose(_)
+	// verbose(_.goals)
+	// graphql(
+	// 	schema,
+	// 	this.req.body.query,
+	// 	{ story: _ },
+	// 	null,
+	// 	{ id }
+	// ).then(e => {
+	// 	// verbose(e)
+	// 	this.res.end(JSON.stringify(e))
+	// })
 	// })
 }

@@ -1,0 +1,1521 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - dat.gui.GUI</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/dat.controllers.BooleanController.html">dat.controllers.BooleanController</a></li>
+	
+	<li><a href="../symbols/dat.controllers.Controller.html">dat.controllers.Controller</a></li>
+	
+	<li><a href="../symbols/dat.controllers.FunctionController.html">dat.controllers.FunctionController</a></li>
+	
+	<li><a href="../symbols/dat.controllers.NumberController.html">dat.controllers.NumberController</a></li>
+	
+	<li><a href="../symbols/dat.controllers.NumberControllerBox.html">dat.controllers.NumberControllerBox</a></li>
+	
+	<li><a href="../symbols/dat.controllers.NumberControllerSlider.html">dat.controllers.NumberControllerSlider</a></li>
+	
+	<li><a href="../symbols/dat.controllers.OptionController.html">dat.controllers.OptionController</a></li>
+	
+	<li><a href="../symbols/dat.controllers.StringController.html">dat.controllers.StringController</a></li>
+	
+	<li><a href="../symbols/dat.gui.GUI.html">dat.gui.GUI</a></li>
+	
+	<li><a href="../symbols/Math.html">Math</a></li>
+	
+	<li><a href="../symbols/root.Mottle.html">root.Mottle</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Class dat.gui.GUI
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/client_scripts_dat.gui.js.html">dat.gui.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class dat.gui.GUI.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#constructor">dat.gui.GUI</a></b>(params)
+							</div>
+							<div class="description">A lightweight controller library for JavaScript.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class dat.gui.GUI.">
+					<caption>Field Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Field Attributes</th>
+							<th scope="col">Field Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#autoPlace">autoPlace</a></b>
+								</div>
+								<div class="description">Handles <code>GUI</code>'s element placement for you</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#closed">closed</a></b>
+								</div>
+								<div class="description">Whether the <code>GUI</code> is collapsed or not</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#closeOnTop">closeOnTop</a></b>
+								</div>
+								<div class="description">Handles <code>GUI</code>'s position of open/close button</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#domElement">domElement</a></b>
+								</div>
+								<div class="description">Outermost DOM Element</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#load">load</a></b>
+								</div>
+								<div class="description">Contains all presets</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#name">name</a></b>
+								</div>
+								<div class="description">The name of <code>GUI</code>.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#parent">parent</a></b>
+								</div>
+								<div class="description">The parent <code>GUI</code></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#preset">preset</a></b>
+								</div>
+								<div class="description">The identifier for a set of saved values</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#useLocalStorage">useLocalStorage</a></b>
+								</div>
+								<div class="description">Determines whether or not to use <a href="https://developer.mozilla.org/en/DOM/Storage#localStorage">localStorage</a> as the means for
+<code>remember</code>ing</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/dat.gui.GUI.html#width">width</a></b>
+								</div>
+								<div class="description">The width of <code>GUI</code> element</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class dat.gui.GUI.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.add">add</a></b>(object, property)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.addColor">addColor</a></b>(object, property)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.addFolder">addFolder</a></b>(name)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.close">close</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.destroy">destroy</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.getRoot">getRoot</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.getSaveObject">getSaveObject</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.listen">listen</a></b>(controller)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/dat.gui.GUI.html#-onClickTitle">onClickTitle</a></b>(e)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.onResize">onResize</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.open">open</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.remember">remember</a></b>(objects)
+								</div>
+								<div class="description">Mark objects for saving.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.remove">remove</a></b>(controller)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/dat.gui.GUI.html#-resetWidth">resetWidth</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.revert">revert</a></b>(gui)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.save">save</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.saveAs">saveAs</a></b>(presetName)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">dat.gui.GUI.<b><a href="../symbols/dat.gui.GUI.html#.updateDisplay">updateDisplay</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+<!-- ============================== events summary ======================== -->
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>dat.gui.GUI</b>(params)
+				</div>
+				
+				<div class="description">
+					A lightweight controller library for JavaScript. It allows you to easily
+manipulate variables and fire functions on the fly.
+					
+				</div>
+				
+				
+				
+				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>params</b>
+								<i>Optional</i>
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>params.name</b>
+								<i>Optional</i>
+							</dt>
+								<dd>The name of this GUI.</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>params.load</b>
+								<i>Optional</i>
+							</dt>
+								<dd>JSON object representing the saved state of
+this GUI.</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Boolean}</span>  <b>params.auto</b>
+								<i>Optional, Default: true</i>
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								<span class="light fixedFont">{<a href="../symbols/dat.gui.GUI.html">dat.gui.GUI</a>}</span>  <b>params.parent</b>
+								<i>Optional</i>
+							</dt>
+								<dd>The GUI I'm nested in.</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Boolean}</span>  <b>params.closed</b>
+								<i>Optional</i>
+							</dt>
+								<dd>If true, starts closed</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Boolean}</span>  <b>params.closeOnTop</b>
+								<i>Optional</i>
+							</dt>
+								<dd>If true, close/open button shows on top of the GUI</dd>
+						
+						</dl>
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+					<a name="autoPlace"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>autoPlace</b>
+					
+					</div>
+					<div class="description">
+						Handles <code>GUI</code>'s element placement for you
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="closed"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>closed</b>
+					
+					</div>
+					<div class="description">
+						Whether the <code>GUI</code> is collapsed or not
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="closeOnTop"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>closeOnTop</b>
+					
+					</div>
+					<div class="description">
+						Handles <code>GUI</code>'s position of open/close button
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="domElement"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{DOMElement}</span>
+					<b>domElement</b>
+					
+					</div>
+					<div class="description">
+						Outermost DOM Element
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="load"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Object}</span>
+					<b>load</b>
+					
+					</div>
+					<div class="description">
+						Contains all presets
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="name"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>name</b>
+					
+					</div>
+					<div class="description">
+						The name of <code>GUI</code>. Used for folders. i.e
+a folder's name
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="parent"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/dat.gui.GUI.html">dat.gui.GUI</a>}</span>
+					<b>parent</b>
+					
+					</div>
+					<div class="description">
+						The parent <code>GUI</code>
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="preset"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>preset</b>
+					
+					</div>
+					<div class="description">
+						The identifier for a set of saved values
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="useLocalStorage"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>useLocalStorage</b>
+					
+					</div>
+					<div class="description">
+						Determines whether or not to use <a href="https://developer.mozilla.org/en/DOM/Storage#localStorage">localStorage</a> as the means for
+<code>remember</code>ing
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="width"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Number}</span>
+					<b>width</b>
+					
+					</div>
+					<div class="description">
+						The width of <code>GUI</code> element
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					
+				
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name=".add"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{<a href="../symbols/dat.controllers.Controller.html">dat.controllers.Controller</a>}</span>
+					<span class="light">dat.gui.GUI.</span><b>add</b>(object, property)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>object</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>property</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/dat.controllers.Controller.html">dat.controllers.Controller</a>}</span> The new controller that was added.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".addColor"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{dat.controllers.ColorController}</span>
+					<span class="light">dat.gui.GUI.</span><b>addColor</b>(object, property)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>object</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>property</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{dat.controllers.ColorController}</span> The new controller that was added.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".addFolder"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{<a href="../symbols/dat.gui.GUI.html">dat.gui.GUI</a>}</span>
+					<span class="light">dat.gui.GUI.</span><b>addFolder</b>(name)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>name</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Throws:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span>  <b></b>
+								</dt>
+								<dd>if this GUI already has a folder by the specified
+name</dd>
+							
+							</dl>
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/dat.gui.GUI.html">dat.gui.GUI</a>}</span> The new folder.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".close"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>close</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".destroy"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>destroy</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".getRoot"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{<a href="../symbols/dat.gui.GUI.html">dat.gui.GUI</a>}</span>
+					<span class="light">dat.gui.GUI.</span><b>getRoot</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/dat.gui.GUI.html">dat.gui.GUI</a>}</span> the topmost parent GUI of a nested GUI.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".getSaveObject"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Object}</span>
+					<span class="light">dat.gui.GUI.</span><b>getSaveObject</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> a JSON object representing the current state of
+this GUI as well as its remembered properties.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".listen"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>listen</b>(controller)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>controller</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="-onClickTitle"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>onClickTitle</b>(e)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>e</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".onResize"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>onResize</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".open"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>open</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".remember"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>remember</b>(objects)
+					
+					</div>
+					<div class="description">
+						Mark objects for saving. The order of these objects cannot change as
+the GUI grows. When remembering new objects, append them to the end
+of the list.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object...}</span> <b>objects</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Throws:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span>  <b></b>
+								</dt>
+								<dd>if not called on a top level GUI.</dd>
+							
+							</dl>
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".remove"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>remove</b>(controller)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>controller</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="-resetWidth"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>resetWidth</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".revert"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>revert</b>(gui)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>gui</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".save"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>save</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".saveAs"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>saveAs</b>(presetName)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>presetName</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".updateDisplay"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">dat.gui.GUI.</span><b>updateDisplay</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					
+				
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Sep 21 2017 23:27:16 GMT+0200 (CEST)
+		</div>
+	</body>
+</html>

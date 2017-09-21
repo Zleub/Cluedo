@@ -33,7 +33,7 @@
 			<template is="dom-repeat" items="{{getDiscussions(title, discussions.*)}}" index-as="index">
 				<paper-item disabled>
 					<paper-item-body two-line>
-						<div class=text >{{item.text}}</div>
+						<div class=text>{{item.text}}</div>
 						<div secondary>
 							<marked-element markdown={{item.response}}></marked-element>
 						</div>

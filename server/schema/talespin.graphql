@@ -1,19 +1,47 @@
-type Story {
-	id: Int
-	personae(name: String): [ Personae ]
-	modsList: [ String ]
-}
-
-type Personae {
-	_name: String
-	knowledge(
-		personae: String,
-		actor: String,
-		action: String,
-		target: String
-	): String
-}
+# type Story {
+# 	id: Int
+# 	personae(name: String): [ Personae ]
+# 	modsList: [ String ]
+# }
+#
+# type Personae {
+# 	_name: String
+# 	knowledge(
+# 		personae: String,
+# 		actor: String,
+# 		action: String,
+# 		target: String
+# 	): String
+# }
+#
+# type Query {
+# 	story(id: Int): Story
+# }
 
 type Query {
-	story(id: Int): Story
+	story(id: Int): Tale
+}
+
+type Tale {
+    id: Int
+    _personae(item: String): [Personae]!
+    modsList: [String]!
+    goals(item: String): String!
+}
+type Personae {
+    _name: String
+    _knowledge(item: String): [Knowledge]!
+    _plan(key: Int): [Plan]!
+}
+type Knowledge {
+    location: [String]!
+    is_a: [String]!
+    home: [String]!
+    goal: [String]!
+}
+type Plan {
+    personae: String
+    actor: String
+    action: String
+    target: String
 }
