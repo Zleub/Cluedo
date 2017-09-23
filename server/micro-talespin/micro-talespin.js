@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-08-06T02:51:52+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-21T23:24:08+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-22T23:36:08+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -30,22 +30,57 @@ const { Knowledge } = require('./Knowledge.js')
 const { Plan } = require('./Plan.js')
 const { Personae } = require('./Personae.js')
 
+/** @module micro-talespin */
+
 exports.Knowledge = Knowledge
 exports.Plan = Plan
 exports.Personae = Personae
 
+/**
+ * This is a description of the talesFactory function.
+ * @function talesFactory
+ * @param {Mod[]} mods
+ * @return {module:micro-talespin~Tale}
+ */
 exports.talesFactory = function talesFactory(mods) {
+	/**
+	 * @class module:micro-talespin~Tale
+	 * @param {number} id
+	 * @param {Fact[]} initFacts
+	 */
 	let Tale = function Tale({
 		id,
 		initFacts
 	}) {
+		/**
+		 * @name module:micro-talespin~Tale#id
+		 * @type {number}
+		 */
 		this.id = id
+		/**
+		 * @name initFacts
+		 * @type {Fact[]}
+		 */
 		initFacts.forEach(e => {
 			this.knows(e)
 		})
 	}
+
+	/**
+	 * @name module:micro-talespin~Tale#constructor
+	 * @type module:micro-talespin~Tale
+	 */
 	Tale.prototype.constructor = Tale
+	/**
+	 * @name module:micro-talespin~Tale#modsList
+	 * @type {String[]}
+	 */
 	Tale.prototype.modsList = Object.keys(mods).map(k => k)
+	/**
+	 * @name module:micro-talespin~Tale#modsList
+	 * @type {Mod[]}
+	 * @see Tale
+	 */
 	Tale.prototype.mods = mods
 
 	Tale.prototype.introspect = introspect
