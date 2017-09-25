@@ -121,6 +121,43 @@
 			console.log(this.ts)
 
 			let {renderer, scene, camera, update_stack} = Scene(this.$.canvas)
+
+			var loader = new THREE.OBJLoader();
+
+			// load a resource
+			loader.load(
+				// resource URL
+				'models/seahorse.obj',
+				// Function when resource is loaded
+				function ( object ) {
+					// console.log(object)
+					// object.position.x = 0
+					// object.position.y = -25
+					object.position.z = 30
+
+					object.scale.x = 0.1
+					object.scale.y = 0.1
+					object.scale.z = 0.1
+					let material = new THREE.MeshPhongMaterial( {
+						color: 0xa5a5a5,
+						// map: texture,
+						// wireframe: true
+					} )
+					var gui = new dat.GUI();
+					gui.add(object.position, 'x', -1000, 1000);
+					gui.add(object.position, 'y', -1000, 1000);
+					gui.add(object.position, 'z', -1000, 1000);
+					object.traverse( function ( child ) {
+						if ( child instanceof THREE.Mesh ) {
+							child.material = material;
+						}
+					} );
+
+					console.log(object)
+					scene.add( object );
+					// camera.lookAt(object.position)
+				}
+			);
 			var spotLight1 = new THREE.SpotLight( 0xaeaeff, 1 );
 			spotLight1.position.set( 25, 25, 25 );
 			spotLight1.castShadow = true;
@@ -145,55 +182,55 @@
 
 			var light = new THREE.AmbientLight( 0x404040 );
 			scene.add( light );
-
-
-			let characters = Object.keys(this.ts._personae).map( k => Object.assign(this.ts._personae[k], {
-				texture: 'red_headphones',
-				relationships: [],
-				particularities: [],
-			}))
-			characters.forEach( (e, i) => {
-				let name = e._name
-
-				if (e.texture)
-					var texture = e.texture.toLowerCase()
-
-				let c = new Character({
-					name: name,
-					texture: `./assets/${texture}.png`,
-					fatness: (e.particularities.find(e => e == 'Fat') ? 1.5 : 1),
-					tallness: (e.particularities.find(e => e == 'Tall') ? 1.5 : 1)
-				})
-
-				if (name == "World") {
-					scene.mainCharacter = c
-					mainCharacter = e
-				}
-
-				if (e.relationships.length != 0) {
-					let d = document.createElement('div')
-					d.style['position'] = 'absolute'
-					d.style['width'] = '150px'
-					d.style['height'] = '80px'
-					d.style['border'] = '1px solid black'
-					d.style['background-color'] = 'white'
-					d.style['top'] = `${Math.floor(i / 8) * 120 + 120}px`
-					d.style['left'] = `${Math.floor(i % 8) * 120 + 100}px`
-					d.id = name
-					d.innerHTML = `
-					${name}<br>
-					${e.age}
-					`
-
-					tree.push(d)
-					this.$.data.appendChild(d)
-				}
-
-				c.translateX( Math.floor(i / 4) )
-				c.translateZ( Math.floor(i % 4) - 1)
-				update_stack.push(c.update.bind(c))
-				scene.add(c)
-			})
+			//
+			//
+			// let characters = Object.keys(this.ts._personae).map( k => Object.assign(this.ts._personae[k], {
+			// 	texture: 'red_headphones',
+			// 	relationships: [],
+			// 	particularities: [],
+			// }))
+			// characters.forEach( (e, i) => {
+			// 	let name = e._name
+			//
+			// 	if (e.texture)
+			// 		var texture = e.texture.toLowerCase()
+			//
+			// 	let c = new Character({
+			// 		name: name,
+			// 		texture: `./assets/${texture}.png`,
+			// 		fatness: (e.particularities.find(e => e == 'Fat') ? 1.5 : 1),
+			// 		tallness: (e.particularities.find(e => e == 'Tall') ? 1.5 : 1)
+			// 	})
+			//
+			// 	if (name == "World") {
+			// 		scene.mainCharacter = c
+			// 		mainCharacter = e
+			// 	}
+			//
+			// 	if (e.relationships.length != 0) {
+			// 		let d = document.createElement('div')
+			// 		d.style['position'] = 'absolute'
+			// 		d.style['width'] = '150px'
+			// 		d.style['height'] = '80px'
+			// 		d.style['border'] = '1px solid black'
+			// 		d.style['background-color'] = 'white'
+			// 		d.style['top'] = `${Math.floor(i / 8) * 120 + 120}px`
+			// 		d.style['left'] = `${Math.floor(i % 8) * 120 + 100}px`
+			// 		d.id = name
+			// 		d.innerHTML = `
+			// 		${name}<br>
+			// 		${e.age}
+			// 		`
+			//
+			// 		tree.push(d)
+			// 		this.$.data.appendChild(d)
+			// 	}
+			//
+			// 	c.translateX( Math.floor(i / 4) )
+			// 	c.translateZ( Math.floor(i % 4) - 1)
+			// 	update_stack.push(c.update.bind(c))
+			// 	scene.add(c)
+			// })
 
 
 		},
