@@ -32,9 +32,10 @@
 		</iron-ajax> -->
 		<iron-ajax
 		  auto
-		  url="http://api.adebray.ovh/test"
+		  url="__api_url__/test"
 		  handle-as="json"
-		  on-response="handleTS">
+		  on-response="handleTS"
+		  on-error="logError">
 		</iron-ajax>
 		<iron-ajax
 		  auto
@@ -74,9 +75,6 @@
 				<!-- <adebray-graphql></adebray-graphql> -->
 				<marked-element markdown={{_toJSON(ts)}}></marked-element>
 			</section>
-			<!-- <section id=data>
-				<marked-element markdown={{_t oJSON(data)}}></marked-element>
-			</section> -->
 			<!-- <section id=blog>
 				<adebray-blog></adebray-blog>
 			</section> -->
@@ -102,6 +100,10 @@
 			return '```\n' + JSON.stringify(e, null, "  ") + '\n```'
 		},
 
+		logError: function (e) {
+			console.log('error', e)
+		},
+
 		openDrawer: function (e) {
 			this.$.drawer.toggle()
 		},
@@ -117,6 +119,7 @@
 		},
 
 		handleTS: function (e) {
+			console.log(e)
 			this.set('ts', e.detail.response)
 			console.log(this.ts)
 
