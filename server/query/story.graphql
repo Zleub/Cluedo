@@ -1,8 +1,0 @@
-query storyQuery($id: Int!) {
-	story(id: $id) {
-		id
-		personae(name: String) {
-			name: String
-		}
-	}
-}
