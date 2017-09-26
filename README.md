@@ -2,6 +2,14 @@
 
 [![Build Status](https://travis-ci.org/Zleub/Cluedo.svg?branch=master)](https://travis-ci.org/Zleub/Cluedo)
 
+- `make all` -- build client side html's
+- `make m4` -- preprocess files
+- `make serve` -- run both client and server process (python & node)
+- `make kill` -- kill both servers
+- `make re` -- rebuild
+
+### Ressources
+
 [MicroTalespin](http://lispm.de/source/misc/micro-talespin.lisp)
 
 Inside Computer Understanding: Five Programs Plus Miniatures
