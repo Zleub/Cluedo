@@ -5,20 +5,20 @@
 # @Last modified time: 2017-09-26T23:58:01+02:00
 
 all:
-	rm client/bower_components
+	rm -f client/bower_components
 	ln -s ../bower_components client/bower_components
 	rsync -avz client/ build/
-	$(shell hash m4 || { echo -e 'm4 not found' ; exit } )
+	$(shell hash m4 || ( echo -e 'm4 not found' ; exit ) )
 	make m4
 
 m4:
 	$(foreach file,$(shell ls build/*.html), \
-		sed -i "" '1s/^/include(conf.m4) /' $(file); \
+		sed -i '1s/^/include(conf.m4) /' $(file); \
 		m4 $(file) > $(file).m4; \
 		mv $(file).m4 $(file); \
 	)
 	$(foreach file,$(shell ls build/elements/*.html), \
-		sed -i "" '1s/^/include(conf.m4) /' $(file); \
+		sed -i '1s/^/include(conf.m4) /' $(file); \
 		m4 $(file) > $(file).m4; \
 		mv $(file).m4 $(file); \
 	)
