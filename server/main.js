@@ -6,20 +6,21 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T00:43:42+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-02T21:36:27+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-21T23:49:55+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
-http = require('http')
-https = require('https')
-querystring = require('querystring')
-fs = require('fs')
+require('colors')
+const http = require('http')
+const https = require('https')
+const querystring = require('querystring')
+const fs = require('fs')
 
 let { Router } = require('./scripts/router.js')
 
-opt = {
+const opt = {
 	port: 8080,
 	hostname: "0.0.0.0"
 }
@@ -37,8 +38,10 @@ process.argv.reduce( (p, e) => {
 new Promise( (res, rej) => {
 	fs.readdir('./server/routes', (err, data) => {
 		res( data.reduce( (p, e) => {
-			let n = e.match(/(\w+)/)[1]
-			p[`/${n}`] = require(`./routes/${e}`)
+			let n = e.match(/^([^.]\w+)/)
+			if (!n)
+				return p
+			p[`/${n[1]}`] = require(`./routes/${e}`)
 			return p
 		}, {}) )
 	})
@@ -69,7 +72,7 @@ new Promise( (res, rej) => {
 					res.end();
 				}
 				else
-					console.log('Served ' + req.url);
+					console.log(`[${req.method}] ${req.url}`.green);
 			});
 		})
 

@@ -2,6 +2,14 @@
 
 [![Build Status](https://travis-ci.org/Zleub/Cluedo.svg?branch=master)](https://travis-ci.org/Zleub/Cluedo)
 
+- `make all` -- build client side html's
+- `make m4` -- preprocess files
+- `make serve` -- run both client and server process (python & node)
+- `make kill` -- kill both servers
+- `make re` -- rebuild
+
+### Ressources
+
 [MicroTalespin](http://lispm.de/source/misc/micro-talespin.lisp)
 
 Inside Computer Understanding: Five Programs Plus Miniatures
@@ -19,8 +27,8 @@ Inside Computer Understanding: Five Programs Plus Miniatures
 
 ### Todo - Micro-Talespin
 
-- [ ] Initial database.  It can be extended before running a story.
-- [ ] Initial database can be loaded from a file.
+- [X] Initial database.  It can be extended before running a story.
+- [X] Initial database can be loaded from a file.
 
 - [ ] `assert-fact` is one of the central control functions.  It starts with one fact, infers the consequences, infers the consequences of the consequences, etc.  Besides the simple result put in *conseqs* (e.g., ptrans changes locs), new states may lead to response actions (put in *actions*) or new plans (put in *plans*).  The plans are done after all the consequences are inferred.
 

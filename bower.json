@@ -20,6 +20,7 @@
     "iron-elements": "^1.0.10",
     "paper-input": "^1.0.0",
     "paper-elements": "^1.0.7",
-    "app-elements": "^1.0.0"
+    "app-elements": "^1.0.0",
+    "dat.gui": "dat-gui#^0.6.5"
   }
 }

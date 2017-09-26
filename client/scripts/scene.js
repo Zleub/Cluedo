@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T01:07:54+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-07-05T18:05:45+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-25T00:41:59+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -33,18 +33,18 @@ let Scene = (canvas) => {
 	let material = new THREE.MeshPhongMaterial( {
 		color: 0xa5a5a5,
 		// map: texture,
-		// wireframe: true
+		wireframe: true
 	} )
 
-	for (let i = -4.5; i < 5; i += 1) {
-		for (let j = -4.5; j < 5; j += 1) {
-			let cube = new THREE.Mesh( geometry, material )
-			cube.position.set( i, 0, j)
-			cube.castShadow = true
-			cube.receiveShadow = true
-			scene.add( cube )
-		}
-	}
+	// for (let i = -4.5; i < 5; i += 1) {
+	// 	for (let j = -4.5; j < 5; j += 1) {
+	// 		let cube = new THREE.Mesh( geometry, material )
+	// 		cube.position.set( i, 0, j)
+	// 		cube.castShadow = true
+	// 		cube.receiveShadow = true
+	// 		scene.add( cube )
+	// 	}
+	// }
 
 	let vector = new THREE.Vector3()
 	let center = new THREE.Vector3()
@@ -105,6 +105,7 @@ let Scene = (canvas) => {
 		if (_) {
 			if (_.object.userData.parent && _.object.userData.parent != scene.mainCharacter) {
 				_.object.userData.parent.lookAt(new THREE.Vector3(scene.mainCharacter.position.x, 1.1, scene.mainCharacter.position.z))
+				console.log(_.object.userData.parent)
 				scene.dialog.setTitle(_.object.userData.parent.name)
 				scene.dialog.toggle()
 				return

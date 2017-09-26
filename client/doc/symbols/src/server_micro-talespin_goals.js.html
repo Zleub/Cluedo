@@ -1,0 +1,51 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">//           `--::-.`</span><span class="WHIT">
+<span class='line'>  2</span> </span><span class="COMM">//       ./shddddddddhs+.</span><span class="WHIT">
+<span class='line'>  3</span> </span><span class="COMM">//     :yddddddddddddddddy:</span><span class="WHIT">
+<span class='line'>  4</span> </span><span class="COMM">//   `sdddddddddddddddddddds`</span><span class="WHIT">
+<span class='line'>  5</span> </span><span class="COMM">//  /ddddy:oddddddddds:sddddd/   @By: Debray Arnaud &lt;adebray> - adebray@student.42.fr</span><span class="WHIT">
+<span class='line'>  6</span> </span><span class="COMM">//  sdddddddddddddddddddddddds   @Last modified by: adebray</span><span class="WHIT">
+<span class='line'>  7</span> </span><span class="COMM">//  sdddddddddddddddddddddddds</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="COMM">//  :ddddddddddhyyddddddddddd:   @Created: 2017-08-07T01:46:01+02:00</span><span class="WHIT">
+<span class='line'>  9</span> </span><span class="COMM">//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-15T09:45:06+02:00</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="COMM">//    +ddddddh`+dh +dddddddo</span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="COMM">//     -sdddddh///sdddddds-</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="COMM">//       .+ydddddddddhs/.</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="COMM">//           .-::::-`</span><span class="WHIT">
+<span class='line'> 14</span> 
+<span class='line'> 15</span> </span><span class="NAME">let</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">	</span><span class="NAME">verbose</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">	</span><span class="NAME">DictionaryFunctor</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">require</span><span class="PUNC">(</span><span class="STRN">'./utils.js'</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="NAME">StringDictionary</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">DictionaryFunctor</span><span class="PUNC">(</span><span class="NAME">String</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 20</span> 
+<span class='line'> 21</span> </span><span class="NAME">exports.goals</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="STRN">'thirsty'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'water'</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 24</span> 
+<span class='line'> 25</span> </span><span class="NAME">Object.keys</span><span class="PUNC">(</span><span class="NAME">exports.goals</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">forEach</span><span class="PUNC">(</span><span class="NAME">e</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="PUNC">></span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">	</span><span class="NAME">let</span><span class="WHIT"> </span><span class="NAME">v</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">exports.goals</span><span class="PUNC">[</span><span class="NAME">e</span><span class="PUNC">]</span><span class="WHIT">
+<span class='line'> 27</span> 
+<span class='line'> 28</span> </span><span class="WHIT">	</span><span class="NAME">exports</span><span class="PUNC">[</span><span class="NAME">e</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">		</span><span class="NAME">personae</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">		</span><span class="NAME">actor</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">		</span><span class="NAME">action</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">		</span><span class="NAME">target</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="TOKN">`</span><span class="PUNC">~</span><span class="NAME">$</span><span class="PUNC">{</span><span class="NAME">e</span><span class="PUNC">}</span><span class="TOKN">`</span><span class="PUNC">.</span><span class="NAME">blue</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">personae</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">actor</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">action</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">		</span><span class="NAME">this.personae</span><span class="PUNC">(</span><span class="NAME">personae</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">_plan.push</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">			</span><span class="NAME">personae</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">			</span><span class="NAME">actor</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">			</span><span class="NAME">action</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'dcont'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">			</span><span class="NAME">target</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">v</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 42</span> 
+<span class='line'> 43</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 44</span> </span></pre></body></html>

@@ -1,0 +1,60 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">//           `--::-.`</span><span class="WHIT">
+<span class='line'>  2</span> </span><span class="COMM">//       ./shddddddddhs+.</span><span class="WHIT">
+<span class='line'>  3</span> </span><span class="COMM">//     :yddddddddddddddddy:</span><span class="WHIT">
+<span class='line'>  4</span> </span><span class="COMM">//   `sdddddddddddddddddddds`</span><span class="WHIT">
+<span class='line'>  5</span> </span><span class="COMM">//  /ddddy:oddddddddds:sddddd/   @By: Debray Arnaud &lt;adebray> - adebray@student.42.fr</span><span class="WHIT">
+<span class='line'>  6</span> </span><span class="COMM">//  sdddddddddddddddddddddddds   @Last modified by: adebray</span><span class="WHIT">
+<span class='line'>  7</span> </span><span class="COMM">//  sdddddddddddddddddddddddds</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="COMM">//  :ddddddddddhyyddddddddddd:   @Created: 2017-09-03T20:34:20+02:00</span><span class="WHIT">
+<span class='line'>  9</span> </span><span class="COMM">//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-12T04:19:11+02:00</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="COMM">//    +ddddddh`+dh +dddddddo</span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="COMM">//     -sdddddh///sdddddds-</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="COMM">//       .+ydddddddddhs/.</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="COMM">//           .-::::-`</span><span class="WHIT">
+<span class='line'> 14</span> 
+<span class='line'> 15</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">graphql</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">buildSchema</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">printSchema</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">require</span><span class="PUNC">(</span><span class="STRN">"graphql"</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">readFileSync</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">readdir</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">require</span><span class="PUNC">(</span><span class="STRN">"fs"</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">load</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">verbose</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Personae</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">require</span><span class="PUNC">(</span><span class="STRN">"./server/micro-talespin"</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="NAME">colors</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">require</span><span class="PUNC">(</span><span class="STRN">'colors'</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="COMM">// colors.styles.test = [ open: '\u001b[31m', close: '\u001b[39m', closeRe: /[39m/g ]</span><span class="WHIT">
+<span class='line'> 20</span> 
+<span class='line'> 21</span> </span><span class="NAME">readdir</span><span class="PUNC">(</span><span class="STRN">"./server/micro-talespin/"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">err</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">files</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="PUNC">></span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">	</span><span class="COMM">// let types = [</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">	</span><span class="COMM">// 	String,</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">	</span><span class="COMM">// 	Number,</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">	</span><span class="COMM">// 	Personae</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">	</span><span class="COMM">// ].map( c => {</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">	</span><span class="COMM">// 	let AnonymousDictionary = DictionaryFunctor(c)</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">	</span><span class="COMM">// 	console.log((new AnonymousDictionary).name.magenta)</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">	</span><span class="COMM">//</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">	</span><span class="COMM">// 	let i = new AnonymousDictionary;</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">	</span><span class="COMM">// 	[</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">	</span><span class="COMM">// 		() => i.insert("test", "test"),</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">	</span><span class="COMM">// 		() => i.insert("test2", 42),</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">	</span><span class="COMM">// 		() => i.insert("test3", new Personae("Joe"))</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">	</span><span class="COMM">// 	].forEach( f => {</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">	</span><span class="COMM">// 		try { f() } catch (e) { console.log(e) }</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">	</span><span class="COMM">// 	})</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">	</span><span class="COMM">// 	console.log(i)</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">	</span><span class="COMM">// })</span><span class="WHIT">
+<span class='line'> 40</span> 
+<span class='line'> 41</span> </span><span class="WHIT">	</span><span class="NAME">let</span><span class="WHIT"> </span><span class="NAME">_ts</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">load</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">	</span><span class="NAME">let</span><span class="WHIT"> </span><span class="NAME">_</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">_ts</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">		</span><span class="NAME">id</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">		</span><span class="NAME">initFacts</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">require</span><span class="PUNC">(</span><span class="STRN">"./server/micro-talespin/story0.json"</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 46</span> 
+<span class='line'> 47</span> </span><span class="WHIT">	</span><span class="COMM">// verbose(require('colors'))</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">	</span><span class="COMM">// verbose(_)</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">	</span><span class="COMM">// verbose(_.mods)</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">	</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="STRN">'-- -- -- --'</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">	</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">_.introspect</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 53</span> </span></pre></body></html>

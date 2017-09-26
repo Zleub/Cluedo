@@ -6,52 +6,68 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-20T20:32:05+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-08-06T21:49:24+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-22T01:07:41+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
 //           .-::::-`
 
-const { readFileSync } = require('fs')
-const { graphql, buildSchema, printSchema } = require('graphql')
+require("colors")
+const { Personae, verbose, load } = require("../micro-talespin")
+const { readFileSync } = require("fs")
+const {
+	graphql,
+	buildSchema,
+	printSchema,
+	GraphQLObjectType,
+	GraphQLList,
+	GraphQLString,
+	GraphQLInt
+} = require("graphql")
 
-exports.get = function () {
-	let { load } = require('../micro-talespin/utils.js')
+exports.get = function() {
+	let { load } = require("../micro-talespin/utils.js")
 	let ts = load()
 	let _ = new ts({
 		id: 0,
-		initFacts: require('../micro-talespin/story0.json')
+		initFacts: require("../micro-talespin/story0.json")
 	})
 
+	_.run({})
 	this.res.end(JSON.stringify(_, null, "  "))
 }
 
 exports.post = function(id) {
-	delete require.cache['../micro-talespin/micro-talespin.js']
-	let { ts } = require('../micro-talespin/micro-talespin.js')
-
-	fs.readdir('./server/micro-talespin/', (err, files) => {
-		let data = files.reduce( (p, e) => {
-			if (e != 'micro-talespin.js' && e.match(/.*\.js$/)) {
-				let _ = require(`../micro-talespin/${e}`)
-				Object.keys(_).forEach( k => {
-					if (p[k])
-						console.warn(`warning, erasing ${k}`)
-					p[k] = _[k]
-				})
-			}
-			return p
-		}, {})
-
-		_ts = new ts(data)
-		let _ = new _ts({
-			id: 0,
-			initFacts: require('../micro-talespin/story0.json')
-		})
-		console.log(_)
-
-		var schema = buildSchema(readFileSync('./server/schema/test.graphql').toString())
-		graphql(schema, this.req.body.query, { story: ({id}) => _ }, null, {id})
-		.then(e => this.res.end(JSON.stringify(e, null, "  ")))
+	let _ts = load()
+	let _ = new _ts({
+		id: 42,
+		initFacts: require("../micro-talespin/story0.json")
 	})
+
+	var schema
+	try {
+		schema = buildSchema(
+			readFileSync("./server/schema/talespin.graphql").toString()
+		)
+	} catch (e) {
+		console.log(`error`.red)
+		verbose('error '.red, e)
+		return this.res.end(
+			JSON.stringify({ errors: [{ message: e.message }] })
+		)
+	}
+	// verbose(this.req.body.query)
+	// verbose(_)
+	// verbose(_.goals)
+	// graphql(
+	// 	schema,
+	// 	this.req.body.query,
+	// 	{ story: _ },
+	// 	null,
+	// 	{ id }
+	// ).then(e => {
+	// 	// verbose(e)
+	// 	this.res.end(JSON.stringify(e))
+	// })
+	// })
 }

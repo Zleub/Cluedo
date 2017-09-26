@@ -1,39 +1,55 @@
 <dom-module id="adebray-cluedo">
 	<template>
+		<style include="iron-flex iron-flex-alignment"></style>
 		<style>
 			:host {
 				display: block;
 				margin: 4px;
 				padding: 8px;
+				@apply(--layout-vertical);
+				@apply(--layout-center);
 			}
 
-			paper-input {
+			/*paper-input {
 				width: 800px;
-			}
+			}*/
 
 			paper-button {
 				display: flex;
 			}
+
+			section {
+				max-width: 800px;
+			}
+
 		</style>
 
-		<iron-ajax
+		<!-- <iron-ajax
 		  auto
 		  url="http://api.adebray.ovh/story/0"
 		  handle-as="json"
 		  on-response="handleResponse">
-		</iron-ajax>
+		</iron-ajax> -->
 		<iron-ajax
 		  auto
 		  url="http://api.adebray.ovh/test"
 		  handle-as="json"
 		  on-response="handleTS">
 		</iron-ajax>
+		<iron-ajax
+		  auto
+		  url="../.ascii_logo"
+		  handle-as="text"
+		  on-response="handleLogo">
+		</iron-ajax>
 
 		<prism-highlighter></prism-highlighter>
-		<app-drawer id="drawer" swipe-open>
-		<paper-button raised on-tap="changeLocation">Scene</paper-button>
-		<paper-button raised on-tap="changeLocation">Data</paper-button>
-		<paper-button raised on-tap="changeLocation">Story</paper-button>
+		<app-drawer id="drawer" style="z-index: 12;" swipe-open>
+			<template is="dom-repeat" items="{{getSections()}}" index-as="index">
+				<paper-button raised on-tap="changeLocation">{{item}}</paper-button>
+			</template>
+			<!-- <paper-button raised on-tap="changeLocation">Data</paper-button>
+			<paper-button raised on-tap="changeLocation">Story</paper-button> -->
 		</app-drawer>
 
 		<app-location route="{{route}}" use-hash-as-path></app-location>
@@ -46,21 +62,31 @@
 
 		<iron-pages selected="{{route.path}}" attr-for-selected="id">
 			<section id=scene>
+				<div class="horizontal layout">
+					<paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
+					<div class="flex horizontal layout end-justified">
+						<pre>{{logo}}</pre>
+					</div>
+				</div>
 				<adebray-dialog id="dialog"></adebray-dialog>
-				<!-- <canvas id=canvas width="800" height="800"></canvas> -->
-				<paper-textarea></paper-textarea>
-
+				<canvas id=canvas width="800" height="400"></canvas>
+				<!-- <paper-textarea></paper-textarea> -->
+				<!-- <adebray-graphql></adebray-graphql> -->
+				<marked-element markdown={{_toJSON(ts)}}></marked-element>
 			</section>
-			<section id=data>
-				<marked-element markdown={{_toJSON(data)}}></marked-element>
-			</section>
-			<section id=story>
+			<!-- <section id=data>
+				<marked-element markdown={{_t oJSON(data)}}></marked-element>
+			</section> -->
+			<!-- <section id=blog>
+				<adebray-blog></adebray-blog>
+			</section> -->
+			<!-- <section id=story>
 				<h2>Story</h2>
-				<adebray-graphql></adebray-graphql>
+				<adebray-graphql></adebray-graphql> -->
 				<!-- <div>{{ts.personae}}</div> -->
 				<!-- <div>{{ts.World.facts}}</div> -->
 				<!-- <marked-element markdown={{_toJSON(ts)}}></marked-element> -->
-			</section>
+			<!-- </section> -->
 		</iron-pages>
 
 	</template>
@@ -68,8 +94,16 @@
 	Polymer({
 		is: 'adebray-cluedo',
 
+		getSections: function () {
+			return Array.from(this.querySelectorAll('section')).map( e => e.id )
+		},
+
 		_toJSON: function (e) {
 			return '```\n' + JSON.stringify(e, null, "  ") + '\n```'
+		},
+
+		openDrawer: function (e) {
+			this.$.drawer.toggle()
 		},
 
 		changeLocation: function (e) {
@@ -77,14 +111,53 @@
 			location = '#' + path
 		},
 
-		handleTS: function (e) {
-			this.set('ts', e.detail.response)
+		handleLogo: function (e) {
+			console.log(e.detail.response)
+			this.set('logo', e.detail.response)
 		},
 
-		handleResponse: function (e) {
-			this.set('data', e.detail.response)
+		handleTS: function (e) {
+			this.set('ts', e.detail.response)
+			console.log(this.ts)
 
 			let {renderer, scene, camera, update_stack} = Scene(this.$.canvas)
+
+			var loader = new THREE.OBJLoader();
+
+			// load a resource
+			loader.load(
+				// resource URL
+				'models/seahorse.obj',
+				// Function when resource is loaded
+				function ( object ) {
+					// console.log(object)
+					// object.position.x = 0
+					// object.position.y = -25
+					object.position.z = 30
+
+					object.scale.x = 0.1
+					object.scale.y = 0.1
+					object.scale.z = 0.1
+					let material = new THREE.MeshPhongMaterial( {
+						color: 0xa5a5a5,
+						// map: texture,
+						// wireframe: true
+					} )
+					var gui = new dat.GUI();
+					gui.add(object.position, 'x', -1000, 1000);
+					gui.add(object.position, 'y', -1000, 1000);
+					gui.add(object.position, 'z', -1000, 1000);
+					object.traverse( function ( child ) {
+						if ( child instanceof THREE.Mesh ) {
+							child.material = material;
+						}
+					} );
+
+					console.log(object)
+					scene.add( object );
+					// camera.lookAt(object.position)
+				}
+			);
 			var spotLight1 = new THREE.SpotLight( 0xaeaeff, 1 );
 			spotLight1.position.set( 25, 25, 25 );
 			spotLight1.castShadow = true;
@@ -107,52 +180,63 @@
 
 			scene.dialog = this.$.dialog
 
-			var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+			var light = new THREE.AmbientLight( 0x404040 );
 			scene.add( light );
+			//
+			//
+			// let characters = Object.keys(this.ts._personae).map( k => Object.assign(this.ts._personae[k], {
+			// 	texture: 'red_headphones',
+			// 	relationships: [],
+			// 	particularities: [],
+			// }))
+			// characters.forEach( (e, i) => {
+			// 	let name = e._name
+			//
+			// 	if (e.texture)
+			// 		var texture = e.texture.toLowerCase()
+			//
+			// 	let c = new Character({
+			// 		name: name,
+			// 		texture: `./assets/${texture}.png`,
+			// 		fatness: (e.particularities.find(e => e == 'Fat') ? 1.5 : 1),
+			// 		tallness: (e.particularities.find(e => e == 'Tall') ? 1.5 : 1)
+			// 	})
+			//
+			// 	if (name == "World") {
+			// 		scene.mainCharacter = c
+			// 		mainCharacter = e
+			// 	}
+			//
+			// 	if (e.relationships.length != 0) {
+			// 		let d = document.createElement('div')
+			// 		d.style['position'] = 'absolute'
+			// 		d.style['width'] = '150px'
+			// 		d.style['height'] = '80px'
+			// 		d.style['border'] = '1px solid black'
+			// 		d.style['background-color'] = 'white'
+			// 		d.style['top'] = `${Math.floor(i / 8) * 120 + 120}px`
+			// 		d.style['left'] = `${Math.floor(i % 8) * 120 + 100}px`
+			// 		d.id = name
+			// 		d.innerHTML = `
+			// 		${name}<br>
+			// 		${e.age}
+			// 		`
+			//
+			// 		tree.push(d)
+			// 		this.$.data.appendChild(d)
+			// 	}
+			//
+			// 	c.translateX( Math.floor(i / 4) )
+			// 	c.translateZ( Math.floor(i % 4) - 1)
+			// 	update_stack.push(c.update.bind(c))
+			// 	scene.add(c)
+			// })
 
-			let tree = []
-			let characters = e.detail.response.data.story.characters
-			characters.forEach( (e, i) => {
-				let name = e.name
-				if (e.texture)
-					var texture = e.texture.toLowerCase()
 
-				let c = new Character({
-					name: name,
-					texture: `./assets/${texture}.png`,
-					fatness: (e.particularities.find(e => e == 'Fat') ? 1.5 : 1),
-					tallness: (e.particularities.find(e => e == 'Tall') ? 1.5 : 1)
-				})
+		},
 
-				if (i == 0) {
-					scene.mainCharacter = c
-					mainCharacter = e
-				}
-
-				if (e.relationships.length != 0) {
-					let d = document.createElement('div')
-					d.style['position'] = 'absolute'
-					d.style['width'] = '150px'
-					d.style['height'] = '80px'
-					d.style['border'] = '1px solid black'
-					d.style['background-color'] = 'white'
-					d.style['top'] = `${Math.floor(i / 8) * 120 + 120}px`
-					d.style['left'] = `${Math.floor(i % 8) * 120 + 100}px`
-					d.id = name
-					d.innerHTML = `
-					${name}<br>
-					${e.age}
-					`
-
-					tree.push(d)
-					this.$.data.appendChild(d)
-				}
-
-				c.translateX(i - characters.length / 2)
-				// c.translateZ( Math.floor(i % 4) - 1)
-				update_stack.push(c.update.bind(c))
-				scene.add(c)
-			})
+		handleResponse: function (e) {
+			this.set('data', e.detail.response)
 
 			// this.async(() => jsPlumb.ready(function() {
 			// 	tree.forEach( e => {

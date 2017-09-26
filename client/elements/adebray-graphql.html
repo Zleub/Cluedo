@@ -1,96 +1,80 @@
 <dom-module id="adebray-graphql">
-  <template>
-    <style>
-      :host {
-        display: block;
-        @apply(--layout-horizontal);
-        @apply(--layout-start);
-      }
+	<template>
+	<style>
+	:host {
+		display: block;
+		@apply(--layout-horizontal);
+		@apply(--layout-start);
+		margin: 8px;
+		padding: 4px;
+	}
 
-      /*.container {
-      }*/
+	.text, pre {
+		display: inline-block;
+		@apply(--layout-self-start);
+		width: 400px;
+	}
 
-      .text, pre {
-          width: 45%;
-          display: inline-block;
-          @apply(--layout-self-start);
-      }
+	pre {
+		white-space: pre-wrap;
+	}
 
-      pre {
-          white-space: pre-wrap;
-      }
+	</style>
 
-    </style>
+	<iron-ajax
+		auto
+		method='POST'
+		url="http://api.adebray.ovh/test"
+		content-type="application/json"
+		handle-as="json"
+		on-response="handleResponse">
+	</iron-ajax>
 
-    <iron-ajax
-      auto
-      method='POST'
-      url="http://api.adebray.ovh/test"
-      content-type="application/json"
-      handle-as="json"
-      on-response="handleResponse">
-    </iron-ajax>
-
-    <!-- <div class=container> -->
 	<pre>{{data}}</pre>
-        <!-- <marked-element markdown={{data}}></marked-element> -->
-        <div class=text>
-            <paper-textarea id='input' value={{value}}></paper-textarea>
-        </div>
-    <!-- </div> -->
+	<div class=text>
+		<paper-textarea id='input' value={{value}}></paper-textarea>
+	</div>
 
-  </template>
-  <script>
-    Polymer({
-      is: 'adebray-graphql',
+	</template>
+	<script>
+	Polymer({
+		is: 'adebray-graphql',
 
-      properties: {
-          data: String,
-          value: {
-              type: String,
-              value: () => `
+		properties: {
+			data: String,
+			value: {
+				type: String,
+				value: () => localStorage.getItem('myQuery'),
+				observer: '_queryChanged'
+			}
+		},
 
-              {
-                __schema {
-                 types {
-                  name
-                  description
-                  }
-                }
-                story {
-                  id
-                  modsList
-                  personae(name: "Joe") {
-                     name
-                     knowledge(name: "Joe")
-                  }
-                }
-              }`
-          }
-      },
+		listeners: {
+			'input.value-changed': 'send'
+		},
 
-      listeners: {
-          'input.value-changed': 'send'
-      },
+		attached: function () {
+			this.send()
+		},
 
-      attached: function () {
-          this.send()
-      },
+		_queryChanged: function (e) {
+			localStorage.setItem('myQuery', e)
+		},
 
-      _toJSON: function (e) {
-          return JSON.stringify(e, null, "  ")
-      },
+		_toJSON: function (e) {
+			return JSON.stringify(e, null, "  ")
+		},
 
-      handleResponse: function (e) {
-        this.set('data', this._toJSON(e.detail.response))
-      },
+		handleResponse: function (e) {
+		this.set('data', this._toJSON(e.detail.response))
+		},
 
-      send: function (e) {
-        this.querySelector('iron-ajax').body = {
-            query: this.value
-        }
-        this.querySelector('iron-ajax').generateRequest()
-      }
-    });
-  </script>
+		send: function (e) {
+		this.querySelector('iron-ajax').body = {
+			query: this.value
+		}
+		this.querySelector('iron-ajax').generateRequest()
+		}
+	});
+	</script>
 </dom-module>
