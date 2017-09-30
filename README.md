@@ -2,6 +2,11 @@
 
 [![Build Status](https://travis-ci.org/Zleub/Cluedo.svg?branch=master)](https://travis-ci.org/Zleub/Cluedo)
 
+```
+	git clone https://github.com/Zleub/cluedo.git
+	npm install ; bower install ; make ; make serve
+```
+
 - `make all` -- build client side html's
 - `make m4` -- preprocess files
 - `make serve` -- run both client and server process (python & node)

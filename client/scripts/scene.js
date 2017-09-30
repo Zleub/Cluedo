@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-06-06T01:07:54+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-25T00:41:59+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-28T16:44:20+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -27,24 +27,25 @@ let Scene = (canvas) => {
 	var raycaster = new THREE.Raycaster()
 
 	let texture = new THREE.TextureLoader().load( "assets/block/bedrock.png" )
-	texture.magFilter	= THREE.NearestFilter;
-	texture.minFilter	= THREE.NearestFilter;
+	texture.magFilter = THREE.NearestFilter;
+	texture.minFilter = THREE.NearestFilter;
 	let geometry = new THREE.BoxGeometry( 1, 1, 1 )
+	geometry.translate(0.5, 0.5, 0.5)
 	let material = new THREE.MeshPhongMaterial( {
 		color: 0xa5a5a5,
 		// map: texture,
 		wireframe: true
 	} )
 
-	// for (let i = -4.5; i < 5; i += 1) {
-	// 	for (let j = -4.5; j < 5; j += 1) {
-	// 		let cube = new THREE.Mesh( geometry, material )
-	// 		cube.position.set( i, 0, j)
-	// 		cube.castShadow = true
-	// 		cube.receiveShadow = true
-	// 		scene.add( cube )
-	// 	}
-	// }
+	for (let i = 0; i < 10; i += 1) {
+		for (let j = 0; j < 10; j += 1) {
+			let cube = new THREE.Mesh( geometry, material )
+			cube.position.set( i, 0, j)
+			cube.castShadow = true
+			cube.receiveShadow = true
+			scene.add( cube )
+		}
+	}
 
 	let vector = new THREE.Vector3()
 	let center = new THREE.Vector3()
@@ -84,7 +85,7 @@ let Scene = (canvas) => {
 		zoom( new THREE.Vector3( 0, 0, event.deltaY ) )
 	})
 
-	zoom = function ( delta ) {
+	let zoom = function ( delta ) {
 		let distance = camera.position.distanceTo( center );
 		delta.multiplyScalar( distance * 0.001 );
 
@@ -128,7 +129,7 @@ let Scene = (canvas) => {
 
 		if (_) {
 			let {object} = _
-			scene.mainCharacter.lookAt( new THREE.Vector3(object.position.x, 1.1, object.position.z) )
+			// scene.mainCharacter.lookAt( new THREE.Vector3(object.position.x, 1.1, object.position.z) )
 		}
 	})
 
@@ -184,9 +185,10 @@ let Scene = (canvas) => {
 		requestAnimationFrame( render )
 	}
 
+	camera.position.x = 10
 	camera.position.y = 5
 	camera.position.z = 30
-	zoom( new THREE.Vector3( 0, 0, -800 ) )
+	zoom( new THREE.Vector3( 0, 0, -500 ) )
 	camera.lookAt( new THREE.Vector3() )
 
 	render()

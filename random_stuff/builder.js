@@ -6,7 +6,7 @@
 //  sdddddddddddddddddddddddds   @Last modified by: adebray
 //  sdddddddddddddddddddddddds
 //  :ddddddddddhyyddddddddddd:   @Created: 2017-09-23T00:51:05+02:00
-//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-24T02:27:21+02:00
+//   odddddddd/`:-`sdddddddds    @Modified: 2017-09-27T22:07:23+02:00
 //    +ddddddh`+dh +dddddddo
 //     -sdddddh///sdddddds-
 //       .+ydddddddddhs/.
@@ -16,15 +16,15 @@ require('colors')
 
 console.log('tetriminitest')
 
-let width = 4
-let height = 4
+let width = 3
+let height = 3
 let pieces = []
-for (var n = 0; n < 30; n++) {
+for (var n = 0; n < 8; n++) {
 	let p = []
 	for (var i = 0; i < width; i++) {
 		p.push("")
 		for (var j = 0; j < height; j++) {
-			if (Math.random() < 0.8)
+			if (Math.random() < 0.2)
 				p[i] += "."
 			else
 				p[i] += "#"
@@ -128,9 +128,9 @@ let greys = Object.keys(String.prototype).filter(e => e.match(/Grey\d/)).sort((a
 // printFunctionPieces()
 // console.log('\n')
 
-solve = (x, y) => (x ** 2) + (y ** 2)
+// solve = (x, y) => (x - y) ** 2
 // solve = (x, y) => x
-// solve = (x, y) => (x) + (y)
+solve = (x, y) => (x * x) + (y * y)
 printPieces()
 console.log('\n')
 printFunctionPieces(0, 0)
@@ -465,23 +465,35 @@ for (var i = 0; i < pieces.length; i++) {
 	map = _empty
 	let res = 0
 	pieces.forEach( (p, n) => {
-		for (var max = 0; max < map_size; max++) {
-			for (var i = 0; i < max; i++) {
-				for (var j = 0; j < max; j++) {
+		let __map = map
+		let __ = [Infinity, __map]
+		// for (var max = 1; max < map_size; max++) {
+
+			for (var i = 0; i < map_size; i++) {
+				for (var j = 0; j < map_size; j++) {
 					let _map = map
 					let r = res + pieceFunction(p)(j, i)
 					map = write(map, p, j, i, colors[n % 15 + 1])
 
-					if (r == pieceFunction(map)(0,0)) {
+					if (r == pieceFunction(map)(0,0) && r < __[0]) {
+						// console.log(`${j} ${i}: ${r} vs ${pieceFunction(map)(0,0)}`)
 						res = r
-						return p
+						// return p
+						__ = [r, map]
 					}
 					else {
+						// console.log(`${j} ${i}: ${r} vs ${pieceFunction(map)(0,0)}`.grey)
 						map = _map
+						// __ = [r, _map]
 					}
 				}
 			}
-		}
+			// print(__[1])
+
+		// }
+		res = __[0]
+		map = __[1]
+		// process.exit()
 	})
 	// print(map)
 	maps.push( [pieceFunction(map)(0,0), map] )
