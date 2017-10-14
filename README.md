@@ -4,7 +4,8 @@
 
 ```
 	git clone https://github.com/Zleub/cluedo.git
-	npm install ; bower install ; make ; make serve
+	npm install ; bower install
+	nodemon --exec "make ; make serve"
 ```
 
 - `make all` -- build client side html's

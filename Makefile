@@ -5,7 +5,7 @@
 # @Last modified time: 2017-09-26T23:58:01+02:00
 
 all:
-	rm client/bower_components
+	rm -f client/bower_components
 	ln -s ../bower_components client/bower_components
 	rsync -avz client/ build/
 	$(shell hash m4 || { echo -e 'm4 not found' ; exit } )

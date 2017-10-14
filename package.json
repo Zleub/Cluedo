@@ -20,6 +20,7 @@
     "bower": "^1.8.0",
     "chance": "^1.0.10",
     "colors": "Zleub/colors.js",
-    "graphql": "^0.10.3"
+    "graphql": "^0.10.3",
+    "nodemon": "^1.12.1"
   }
 }
