@@ -24,12 +24,11 @@ m4:
 	)
 
 serve:
-	(node server/main.js --hostname localhost --port 8081) &
-	(cd build ; python -m SimpleHTTPServer 8080 > /dev/null 2> /dev/null) &
+	@echo client: http://localhost:8080 
+	node server/main.js --hostname localhost --port 8081 &
 
 kill: # until a better alternative
-	pkill node
-	pkill python
+	$(shell kill `lsof -ti:8081`)
 
 re:
 	rm -rf build

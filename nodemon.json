@@ -1,5 +1,12 @@
 {
-  "events": {
-    "restart": "make kill"
-  }
+    "events": {
+        "restart": "make kill"
+    },
+    "ext": "js html json",
+    "ignore": [
+        ".git",
+        "node_modules",
+        "bower_components",
+        "build"
+    ]
 }

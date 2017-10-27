@@ -1,0 +1,3 @@
+[submodule "client/lissajous"]
+	path = client/lissajous
+	url = https://github.com/kylestetz/lissajous.git

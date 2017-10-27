@@ -35,7 +35,7 @@
 		  url="__api_url__/test"
 		  handle-as="json"
 		  on-response="handleTS"
-		  on-error="logError">
+		  on-error="handleTS">
 		</iron-ajax>
 		<iron-ajax
 		  auto
@@ -71,14 +71,68 @@
 				</div>
 				<adebray-dialog id="dialog"></adebray-dialog>
 				<canvas id=canvas width="800" height="400"></canvas>
+				<paper-button on-tap=run>Run</paper-button>
 				<!-- <paper-textarea></paper-textarea> -->
 				<!-- <adebray-graphql></adebray-graphql> -->
-				<marked-element markdown={{_toJSON(ts)}}></marked-element>
+				<paper-button on-tap=toggle>TaleSpin Response</paper-button>
+				<iron-collapse id=collapse>
+					<marked-element markdown={{_toJSON(ts)}}></marked-element>
+				</iron-collapse>
 			</section>
-			<!-- <section id=blog>
-				<adebray-blog></adebray-blog>
-			</section> -->
-			<!-- <section id=story>
+			<section id=music>
+				<iron-ajax
+				  auto
+				  url="../drumkit/snare/snare-top4.wav"
+				  handle-as="arraybuffer"
+				  on-response="handleMusic">
+				</iron-ajax>
+				<iron-ajax
+				  auto
+				  url="../drumkit/snare/snare-top25.wav"
+				  handle-as="arraybuffer"
+				  on-response="handleMusic">
+				</iron-ajax>
+				<iron-ajax
+				  auto
+				  url="../drumkit/kick/kick20.wav"
+				  handle-as="arraybuffer"
+				  on-response="handleMusic">
+				</iron-ajax>
+				<iron-ajax
+				  auto
+				  url="../drumkit/hihat/closed-hihat/chh6.wav"
+				  handle-as="arraybuffer"
+				  on-response="handleMusic">
+				</iron-ajax>
+				<iron-ajax
+				  auto
+				  url="../drumkit/hihat/foot-hihat/fhh6.wav"
+				  handle-as="arraybuffer"
+				  on-response="handleMusic">
+				</iron-ajax>
+				<iron-ajax
+				  auto
+				  url="../drumkit/crash/crash8.wav"
+				  handle-as="arraybuffer"
+				  on-response="handleMusic">
+				</iron-ajax>
+				<iron-ajax
+				  auto
+				  url="../drumkit/ride/ride-mid-in8.wav"
+				  handle-as="arraybuffer"
+				  on-response="handleMusic">
+				</iron-ajax>
+				<iron-ajax
+				  auto
+				  url="../voice.wav"
+				  handle-as="arraybuffer"
+				  on-response="handleMusic">
+				</iron-ajax>
+
+				<paper-button on-tap=music>Run</paper-button>
+
+			</section>
+			<!-- <section id=story>c
 				<h2>Story</h2>
 				<adebray-graphql></adebray-graphql> -->
 				<!-- <div>{{ts.personae}}</div> -->
@@ -86,11 +140,14 @@
 				<!-- <marked-element markdown={{_toJSON(ts)}}></marked-element> -->
 			<!-- </section> -->
 		</iron-pages>
-
 	</template>
 	<script>
 	Polymer({
 		is: 'adebray-cluedo',
+
+		properties: {
+			track: Object
+		},
 
 		getSections: function () {
 			return Array.from(this.querySelectorAll('section')).map( e => e.id )
@@ -126,6 +183,84 @@
 			console.log(e)
 			this.set('ts', e.detail.response)
 			console.log(this.ts)
+		},
+
+		handleMusic: function (e) {
+			var name = e.target.url.match(/.+\/(.+)\..+$/)[1]
+	 		var data = e.detail.response;
+			context.decodeAudioData(data, function(buffer) {
+
+			if(
+				window[name] !== undefined ||
+				name === 'undefined' ||
+				name.match(/^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|null|this|true|void|with|break|catch|class|const|false|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/)
+			) {
+				name = 'sampleupload_' + (name || (new Date()).getTime());
+			}
+
+			window[name] = buffer;
+
+			if(name.match(/\/|\-|\~|\%|\,|\.|\;|\:|\!|\@|\#|\^|\&|\*|\(|\)|\\|\ /)) {
+				console.log('The AudioBuffer `window["' + name + '"]` is ready for you to use.');
+			} else {
+				console.log('The AudioBuffer `' + name + '` is ready for you to use.');
+			}
+
+			}, function(e) {
+			console.log('There was an error decoding your file (make sure it\'s a .wav file!)');
+			console.log(e);
+			});
+		},
+
+		toggle: function (e) {
+			this.$.collapse.toggle()
+		},
+
+		music: function () {
+			let tracks = [
+				{
+					name: 'foot hat',
+					track: new track(window[`fhh6`]).beat(2).vol(0.3)
+				},
+				{
+					name: 'snare1',
+					track: new track(window[`snare-top4`]).beat(1).vol(0.1)
+				},
+				{
+					name: 'snare2',
+					track: new track(window[`snare-top25`]).beat(6, 3, 6, 3, 3, 3).vol(0.4)
+				},
+				{
+					name: 'crash',
+					track: new track(window[`crash8`]).beat(16).nl(16).vol(0.3)
+				},
+				{
+					name: 'ride',
+					track: new track(window["ride-mid-in8"]).beat(12).nl(12).vol(0.3)
+				},
+				// {
+				// 	name: 'kick',
+				// 	track: new track(window[`kick20`]).beat(12, 6).vol(0.3)
+				// },
+				// {
+				// 	name: 'bass',
+				// 	track: new track().sine().nl(8, 4, 4).beat(8, 4, 4).notes(
+				// 		66, 73, 81, 66, 73, 81, 66, 74, 83, 66, 74, 83,
+				// 		66, 68, 76, 66, 70, 78,
+				// 	).trans(-36).vol(0.3)
+				// }
+			]
+
+			tracks.forEach( e => {
+				let child = document.createElement('adebray-volume')
+				child.track = e
+				this.$.music.appendChild(child)
+			})
+			// this.set('track', t)
+			// console.log(this.track)
+		},
+
+		run: function (e) {
 
 			let {renderer, scene, camera, update_stack} = Scene(this.$.canvas)
 
@@ -155,38 +290,38 @@
 
 			scene.dialog = this.$.dialog
 
-			var light = new THREE.AmbientLight( 0xa0a0a0, 5 );
+			var light = new THREE.AmbientLight( 0xa0a0a0, 1000 );
 			// light.position = new THREE.Vector3(0, 100, 0);
 			scene.add( light );
 
 
 			// let geometry = new THREE.BoxGeometry( 1, 1, 1 )
 			let pieces = [
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
+				{ w: 2, h: 2, d: 2 },
+				{ w: 2, h: 2, d: 2 },
+				{ w: 2, h: 2, d: 2 },
+				{ w: 2, h: 2, d: 2 },
+				{ w: 2, h: 2, d: 2 },
 
-				{ w: 5 * 10, h: 1 * 10, d: 5 * 10 },
-				{ w: 5 * 10, h: 5 * 10, d: 1 * 10 },
-				{ w: 1 * 10, h: 5 * 10, d: 5 * 10 },
-				{ w: 3 * 10, h: 2 * 10, d: 3 * 10 },
-				{ w: 3 * 10, h: 3 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 3 * 10, d: 3 * 10 },
-
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 2 * 10, d: 2 * 10 },
-
-				{ w: 5 * 10, h: 1 * 10, d: 5 * 10 },
-				{ w: 5 * 10, h: 5 * 10, d: 1 * 10 },
-				{ w: 1 * 10, h: 5 * 10, d: 5 * 10 },
-				{ w: 3 * 10, h: 2 * 10, d: 3 * 10 },
-				{ w: 3 * 10, h: 3 * 10, d: 2 * 10 },
-				{ w: 2 * 10, h: 3 * 10, d: 3 * 10 },
+				// { w: 5, h: 1, d: 5 },
+				// { w: 5, h: 5, d: 1 },
+				// { w: 1, h: 5, d: 5 },
+				// { w: 3, h: 2, d: 3 },
+				// { w: 3, h: 3, d: 2 },
+				// { w: 2, h: 3, d: 3 },
+				//
+				// { w: 2, h: 2, d: 2 },
+				// { w: 2, h: 2, d: 2 },
+				// { w: 2, h: 2, d: 2 },
+				// { w: 2, h: 2, d: 2 },
+				// { w: 2, h: 2, d: 2 },
+				//
+				// { w: 5, h: 1, d: 5 },
+				// { w: 5, h: 5, d: 1 },
+				// { w: 1, h: 5, d: 5 },
+				// { w: 3, h: 2, d: 3 },
+				// { w: 3, h: 3, d: 2 },
+				// { w: 2, h: 3, d: 3 },
 				// [
 				// 	{
 				// 		x: 1,
@@ -333,13 +468,13 @@
 						// console.log(data(map)(0, 0, 0), _piece + _map)
 						// console.log(data(map)(0, 0, 0) == _piece + _map)
 
-						// setTimeout(() => {
+						setTimeout(() => {
 							if (data(map)(0, 0, 0) == _piece + _map) {
 								res()
 							}
 							else {
 								remove(map, e)(x, y, z)
-								// draw(map)
+								draw(map)
 
 								if (x < seuil)
 									x += 1
@@ -360,7 +495,7 @@
 
 								rej()
 							}
-						// }, 200)
+						}, 200)
 					})
 				}
 			})
