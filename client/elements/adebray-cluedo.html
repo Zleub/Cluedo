@@ -61,10 +61,10 @@
 			tail="{{tail}}">
 		</app-route>
 
+		<paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
 		<iron-pages selected="{{route.path}}" attr-for-selected="id">
 			<section id=scene>
 				<div class="horizontal layout">
-					<paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
 					<div class="flex horizontal layout end-justified">
 						<pre>{{logo}}</pre>
 					</div>
@@ -80,57 +80,8 @@
 				</iron-collapse>
 			</section>
 			<section id=music>
-				<iron-ajax
-				  auto
-				  url="../drumkit/snare/snare-top4.wav"
-				  handle-as="arraybuffer"
-				  on-response="handleMusic">
-				</iron-ajax>
-				<iron-ajax
-				  auto
-				  url="../drumkit/snare/snare-top25.wav"
-				  handle-as="arraybuffer"
-				  on-response="handleMusic">
-				</iron-ajax>
-				<iron-ajax
-				  auto
-				  url="../drumkit/kick/kick20.wav"
-				  handle-as="arraybuffer"
-				  on-response="handleMusic">
-				</iron-ajax>
-				<iron-ajax
-				  auto
-				  url="../drumkit/hihat/closed-hihat/chh6.wav"
-				  handle-as="arraybuffer"
-				  on-response="handleMusic">
-				</iron-ajax>
-				<iron-ajax
-				  auto
-				  url="../drumkit/hihat/foot-hihat/fhh6.wav"
-				  handle-as="arraybuffer"
-				  on-response="handleMusic">
-				</iron-ajax>
-				<iron-ajax
-				  auto
-				  url="../drumkit/crash/crash8.wav"
-				  handle-as="arraybuffer"
-				  on-response="handleMusic">
-				</iron-ajax>
-				<iron-ajax
-				  auto
-				  url="../drumkit/ride/ride-mid-in8.wav"
-				  handle-as="arraybuffer"
-				  on-response="handleMusic">
-				</iron-ajax>
-				<iron-ajax
-				  auto
-				  url="../voice.wav"
-				  handle-as="arraybuffer"
-				  on-response="handleMusic">
-				</iron-ajax>
-
-				<paper-button on-tap=music>Run</paper-button>
-
+				<!-- <paper-button on-tap=music>Run</paper-button> -->
+				<adebray-live></adebray-live>
 			</section>
 			<!-- <section id=story>c
 				<h2>Story</h2>
@@ -197,6 +148,8 @@
 			) {
 				name = 'sampleupload_' + (name || (new Date()).getTime());
 			}
+			if (name.match(/^\d+$/))
+				name = 'sampleupload_' + (name || (new Date()).getTime());
 
 			window[name] = buffer;
 
@@ -217,74 +170,139 @@
 		},
 
 		music: function () {
-			let tracks = [
-				{
-					name: 'foot hat',
-					track: new track(window[`fhh6`]).beat(4).vol(0.3)
-				},
-				{
-					name: 'snare1',
-					track: new track(window[`snare-top4`]).beat(1).vol(0).in(20).beat(
-						1, 1, 1, 3
-					).vol(
-						rf(0, .2), rf(0, .2), rf(0, .2), rf(0, .2)
-					)
-				},
-				{
-					name: 'snare2',
-					track: new track(window[`snare-top25`]).beat(1).vol(0).in(30).beat(12).vol(0.3).in(60).beat(6, 3, 6, 3, 3, 3)
-				},
+			// let scale = test('C', minor, [ 'ii', 'V7', 'I' ])
+			// let _1 = scale().map(e => e - 64)
+			// let _2 = scale().map(e => e - 64)
+			// let _3 = scale().map(e => e - 64)
+			// // let _4 = _1
+
+			// let head = [ _1[0], _2[0], _3[0] ]
+
+			// let cello1 = new track(
+			// 	C3, Db3, D3, Eb3, E3, F3, Gb3, G3, Ab3, A3, Bb3, B3,
+			// 	C4, Db4, D4, Eb4, E4, F4, Gb4, G4, Ab4, A4, Bb4, B4,
+			// )
+			// let cello2 = new track(
+			// 	C3, Db3, D3, Eb3, E3, F3, Gb3, G3, Ab3, A3, Bb3, B3,
+			// 	C4, Db4, D4, Eb4, E4, F4, Gb4, G4, Ab4, A4, Bb4, B4,
+			// )
+			//
+			// let alter = (track) => {
+			// 	track.in()
+			// }
+
+			// let tracks = [
 				// {
-				// 	name: 'crash',
-				// 	track: new track(window[`crash8`]).beat(16).nl(16).vol(0.3)
+				// 	name: 'foot hat',
+				// 	track: new track(window[`fhh6`]).beat(4).vol(0.3)
+				// 		// .in(80).vol(0)
 				// },
-				{
-					name: 'ride',
-					track: new track(window["ride-mid-in8"]).beat(1).vol(0).in(24).beat(21, 3).nl(12).vol(0.3)
-				},
-				{
-					name: 'kick',
-					track: new track(window[`kick20`]).beat(1).vol(0).in(24).beat(8, 16, 8).vol(0.3)
-				},
-				{
-					name: 'bass',
-					track: new track().saw().merge(
-						new track().square()
-					).nl(rf(1.8, 2.2), rf(1.8, 2.2), rf(1.8, 2.2)).notes(
-						66, 73, 81,
-						66, 73, 81,
-						66, 74, 83,
-						66, 74, 83,
-						66, 74, 68, 76, 78, 73
-					).trans(-36).vol(0.4).beat(
-						8, 4, 4,
-						4, 2, 2,
-						8, 4, 4,
-						4, 2, 2,
-						2, 4, 2, 4, 2, 4
-					).lp(33, 0, 1) //.adsr(0, 1, 1, 0)
-				},
+				// {
+				// 	name: 'snare1',
+				// 	track: new track(window[`snare-top4`]).beat(1).vol(0)
+				// 		.in(24).beat(2).sample(chh6)
+				// 		.in(94).beat(1).vol(.1)
+				// },
+				// {
+				// 	name: 'snare2',
+				// 	track: new track(window[`snare-top25`]).beat(1).vol(0)
+				// 		.in(32).beat(12).vol(0.3)
+				// 		.in(94).beat(6, 3, 6, 3, 3, 3)
+				// },
+				// // {
+				// // 	name: 'crash',
+				// // 	track: new track(window[`crash8`]).beat(16).nl(16).vol(0.3)
+				// // },
+				// {
+				// 	name: 'ride',
+				// 	track: new track(window["ride-mid-in8"]).beat(1).vol(0)
+				// 		.in(24).beat(29, 3, 32).nl(12).vol(0.3)
+				// 		.in(56).sample(crash8)
+				// 		.in(16).sample(window["ride-mid-in8"])
+				// 		.in(16).sample(crash8)
+				// },
+				// {
+				// 	name: 'kick',
+				// 	track: new track(window[`kick20`]).beat(1).vol(0)
+				// 		.in(24).beat(6).vol(0.3)
+				// },
+
+				// {
+				// 	name: 'piano',
+				// 	track: new track(
+				// 		sampleupload_64,
+				// 		sampleupload_65,
+				// 		sampleupload_66,
+				// 		sampleupload_67,
+				// 		sampleupload_68,
+				// 		sampleupload_69,
+				// 		sampleupload_70,
+				// 		sampleupload_71,
+				// 		sampleupload_72,
+				// 		sampleupload_73,
+				// 		sampleupload_74,
+				// 		sampleupload_75,
+				// 		sampleupload_76,
+				// 	).vol(0.2).nl(8, 4, 4).beat(8, 4, 4).sseq(head)
+				// }
+
+				// {
+				// 	name: 'cello',
+				// 	track: cello1.adsr(0.5, 1, 1, 1).vol(0).beat(1)
+				// 		// .in(24).nl(4).beat(4).sseq(head).vol(0.05)
+				// 		.in(24).vol(0.05).nl(8, 4, 4).beat(8, 4, 4).sseq(head)
+				// 		.in(94).vol(0.05).nl(2).beat(2).sseq(_1.concat(_2).concat(_3))
+				// },
+				// {
+				// 	name: 'cello',
+				// 	track: cello1.adsr(0.5, 1, 1, 1).vol(0).beat(1)
+				// 		.in(24).nl(4).beat(4).sseq(0, 2).vol(0.05)
+				// 		.in(24).vol(0.05).nl(8, 4, 4).beat(8, 4, 4).sseq(0, 2)
+				// },
+				// {
+				// 	name: 'cello',
+				// 	track: cello2.adsr(0.5, 1, 1, 1).vol(0).beat(1)
+				// 		.in(24 + 64).vol(0.05).nl(1).beat(1).sseq(head.map(e => e + 12)).in(128).vol(0)
+				// },
+				// {
+				// 	name: 'bass',
+				// 	track: new track().saw().merge(
+				// 		new track().sine()
+				// 	).nl(rf(1.8, 2.2), rf(1.8, 2.2), rf(1.8, 2.2)).notes(
+				// 		66, 73, 81,
+				// 		66, 73, 81,
+				// 		66, 74, 83,
+				// 		66, 74, 83,
+				// 		66, 74, 68, 76, 78, 73
+				// 	).trans(-36).vol(0.2).beat(
+				// 		8, 4, 4,
+				// 		4, 2, 2,
+				// 		8, 4, 4,
+				// 		4, 2, 2,
+				// 		2, 4, 2, 4, 2, 4
+				// 	).lp(33, 0, 1) //.adsr(0, 1, 1, 0)
+				// },
 				// {
 				// 	name: 'chords',
 				// 	track: new track().sine().nl(1).notes(
 				// 		walk.locrian(66)
 				// 	).vol(0.01).beat(1, 1, 2)
 				// }
-			]
+			// ]
 
 			// tracks.forEach( e => {
-			// 	let child = document.createElement('adebray-volume')
+			// 	let child = document.createElement('adebray-live')
 			// 	child.track = e
 			// 	this.$.music.appendChild(child)
 			// })
 
-			let bass = tracks.find(e => e.name == 'bass').track
-
-			var gui = new dat.GUI()
-			var controller = gui.add(bass, '_volume').min(0).max(1).step(0.01)
-			controller.onChange( (value) => {
-				bass.vol(value)
-			} )
+			// let bass = tracks.find(e => e.name == 'bass').track
+			//
+			// var gui = new dat.GUI()
+			// var controller = gui.add(bass, '_volume').min(0).max(1).step(0.01)
+			// controller.onChange( (value) => {
+			// 	bass.vol(value)
+			// } )
 
 			// this.set('track', t)
 			// console.log(this.track)

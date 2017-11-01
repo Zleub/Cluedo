@@ -1,0 +1,149 @@
+<dom-module id="adebray-live">
+  <template>
+	<style>
+	:host {
+		display: block;
+		border: 1px solid cyan;
+		padding: 4px;
+		position: relative;
+	}
+	</style>
+
+	<template is="dom-repeat" items="{{samples}}" index-as="index">
+		<iron-ajax
+			auto
+			url={{item}}
+			handle-as="arraybuffer"
+			on-response="handleSample">
+		</iron-ajax>
+
+	</template>
+
+	<template is="dom-if" if="{{loading}}" restamp="true">
+		<paper-spinner active></paper-spinner>
+	</template>
+	<template is="dom-if" if="{{!loading}}" restamp="true">
+		<h3>{{track.name}}</h3>
+        <template is="dom-repeat" items="{{samples}}" index-as="index">
+            <paper-item>
+                <paper-icon-button icon="mdi:play"></paper-icon-button>
+                {{item}}
+            </paper-item>
+        </template>
+	</template>
+
+
+	</template>
+	<script>
+	Polymer({
+		is: 'adebray-live',
+
+		properties: {
+			count: {
+				type: Number,
+				value: 0
+			},
+			loading: {
+				type: Boolean,
+				value: true
+			},
+			samples: {
+				type: Array,
+				value: [
+					"../drumkit/snare/snare-top4.wav",
+					"../drumkit/snare/snare-top25.wav",
+					"../drumkit/kick/kick20.wav",
+					"../drumkit/hihat/closed-hihat/chh6.wav",
+					"../drumkit/hihat/half-closed-hihat/hchh8.wav",
+					"../drumkit/hihat/foot-hihat/fhh6.wav",
+					"../drumkit/crash/crash8.wav",
+					"../drumkit/ride/ride-mid-in8.wav",
+					"../voice.wav",
+					"../drumkit/toms/large-tom12.wav",
+					"../gigatron/Cello/C3.wav",
+					"../gigatron/Cello/Db3.wav",
+					"../gigatron/Cello/D3.wav",
+					"../gigatron/Cello/Eb3.wav",
+					"../gigatron/Cello/E3.wav",
+					"../gigatron/Cello/F3.wav",
+					"../gigatron/Cello/Gb3.wav",
+					"../gigatron/Cello/G3.wav",
+					"../gigatron/Cello/Ab3.wav",
+					"../gigatron/Cello/A3.wav",
+					"../gigatron/Cello/Bb3.wav",
+					"../gigatron/Cello/B3.wav",
+					"../gigatron/Cello/C4.wav",
+					"../gigatron/Cello/Db4.wav",
+					"../gigatron/Cello/D4.wav",
+					"../gigatron/Cello/Eb4.wav",
+					"../gigatron/Cello/E4.wav",
+					"../gigatron/Cello/F4.wav",
+					"../gigatron/Cello/Gb4.wav",
+					"../gigatron/Cello/G4.wav",
+					"../gigatron/Cello/Ab4.wav",
+					"../gigatron/Cello/A4.wav",
+					"../gigatron/Cello/Bb4.wav",
+					"../gigatron/Cello/B4.wav",
+					"../gigatron/Piano/mcg/mf/64.wav",
+					"../gigatron/Piano/mcg/mf/65.wav",
+					"../gigatron/Piano/mcg/mf/66.wav",
+					"../gigatron/Piano/mcg/mf/67.wav",
+					"../gigatron/Piano/mcg/mf/68.wav",
+					"../gigatron/Piano/mcg/mf/69.wav",
+					"../gigatron/Piano/mcg/mf/70.wav",
+					"../gigatron/Piano/mcg/mf/71.wav",
+					"../gigatron/Piano/mcg/mf/72.wav",
+					"../gigatron/Piano/mcg/mf/73.wav",
+					"../gigatron/Piano/mcg/mf/74.wav",
+					"../gigatron/Piano/mcg/mf/75.wav",
+					"../gigatron/Piano/mcg/mf/76.wav"
+				]
+			},
+			track: {
+				type: Object,
+				value: {
+					name: "Default"
+				}
+			}
+		},
+
+		handleSample: function (e) {
+			var name = e.target.url.match(/.+\/(.+)\..+$/)[1]
+			var data = e.detail.response;
+			context.decodeAudioData(data, (buffer) => {
+
+				if(
+					window[name] !== undefined ||
+					name === 'undefined' ||
+					name.match(/^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|null|this|true|void|with|break|catch|class|const|false|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/)
+				) {
+					name = 'sampleupload_' + (name || (new Date()).getTime());
+				}
+				if (name.match(/^\d+$/))
+					name = 'sampleupload_' + (name || (new Date()).getTime());
+
+				window[name] = buffer;
+
+				if(name.match(/\/|\-|\~|\%|\,|\.|\;|\:|\!|\@|\#|\^|\&|\*|\(|\)|\\|\ /)) {
+					console.log('The AudioBuffer `window["' + name + '"]` is ready for you to use.');
+				} else {
+					console.log('The AudioBuffer `' + name + '` is ready for you to use.');
+				}
+				this.count += 1
+
+				if (this.count == this.samples.length) {
+					this.loading = false
+				}
+
+			}, (e) => {
+				console.log('There was an error decoding your file (make sure it\'s a .wav file!)');
+				console.log(e);
+				this.count += 1
+				if (this.count == this.samples.length) {
+					this.loading = false
+				}
+			});
+		},
+	});
+	</script>
+</dom-module>
